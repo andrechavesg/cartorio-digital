@@ -2,6 +2,13 @@
 
 Este módulo estabelece a base conceitual para todo o restante do curso.  Você estudará a diferença entre criptografia simétrica e assimétrica, algoritmos de hash e assinaturas digitais.  Esses conhecimentos são indispensáveis para entender como funcionam os certificados X.509 e como proteger dados e chaves no cartório digital.
 
+## Sumário dos capítulos
+
+1. [Objetivo do módulo](01_objetivo.md) – Por que criptografia é essencial no cartório digital.  
+2. [Criptografia simétrica vs. assimétrica](02_simetrica_assimetrica.md) – Conceitos e exemplos práticos com AES e RSA/ECDSA.  
+3. [Funções hash e integridade](03_hashes_integridade.md) – Propriedades de um hash seguro e exercícios com SHA-256/HMAC.  
+4. [Assinaturas digitais](04_assinaturas.md) – O que são, como funcionam e como aplicá-las no projeto.
+
 ## Objetivos de aprendizagem
 
 - Entender cifras simétricas (AES, ChaCha20) e assimétricas (RSA, ECDSA, Ed25519);

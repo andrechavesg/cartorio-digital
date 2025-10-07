@@ -3,17 +3,17 @@
 Neste módulo você irá aprender a assinar digitalmente documentos, aplicativos e outros artefatos do cartório digital, garantindo autenticidade, integridade e valor legal. Também irá estudar o carimbo do tempo (timestamp) e os diferentes tipos de assinatura reconhecidos pela legislação brasileira e europeia.
 
 ## Sumário
-- [00 — Sumário e Objetivos](capitulo-07-assinaturas-digitais/00-sumario.md)
-- [01 — Tipos de Assinatura: Avançada vs Qualificada](capitulo-07-assinaturas-digitais/01-tipos-assinatura.md)
-- [02 — PAdES: Assinando PDF + Timestamp](capitulo-07-assinaturas-digitais/02-pades.md)
-- [03 — Assinando Artefatos de Software (JAR/EXE)](capitulo-07-assinaturas-digitais/03-assinatura-artefatos.md)
-- [04 — Carimbo do Tempo (RFC 3161)](capitulo-07-assinaturas-digitais/04-timestamp-rfc3161.md)
-- [05 — Prática Guiada e Critérios de Aceitação](capitulo-07-assinaturas-digitais/05-pratica-guiada.md)
-- [06 — Validação e Relatório de Resultados](capitulo-07-assinaturas-digitais/06-validacao-relatorio.md)
-- [07 — Integração no cartorio-digital (APIs & Jobs)](capitulo-07-assinaturas-digitais/07-apis-integracao.md)
-- [08 — Testes Automatizados](capitulo-07-assinaturas-digitais/08-testes.md)
-- [09 — Desafios](capitulo-07-assinaturas-digitais/09-desafios.md)
-- [10 — Referências](capitulo-07-assinaturas-digitais/10-referencias.md)
+- [00 — Sumário e Objetivos](00-sumario.md) – Alinhe a visão do módulo e veja como cada capítulo fortalece a confiança do cartório digital.
+- [01 — Tipos de Assinatura: Avançada vs Qualificada](01-tipos-assinatura.md) – Escolha a assinatura ideal para equilibrar valor jurídico, experiência do usuário e segurança operacional.
+- [02 — PAdES: Assinando PDF + Timestamp](02-pades.md) – Transforme certidões eletrônicas em evidências robustas com assinatura PAdES e carimbo do tempo integrado.
+- [03 — Assinando Artefatos de Software (JAR/EXE)](03-assinatura-artefatos.md) – Proteja instaladores e aplicações do cartório digital, garantindo integridade ponta a ponta.
+- [04 — Carimbo do Tempo (RFC 3161)](04-timestamp-rfc3161.md) – Amplie a validade jurídica dos documentos com registros temporais auditáveis.
+- [05 — Prática Guiada e Critérios de Aceitação](05-pratica-guiada.md) – Execute um fluxo completo de assinatura com checkpoints que espelham a operação real do cartório.
+- [06 — Validação e Relatório de Resultados](06-validacao-relatorio.md) – Consolide evidências e comunique conformidade para times técnicos e jurídicos.
+- [07 — Integração no cartório digital (APIs & Jobs)](07-apis-integracao.md) – Automatize assinaturas em pipelines e serviços, mantendo a fluidez dos atendimentos digitais.
+- [08 — Testes Automatizados](08-testes.md) – Cubra regressões com testes focados em criptografia e preservação de evidências.
+- [09 — Desafios](09-desafios.md) – Explore cenários avançados para elevar a maturidade de segurança do cartório digital.
+- [10 — Referências](10-referencias.md) – Acesse normas e guias para decisões respaldadas tecnicamente e legalmente.
 
 ## Objetivos de aprendizagem
 - Entender e implementar assinaturas de documentos em diferentes formatos, como PDF/A (PAdES), arquivos JAR/EXE e contêineres;

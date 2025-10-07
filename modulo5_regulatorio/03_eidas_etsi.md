@@ -1,36 +1,87 @@
-# Padrões Europeus e Internacionais (eIDAS & ETSI)
+# eIDAS e normas ETSI
 
-Nos capítulos anteriores, você viu como montar uma infraestrutura de certificação baseada na ICP‑Brasil. Entretanto, nosso cartório digital pode ter de interagir com parceiros internacionais ou adotar boas práticas de outros mercados. Por isso, é importante compreender o arcabouço europeu de identidades eletrônicas e serviços de confiança – o **Regulamento eIDAS** – e a família de normas **ETSI EN 319**, que definem perfis e exigências para provedores de serviços de confiança. Este capítulo aprofunda esses conceitos e mostra como eles se relacionam com a ICP‑Brasil.
+No módulo anterior você estudou a Infraestrutura de Chaves Públicas brasileira e suas legislações. Agora vamos ampliar o horizonte para a União Europeia, onde a confiança eletrônica é regida pelo Regulamento (UE) 910/2014, conhecido como eIDAS.
 
-## Regulamento eIDAS (Reg. 910/2014)
+O eIDAS estabelece regras uniformes para identificação eletrônica, serviços de confiança e documentos eletrônicos válidos em todo o bloco. Ele define níveis de assinatura e credenciamento de prestadores de serviço de confiança (QTSPs).
 
-O eIDAS (eletronic IDentification, Authentication and trust Services) é um regulamento da União Europeia que define requisitos legais para identidades eletrônicas e assinaturas digitais transfronteiriças. Seus principais pontos são:
+## Categorias de assinaturas
 
-- **Reconhecimento mútuo de identidades eletrônicas**: Estados‑Membros devem aceitar os esquemas de identidade eletrônica notificados por outros países.
-- **Categorias de assinatura**:
-  - *Assinatura eletrônica simples*: qualquer dado em formato eletrônico associado a um signatário (como um nome digitado).
-  - *Assinatura eletrônica avançada*: exige vinculação ao signatário, controle exclusivo do meio de criação e detecção de alterações.
-  - *Assinatura eletrônica qualificada*: além dos requisitos de avançada, utiliza certificado qualificado emitido por um Prestador de Serviços de Confiança (QTSP) e dispositivo qualificado (QSCD). Tem presunção legal equivalente à assinatura manuscrita.
-- **Serviços de confiança**: definem regras para carimbo do tempo, selagem eletrônica, autenticação de websites, certificados de selo, etc.
+- **Assinatura eletrônica simples**: pode ser qualquer dado anexado ou associado logicamente a outros dados que o assinante usa para assinar. Tem valor probatório reduzido.
+- **Assinatura eletrônica avançada** (AdES): identifica exclusivamente o signatário e permite detecção de alterações; o signatário mantém controle exclusivo da chave.
+- **Assinatura eletrônica qualificada** (QES): uma AdES emitida por um QTSP credenciado e criada por um dispositivo de criação de assinatura qualificado. Equivale legalmente à assinatura manuscrita em todos os Estados‑membros da UE.
 
-> ⚠️ Embora a ICP‑Brasil tenha conceitos semelhantes, o reconhecimento de assinaturas qualificada e avançada entre jurisdições depende de acordos bilaterais e ajustes de perfil. Em um cartório digital que atenda clientes europeus, pode ser necessário utilizar certificados emitidos por QTSPs europeus para documentos eletrônicos destinados à UE.
+## Principais normas ETSI
+# eIDAS e normas ETSI
 
-## Normas ETSI EN 319
+No módulo anterior você estudou a Infraestrutura de Chaves Públicas brasileira e suas legislações. Agora vamos ampliar o horizonte para a União Europeia, onde a confiança eletrônica é regida pelo Regulamento (UE) 910/2014, conhecido como eIDAS.
 
-Para implementar eIDAS, as normas ETSI detalham requisitos técnicos e perfis de certificados. Algumas das mais relevantes são:
+O eIDAS estabelece regras uniformes para identificação eletrônica, serviços de confiança e documentos eletrônicos válidos em todo o bloco. Ele define níveis de assinatura e credenciamento de prestadores de serviço de confiança (QTSPs).
 
-- **ETSI EN 319 401** – Requisitos gerais de política para provedores de serviços de confiança (TSP). Define princípios de gestão de risco, segurança física e lógica, e controles organizacionais.
-- **ETSI EN 319 411 (Partes 1 e 2)** – Requisitos para TSP que emitem certificados (incluindo QTSP). A Parte 1 cobre certificados “não‑qualificados” e a Parte 2 inclui requisitos adicionais para certificados qualificados e QSCD.
-- **ETSI EN 319 412 (Partes 1–5)** – Perfis de certificados de assinatura e selo. Estabelece campos obrigatórios/optativos e OIDs específicos para certificados qualificados, e define extensões como *qcStatements* e *QCP* (Qualified Certificate Policy).
-- **ETSI EN 319 421** – Requisitos de política e segurança para provedores de serviços de carimbo do tempo (TSP de timestamp). Similar ao RFC 3161, mas adapta o serviço à regulação eIDAS.
+## Categorias de assinaturas
 
-Estude essas normas para entender como elas influenciam a estrutura do certificado, o processo de emissão e os mecanismos de revogação.
+- **Assinatura eletrônica simples**: pode ser qualquer dado anexado ou associado logicamente a outros dados que o assinante usa para assinar. Tem valor probatório reduzido.
+- **Assinatura eletrônica avançada** (AdES): identifica exclusivamente o signatário e permite detecção de alterações; o signatário mantém controle exclusivo da chave.
+- **Assinatura eletrônica qualificada** (QES): uma AdES emitida por um QTSP credenciado e criada por um dispositivo de criação de assinatura qualificado. Equivale legalmente à assinatura manuscrita em todos os Estados‑membros da UE.
+
+## Principais normas ETSI
+
+Os perfis e requisitos técnicos para certificados, assinaturas e serviços de confiança são detalhados por normas da European Telecommunications Standards Institute (ETSI):
+
+- **EN 319 401**: requisitos gerais para provedores de serviço de confiança.
+- **EN 319 411-1**: especifica requisitos de política e segurança para provedores que emitem certificados públicos (Trust Service Providers); define perfis de autoridade de certificação (CA) e políticas.
+- **EN 319 411-2**: perfis adicionais para certificados qualificados (QCP-n/qc) e eIDAS.
+- **EN 319 412**: define perfis de certificado (atributos do sujeito, extensões qcStatements, ETSI NR) para pessoas físicas, jurídicas e componentes de sites.
+- **EN 319 421**: serviços de validação de assinaturas eletrônicas e políticas associadas.
+
+No contexto de assinaturas de documentos eletrônicos, também são importantes as normas para formatos de assinatura:
+
+- **EN 319 102-1 (XAdES)**: assinatura XML avançada.
+- **EN 319 122 (CAdES)**: assinatura CMS avançada.
+- **EN 319 142 (PAdES)**: assinatura PDF avançada e qualificada.
+
+## Interoperabilidade com ICP‑Brasil
+
+Apesar de jurisdições diferentes, há correspondências entre os níveis:
+
+- Certificados A1 (software) e A3 (token) ICP‑Brasil são equivalentes a certificados avançados e qualificados na UE, respectivamente.
+- A legislação brasileira não diferencia QTSPs e CA oficiais, mas a responsabilidade e as políticas devem seguir práticas similares às normas ETSI.
+- Para transações internacionais, seu sistema de cartório digital deve aceitar e validar cadeias de certificados europeus e mapear extensões como `qcStatements`, `policyOIDs` e `qcType`.
 
 ## Atividades
 
-1. Visite o portal da Comissão Europeia sobre eIDAS e identifique as diferenças entre assinatura eletrônica simples, avançada e qualificada.
-2. Baixe um certificado qualificado de um QTSP europeu e compare os campos e extensões (`qcStatements`, OIDs) com o certificado ICP‑Brasil que você emitiu no capítulo anterior (`openssl x509 -noout -text -in cert.pem`). Observe as políticas OID e extensões específicas.
-3. Leia a norma ETSI EN 319 412‑5 e verifique quais atributos e extensões são exigidos para certificados de pessoas jurídicas. Anote semelhanças e diferenças com o documento 15.03 da ICP‑Brasil.
-4. Pesquise como funcionam as listas de confiança da UE (EU Trusted Lists) e identifique como elas poderiam ser consultadas pelo seu cartório digital para validar um certificado europeu.
+1. Leia o Regulamento (UE) 910/2014 e prepare um resumo destacando obrigações de um QTSP e requisitos de QES.
+2. Acesse listas de confiança da UE e identifique uma Autoridade de Certificação qualificada; compare suas políticas com as da ICP‑Brasil.
+3. Verifique um certificado qualificado .p7b usando `openssl asn1parse` e identifique extensões ETSI (por exemplo, `qcStatements`).
+4. Se o seu cartório digital atuar com clientes europeus, proponha ajustes no backend para suportar validação cruzada (cadeias da EU Trusted List) e carimbo do tempo ETSI.
 
-No próximo capítulo você irá explorar em detalhes as diferenças práticas entre **assinaturas qualificadas** e **assinaturas avançadas**, e como escolher a modalidade correta para cada tipo de documento no seu projeto.
+Este capítulo mostra que, para oferecer serviços notarizados de âmbito internacional, é necessário compreender tanto o ambiente regulatório brasileiro quanto o europeu. No próximo módulo você aprofundará a distinção entre certificados qualificados e avançados e verá como escolher o tipo adequado no projeto.
+Os perfis e requisitos técnicos para certificados, assinaturas e serviços de confiança são detalhados por normas da European Telecommunications Standards Institute (ETSI):
+
+- **EN 319 401**: requisitos gerais para provedores de serviço de confiança.
+- **EN 319 411-1**: especifica requisitos de política e segurança para provedores que emitem certificados públicos (Trust Service Providers); define perfis de autoridade de certificação (CA) e políticas.
+- **EN 319 411-2**: perfis adicionais para certificados qualificados (QCP-n/qc) e eIDAS.
+- **EN 319 412**: define perfis de certificado (atributos do sujeito, extensões qcStatements, ETSI NR) para pessoas físicas, jurídicas e componentes de sites.
+- **EN 319 421**: serviços de validação de assinaturas eletrônicas e políticas associadas.
+
+No contexto de assinaturas de documentos eletrônicos, também são importantes as normas para formatos de assinatura:
+
+- **EN 319 102-1 (XAdES)**: assinatura XML avançada.
+- **EN 319 122 (CAdES)**: assinatura CMS avançada.
+- **EN 319 142 (PAdES)**: assinatura PDF avançada e qualificada.
+
+## Interoperabilidade com ICP‑Brasil
+
+Apesar de jurisdições diferentes, há correspondências entre os níveis:
+
+- Certificados A1 (software) e A3 (token) ICP‑Brasil são equivalentes a certificados avançados e qualificados na UE, respectivamente.
+- A legislação brasileira não diferencia QTSPs e CA oficiais, mas a responsabilidade e as políticas devem seguir práticas similares às normas ETSI.
+- Para transações internacionais, seu sistema de cartório digital deve aceitar e validar cadeias de certificados europeus e mapear extensões como `qcStatements`, `policyOIDs` e `qcType`.
+
+## Atividades
+
+1. Leia o Regulamento (UE) 910/2014 e prepare um resumo destacando obrigações de um QTSP e requisitos de QES.
+2. Acesse listas de confiança da UE e identifique uma Autoridade de Certificação qualificada; compare suas políticas com as da ICP‑Brasil.
+3. Verifique um certificado qualificado .p7b usando `openssl asn1parse` e identifique extensões ETSI (por exemplo, `qcStatements`).
+4. Se o seu cartório digital atuar com clientes europeus, proponha ajustes no backend para suportar validação cruzada (cadeias da EU Trusted List) e carimbo do tempo ETSI.
+
+Este capítulo mostra que, para oferecer serviços notarizados de âmbito internacional, é necessário compreender tanto o ambiente regulatório brasileiro quanto o europeu. No próximo módulo você aprofundará a distinção entre certificados qualificados e avançados e verá como escolher o tipo adequado no projeto.

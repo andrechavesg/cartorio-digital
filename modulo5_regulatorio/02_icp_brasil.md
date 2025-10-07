@@ -1,35 +1,42 @@
-# ICP‑Brasil e legislação brasileira
+# ICP-Brasil e Legislação Nacional
 
-A Infraestrutura de Chaves Públicas Brasileira (ICP‑Brasil) foi instituída pela Medida Provisória n.º 2.200-2/2001 para garantir a autenticidade, integridade e validade jurídica de documentos em formato eletrônico. No contexto do cartório digital, seguir as diretrizes da ICP‑Brasil é obrigatório para que os atos tenham valor legal.
+Para que o cartório digital cumpra requisitos legais, é preciso conhecer a estrutura da Infraestrutura de Chaves Públicas Brasileira (ICP-Brasil). Este capítulo aprofunda a base normativa e os tipos de certificados disponíveis no Brasil.
 
-## Leis e decretos
+## Normas e leis
 
-- **MP 2.200‑2/2001** – Estabelece a ICP‑Brasil e cria o Instituto Nacional de Tecnologia da Informação (ITI) como autoridade gestora. Define que documentos assinados com certificados emitidos pela ICP‑Brasil têm presunção de validade jurídica.
-- **Lei 14.063/2020** – Regula o uso de assinaturas eletrônicas na administração pública e em interações com particulares. Define níveis de assinatura (simples, avançada e qualificada) e exige que assinaturas qualificadas utilizem certificado ICP‑Brasil ou equivalentes.
-- **Lei 14.382/2022** – Altera normas dos registros públicos e cria o Sistema Eletrônico dos Registros Públicos (Serp). Determina que cartórios aceitem documentos e certificados em formato eletrônico.
+- **MP 2.200-2/2001** — Institui a ICP-Brasil e cria o Comitê Gestor. Estabelece a fé pública dos documentos eletrônicos assinados digitalmente por certificados ICP-Brasil.
+- **Lei 14.063/2020** — Dispõe sobre assinaturas eletrônicas (simples, avançada e qualificada) e define que a qualificada utiliza certificado ICP.
+- **Lei 14.382/2022** — Moderniza os registros públicos e institui o Serp; determina que atos cartorários podem ser praticados eletronicamente mediante assinatura avançada ou qualificada.
+- **DOC-ICP-05** — Declaração de Práticas de Certificação; define responsabilidades das Autoridades Certificadoras.
 
-Outros instrumentos normativos incluem a Resolução n° 134/2022 do CNJ, que regulamenta o atendimento remoto nos cartórios, e os documentos de política de certificação (DOC‑ICP‑05, DOC‑ICP‑03, DOC‑ICP‑15 etc.) publicados pelo ITI.
+Leia# ICP-Brasil
+ esses documentos e identifique requisitos de implementação, como políticas de armazenamento e procedimentos de revogação.
 
-## Tipos de certificado
+## Tipos de certificados
 
-No âmbito da ICP‑Brasil existem diferentes classes de certificados com usos específicos:
+| Classe | Armazenamento | Validade | Uso típico |
+| ------ | -------------- | -------- | ---------- |
+| **A1** | Software, arquivo .p12 | 1 ano | Assinaturas em massa, servidores web |
+| **A3** | Cartão ou token criptográfico | 1 a 5 anos | Assinatura de documentos com fé pública (Notários) |
+| **A5** | Módulo de segurança (HSM) | 5 anos | Autoridades certificadoras, carimbadores do tempo |
 
-| Classe | Uso | Mídia |
-|---|---|---|
-| A1 | Assinatura digital de documentos e e‑mails; validade de 1 ano; chave gerada em software. |
-| A3 | Assinatura digital e autenticação; validade de 1 a 3 anos; chave gerada em token ou smartcard (dispositivo criptográfico). |
-| A5 | Certificados de autoridade certificadora (CA) raiz e intermediárias; utilizados para assinar outros certificados. |
+Os certificados A3 e A5 são considerados **qualificados**, pois a chave privada é gerada e protegida em hardware certificado.
 
-Além disso, há categorias específicas para pessoas físicas (PF), pessoas jurídicas (PJ) e equipamentos (servidores, aplicações). Os certificados do tipo “S” são destinados a sigilo (criptação) e os “T” ao carimbo do tempo.
+## Requisitos práticos para o projeto
 
-## Exigências práticas para o projeto
+- Armazenar as chaves privadas de oficiais do cartório em tokens (A3) ou HSM (A5) para garantir segurança e conformidade.
+- Validar a cadeia de confiança dos certificados usando `openssl verify` e configurar OCSP ou CRL para revogação.
+- Implementar políticas de acesso e senha nos dispositivos.
+- Manter cópias de segurança da chave raiz em cofre físico ou HSM offline.
 
-- **Política de certificação**: O cartório digital deve observar a DPC da AC emissora (ex.: DOC‑ICP‑05) para saber quais práticas de segurança e controle devem ser seguidas (proteção de chave, revogação, etc.).
-- **Emissão e armazenamento**: Certificados de oficiais de registro e tabeliães devem ser emitidos em hardware criptográfico (token ou smartcard) quando exigido (certificado A3). O sistema deve integrar‑se ao dispositivo via drivers.
-- **Validação**: Para verificar um certificado ICP‑Brasil, utilize ferramentas como `openssl x509` ou ferramentas do ITI, verificando se a cadeia está ancorada na AC Raiz Brasileira.
-- **Revogação**: Consulte CRLs ou servidores OCSP publicados pelas ACs para verificar se o certificado está revogado. O projeto deve automatizar essas checagens.
+````bash
+# Exemplo: verificando um certificado
+openssl verify -CAfile cadeia_icp_brasil.pem cert_oficial.pem
+```
 
-### Atividades
+## Atividades
 
-1. Acesse o site do [Portal ITI](https://www.gov.br/iti/pt-br) e baixe o DOC‑ICP‑05 e o DOC‑ICP‑15. Identifique três requisitos que impactam o desenvolvimento de um cartório digital.
-2. Utilize `openssl x509 -in certificado.icp.pem -text -noout` para inspecionar um certificado ICP‑Brasil que você possua (ou utilize o repositório de cadeia pública do ITI). Observe as extensões “policyIdentifier”, “CRL Distribution Points” e “Authority Info Access”.
+1. Pesquise no site do ITI (Instituto Nacional de Tecnologia da Informação) os documentos DOC-ICP-03, DOC-ICP-05 e DOC-ICP-15 e anote as exigências técnicas para emissores e usuários.
+2. Gere um par de chaves e CSR de teste com `openssl req -newkey rsa:2048 -keyout chave.pem -out pedido.csr` e observe as extensões necessárias.
+3. Experimente importar um certificado ICP-Brasil no seu navegador e explore os campos (Subject, Issuer, Key Usage).
+4. Liste as diferenças práticas entre certificados A1, A3 e A5 e discuta em qual situação cada um é adequado para o cartório digital.

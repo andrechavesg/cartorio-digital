@@ -1,6 +1,6 @@
 # Timestamp RFC 3161
 
-## Exemplo Inspirador
+## Introdução
 
 Ao registrar uma ata digital, o cartório aplicou um carimbo de tempo RFC 3161 fornecido por uma TSA confiável. Meses depois, uma auditoria solicitou comprovação de data e hora; bastou apresentar o arquivo carimbado e a verificação independente confirmou a autenticidade. A confiança foi reforçada.
 
@@ -20,4 +20,4 @@ Ao registrar uma ata digital, o cartório aplicou um carimbo de tempo RFC 3161 f
 
 ## Gancho para o Próximo Capítulo
 
-Com timestamps dominados, avançaremos para uma prática guiada que combina assinatura e validação em fluxo completo. No próximo capítulo, um exemplo inspirador conduzirá você passo a passo.
+Com timestamps dominados, avançaremos para uma prática guiada que combina assinatura e validação em fluxo completo. Na Introdução do próximo capítulo você será conduzido passo a passo.

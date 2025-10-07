@@ -1,6 +1,6 @@
 # Certbot e desafios HTTP-01
 
-## Exemplo Inspirador
+## Introdução
 
 Em pleno horário de pico, o portal do cartório precisava de um certificado renovado. Com o Certbot configurado, bastou executar o agendador e assistir ao log: o desafio HTTP foi respondido automaticamente e o certificado atualizado sem tempo de indisponibilidade. A equipe celebrou a sensação de ter um guardião silencioso trabalhando em segundo plano.
 

@@ -1,6 +1,6 @@
 # Observabilidade e Alertas
 
-## Exemplo Inspirador
+## Introdução
 
 Um pico de acessos quase derrubou a API do cartório. Graças a dashboards em Grafana, logs estruturados e alertas no PagerDuty, a equipe escalou recursos e resolveu o problema antes que os cidadãos percebessem. O episódio consolidou a importância da observabilidade.
 
@@ -20,4 +20,4 @@ Um pico de acessos quase derrubou a API do cartório. Graças a dashboards em Gr
 
 ## Gancho para o Próximo Capítulo
 
-Com observabilidade em ação, vamos encarar o desafio final do módulo: construir uma entrega completa de ponta a ponta. No próximo capítulo um exemplo inspirador unirá todos os elementos em uma jornada prática.
+Com observabilidade em ação, vamos encarar o desafio final do módulo: construir uma entrega completa de ponta a ponta. Na Introdução do próximo capítulo uniremos todos os elementos em uma jornada prática.

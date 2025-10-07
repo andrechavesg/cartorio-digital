@@ -1,6 +1,6 @@
 # Apresentação e Execução Final
 
-## Exemplo Inspirador
+## Introdução
 
 Na apresentação final, a equipe demonstrou o cartório digital em funcionamento, do atendimento on-line à assinatura e registro. Stakeholders puderam testar os fluxos e sentir a confiança construída ao longo do curso.
 

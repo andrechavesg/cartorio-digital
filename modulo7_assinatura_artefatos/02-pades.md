@@ -1,6 +1,6 @@
 # PADES – Assinaturas para PDFs
 
-## Exemplo Inspirador
+## Introdução
 
 Em uma audiência virtual, o cartório apresentou um PDF assinado com PADES. O selo visível no documento transmitia confiança imediata ao juiz e às partes. Todos puderam verificar a assinatura sem ferramentas adicionais, reforçando a transparência do processo.
 
@@ -20,4 +20,4 @@ Em uma audiência virtual, o cartório apresentou um PDF assinado com PADES. O s
 
 ## Gancho para o Próximo Capítulo
 
-Depois de dominar o PADES, vamos abordar assinaturas de artefatos gerais. No próximo capítulo mostraremos, com um exemplo inspirador, como proteger pacotes e arquivos em larga escala.
+Depois de dominar o PADES, vamos abordar assinaturas de artefatos gerais. Na Introdução do próximo capítulo mostraremos como proteger pacotes e arquivos em larga escala.

@@ -1,6 +1,6 @@
 # Objetivo do Módulo – Automação com ACME
 
-## Exemplo Inspirador
+## Introdução
 
 Em uma madrugada de implantação, o certificado do ambiente de homologação expirou e quase interrompeu os testes regulatórios. A equipe decidiu que nunca mais dependeria de processos manuais. Ao amanhecer, tinham um plano: automatizar renovações usando ACME e integrações seguras. Essa virada de chave mostrou que disciplina e automação caminham juntas para manter o cartório sempre disponível.
 
@@ -20,4 +20,4 @@ Em uma madrugada de implantação, o certificado do ambiente de homologação ex
 
 ## Gancho para o Próximo Capítulo
 
-Com o propósito definido, vamos explorar o protocolo que torna essa mágica possível. No próximo capítulo estudaremos, por meio de um exemplo inspirador, como o ACME funciona passo a passo e por que ele é a espinha dorsal da automação no cartório digital.
+Com o propósito definido, vamos explorar o protocolo que torna essa mágica possível. Na Introdução do próximo capítulo estudaremos como o ACME funciona passo a passo e por que ele é a espinha dorsal da automação no cartório digital.

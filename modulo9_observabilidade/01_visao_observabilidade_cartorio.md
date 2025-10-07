@@ -1,6 +1,6 @@
 # Visão de Observabilidade para Certificados
 
-## Exemplo Inspirador
+## Introdução
 
 Quando um certificado prestes a expirar quase interrompeu um serviço, o cartório decidiu construir um centro de observabilidade dedicado a cadeias de confiança. Painéis, alertas e relatórios passaram a monitorar cada emissor, dando tranquilidade à operação.
 

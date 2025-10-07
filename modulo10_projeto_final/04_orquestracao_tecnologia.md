@@ -1,6 +1,6 @@
 # Orquestração de Tecnologia
 
-## Exemplo Inspirador
+## Introdução
 
 Durante um sprint decisivo, a equipe montou um diagrama vivo mostrando integrações entre PKI, KMS, automação ACME, pipelines CI/CD, monitoramento e atendimento. O quadro virou mural da sala de guerra, guiando todas as decisões técnicas.
 

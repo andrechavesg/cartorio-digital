@@ -1,6 +1,6 @@
 # Sumário do Módulo – Assinatura de Artefatos
 
-## Exemplo Inspirador
+## Introdução
 
 Ao preparar a primeira release do sistema do cartório, a equipe percebeu que cada componente — documentos, APIs, aplicativos — precisava de assinatura digital para garantir confiança. Eles mapearam todos os artefatos e criaram um plano integrado. A clareza desse sumário guiou o restante do módulo.
 
@@ -20,4 +20,4 @@ Ao preparar a primeira release do sistema do cartório, a equipe percebeu que ca
 
 ## Gancho para o Próximo Capítulo
 
-Com a visão geral em mãos, vamos iniciar pelo entendimento dos tipos de assinatura disponíveis. No próximo capítulo um exemplo inspirador mostrará como escolher o formato certo para cada necessidade.
+Com a visão geral em mãos, vamos iniciar pelo entendimento dos tipos de assinatura disponíveis. Na Introdução do próximo capítulo entenderemos como escolher o formato certo para cada necessidade.

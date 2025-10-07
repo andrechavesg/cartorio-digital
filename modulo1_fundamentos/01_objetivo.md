@@ -1,6 +1,6 @@
 # 1. Objetivo e Inspiração
 
-## Exemplo Inspirador
+## Introdução
 
 Imagine que o cartório digital acabe de nascer e a primeira auditoria bata à porta exigindo evidências de que toda a base criptográfica está pronta para proteger certidões sensíveis. O time técnico reúne-se na sala principal, projeta o terminal na parede e, diante da diretoria, executa o comando que comprova a versão homologada do OpenSSL. Quando o resultado aparece, todos respiram aliviados: a fundação tecnológica está firme e o sonho de um cartório plenamente digital segue vivo.
 

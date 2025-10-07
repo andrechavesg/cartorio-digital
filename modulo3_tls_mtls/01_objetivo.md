@@ -1,6 +1,6 @@
 # Objetivo do Módulo – TLS 1.3 e mTLS
 
-## Exemplo Inspirador
+## Introdução
 
 Na inauguração do balcão digital, uma cidadã acessou o portal do cartório e, ao perceber o cadeado no navegador, comentou que finalmente confiava em enviar sua escritura pela internet. A equipe técnica sorriu: o certificado emitido no módulo anterior estava agora protegendo uma conexão TLS 1.3 impecável, com autenticação mútua para as APIs internas. Esse momento confirmou que segurança visível gera credibilidade imediata.
 

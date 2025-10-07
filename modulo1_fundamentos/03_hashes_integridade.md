@@ -1,6 +1,6 @@
 # 3. Funções Hash e Integridade
 
-## Exemplo Inspirador
+## Introdução
 
 Uma remessa de certidões recém-assinadas chega ao cofre digital com uma falha misteriosa: um único PDF foi truncado durante o upload e o protocolo quase foi rejeitado. A equipe de infraestrutura reúne-se ao redor do dashboard, calcula rapidamente o hash do arquivo de origem e o compara com o hash armazenado no livro de transmissão. A discrepância acende um alerta vermelho, mas também desperta a certeza de que a integridade pode ser monitorada com maestria. A partir desse episódio, nenhum documento sai do cartório sem o seu resumo criptográfico acompanhado.
 

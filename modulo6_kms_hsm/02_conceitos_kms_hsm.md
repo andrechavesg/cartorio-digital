@@ -1,6 +1,6 @@
 # Conceitos de KMS e HSM
 
-## Exemplo Inspirador
+## Introdução
 
 Na migração para o HSM, a equipe realizou uma sessão aberta para todo o cartório. Demonstraram como uma chave criada dentro do módulo jamais sai em formato texto, apenas é utilizada via operações assinadas. Esse espetáculo tecnológico encantou a todos e reforçou a importância de investir em hardware dedicado.
 

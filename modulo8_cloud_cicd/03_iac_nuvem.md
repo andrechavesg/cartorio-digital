@@ -1,6 +1,6 @@
 # Infraestrutura como Código
 
-## Exemplo Inspirador
+## Introdução
 
 O cartório provisionou um ambiente completo em minutos usando Terraform: redes, clusters Kubernetes, HSM gerenciado e integrações com KMS. A automação eliminou erros manuais e permitiu reproduzir ambientes com exatidão.
 

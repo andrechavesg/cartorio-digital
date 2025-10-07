@@ -1,6 +1,6 @@
 # Projeto Integrado de KMS/HSM
 
-## Exemplo Inspirador
+## Introdução
 
 Encerrando o módulo, o cartório realizou um hackathon interno para consolidar todos os aprendizados. As equipes criaram fluxos que iam da geração de chaves no HSM até a emissão de certificados e assinatura de documentos, tudo monitorado por dashboards. O resultado foi apresentado à diretoria, que aprovou a implantação oficial do projeto.
 

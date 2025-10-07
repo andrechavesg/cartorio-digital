@@ -1,6 +1,6 @@
 # Prática Guiada de Assinatura
 
-## Exemplo Inspirador
+## Introdução
 
 A equipe do cartório organizou um workshop interno onde todos assinaram um documento, aplicaram carimbo de tempo e validaram o resultado em conjunto. O exercício colaborativo fortaleceu a confiança entre áreas técnicas e jurídicas.
 
@@ -20,4 +20,4 @@ A equipe do cartório organizou um workshop interno onde todos assinaram um docu
 
 ## Gancho para o Próximo Capítulo
 
-Após consolidar a prática manual, vamos explorar integrações via API. No próximo capítulo um exemplo inspirador mostrará como disponibilizar assinatura como serviço para sistemas do cartório.
+Após consolidar a prática manual, vamos explorar integrações via API. Na Introdução do próximo capítulo veremos como disponibilizar assinatura como serviço para sistemas do cartório.

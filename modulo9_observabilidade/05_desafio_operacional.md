@@ -1,6 +1,6 @@
 # Desafio Operacional de Observabilidade
 
-## Exemplo Inspirador
+## Introdução
 
 Em um exercício conjunto, times técnicos e jurídicos simularam a expiração de múltiplos certificados ao mesmo tempo. Graças aos alertas e runbooks, cada equipe executou sua parte e o cartório manteve-se operacional.
 

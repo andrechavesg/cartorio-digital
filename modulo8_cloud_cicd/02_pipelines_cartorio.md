@@ -1,6 +1,6 @@
 # Pipelines do Cartório Digital
 
-## Exemplo Inspirador
+## Introdução
 
 A equipe criou uma pipeline que valida código, executa testes de assinatura, constrói contêineres assinados e implanta tudo com aprovação de segurança. Na primeira execução bem-sucedida, um painel exibiu o fluxo completo em tempo real, emocionando quem acompanhava.
 

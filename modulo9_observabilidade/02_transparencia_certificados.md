@@ -1,6 +1,6 @@
 # Transparência nos Certificados do Cartório
 
-## Exemplo Inspirador
+## Introdução
 
 Em uma apresentação à corregedoria, o cartório exibiu um relatório detalhado com todas as emissões, renovações e revogações de certificados. A clareza das informações conquistou a confiança dos avaliadores.
 

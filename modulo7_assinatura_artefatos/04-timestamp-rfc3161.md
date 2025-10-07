@@ -2,6 +2,8 @@
 
 > O **timestamp** prova que um dado/assinatura existia em um momento específico.
 
+Nas primeiras rodadas de auditoria do **Cartório Digital**, percebemos que apenas assinar os documentos não bastava: precisávamos comprovar, anos depois, que aquela assinatura foi realmente aplicada no instante prometido. Sem essa trilha temporal, a confiança nas certidões digitais corria risco. Foi aí que desenhamos um fluxo claro com `openssl ts`, capaz de registrar cada evidência no tempo e dar à nossa equipe a segurança de dizer, com orgulho, que o cartório domina o relógio da confiança.
+
 ## Fluxo geral
 1. Calcule o **hash** do artefato (ex.: SHA‑256).
 2. Envie uma **TSQ** (Time-Stamp Request) para a **TSA** (URL RFC 3161).

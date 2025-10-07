@@ -19,7 +19,9 @@ Todas as chaves de aplicação são derivadas com HKDF com base nos segredos ef�
 
 ### Listando suites TLS 1.3 suportadas
 
-Use `openssl` para listar as suites da versão 1.3:
+**Dor do Cartório Digital**: a equipe de segurança precisa validar rapidamente se o front-end do portal está negociando apenas as suites aprovadas pelo escritório de compliance, evitando regressões quando novos componentes são implantados.
+
+Para responder a essa necessidade, execute o comando abaixo e obtenha exatamente a lista de suites TLS 1.3 que a ferramenta `openssl` reconhece como disponíveis:
 
 ```bash
 openssl ciphers -v -tls1_3
@@ -33,9 +35,13 @@ TLS_AES_128_GCM_SHA256      TLSv1.3 Kx=any   Au=any Enc=AESGCM(128) Mac=AEAD
 TLS_CHACHA20_POLY1305_SHA256 TLSv1.3 Kx=any   Au=any Enc=CHACHA20_POLY1305 Mac=AEAD
 ```
 
+Validar essa lista é o primeiro passo antes de configurar o servidor do módulo seguinte, garantindo que cada ajuste mantenha o portal do cartório alinhado às políticas internas.
+
 ### Testando um handshake TLS 1.3
 
-É possível observar o handshake usando `openssl s_client`:
+**Problema concreto**: o time precisa auditar o handshake do portal do cartório para ter certeza de que a cadeia de certificados enviada aos clientes está completa e confiável, além de confirmar que a negociação está ocorrendo com TLS 1.3.
+
+O comando `openssl s_client` permite estabelecer uma sessão controlada com o serviço e imprimir o passo a passo do handshake, expondo certificados, extensões e mensagens para comparação com os requisitos internos.
 
 ```bash
 # Conectar ao site do seu cartório (quando configurado)
@@ -47,4 +53,4 @@ openssl s_client -connect google.com:443 -tls1_3 -tlsextdebug -msg
 
 No output, repare nas mensagens `ClientHello`, `ServerHello`, `EncryptedExtensions`, `Certificate`, `CertificateVerify` e `Finished`. Esses comandos ajudam a visualizar o fluxo e a cadeia de certificados enviada pelo servidor.
 
-Nos próximos capítulos você irá usar estes conceitos para configurar um servidor real com TLS 1.3 e, em seguida, habilitar mTLS.
+Nos próximos capítulos você irá usar estes conceitos para configurar um servidor real com TLS 1.3 e, em seguida, habilitar mTLS, assegurando que as verificações realizadas aqui orientem cada decisão de configuração e reforcem a confiança digital do cartório.

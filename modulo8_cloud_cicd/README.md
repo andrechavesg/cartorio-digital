@@ -1,6 +1,28 @@
-# Módulo 8 – Implantacao em Cloud e CI/CD
+# Módulo 8 – Implantação em Cloud e CI/CD
 
-O cartório digital precisa ser implantado com agilidade e segurança em ambientes de produção.  Neste módulo você irá integrar o projeto com pipelines de integração e entrega contínua (CI/CD) e preparar a infraestrutura em nuvem (AWS, Azure ou outra) para o uso de certificados automatizados.
+O cartório digital precisa ser implantado com agilidade e segurança em ambientes de produção. Neste módulo você irá integrar o projeto com pipelines de integração e entrega contínua (CI/CD) e preparar a infraestrutura em nuvem (AWS, Azure ou outra) para o uso de certificados automatizados.
+
+## Sumário da jornada
+
+1. [Visão estratégica da jornada em nuvem](./01_visao_estrategica.md) — Diagnostica a falta de padronização e apresenta GitHub Actions e Terraform como pilares da transformação.
+2. [Pipelines do cartório digital](./02_pipelines_cartorio.md) — Converte a visão em uma esteira GitHub Actions completa, conectando requisitos de segurança e conformidade.
+3. [Infraestrutura como código na nuvem](./03_iac_nuvem.md) — Mostra como Terraform recria os ambientes do projeto principal com rastreabilidade total.
+4. [Observabilidade e alertas em pipelines cloud](./04_observabilidade_alertas.md) — Instrumenta pipelines e certificados com Prometheus e Grafana para respostas rápidas.
+5. [Desafio final do módulo](./05_desafio_final.md) — Integra automação, infraestrutura e monitoramento em uma release comprovadamente resiliente.
+
+Cada capítulo aprofunda a maturidade do cartório digital, guiando a equipe desde a estratégia até a operação contínua na nuvem. Ao concluir a sequência, você estará preparado para consolidar todos os aprendizados no `modulo10_projeto_final`.
+
+## Estrutura e conexões do módulo
+
+| Capítulo | Conteúdo | Conexões principais |
+| --- | --- | --- |
+| [01 · Visão estratégica da jornada em nuvem](./01_visao_estrategica.md) | Panorama inspirador da jornada para cloud e CI/CD, lembrando os aprendizados dos módulos 2 a 7. | Reforça a linha do tempo que culmina no `modulo10_projeto_final` e estabelece a cultura de automação. |
+| [02 · Pipelines do cartório digital](./02_pipelines_cartorio.md) | Criação de pipelines GitHub Actions com estágios de build, segurança, assinatura e deploy. | Consome scripts de assinatura do `modulo7_assinatura_artefatos` e requisitos de conformidade do `modulo5_regulatorio`. |
+| [03 · Infraestrutura como código na nuvem](./03_iac_nuvem.md) | Provisionamento de ambientes com Terraform e automação de certificados em load balancers. | Conecta-se com automações do `modulo4_automacao` e governança de chaves do `modulo6_kms_hsm`. |
+| [04 · Observabilidade e alertas em pipelines cloud](./04_observabilidade_alertas.md) | Instrumentação de métricas e alertas para pipelines e certificados. | Complementa as práticas de `modulo9_observabilidade` e garante continuidade operacional. |
+| [05 · Desafio final do módulo](./05_desafio_final.md) | Exercício integrador que entrega uma release completa com monitoramento e documentação. | Prepara para consolidar tudo no `modulo10_projeto_final`. |
+
+Assim, este módulo atua como ponte entre a fundação técnica construída nos módulos anteriores e a materialização completa no projeto final.
 
 ## Objetivos de aprendizagem
 

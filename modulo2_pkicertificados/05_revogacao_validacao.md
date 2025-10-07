@@ -52,6 +52,6 @@ Certa manhã, a equipe do cartório recebeu a notícia de que um colaborador hav
 
 5. **Planeje monitoramento contínuo:** configure tarefas para gerar e publicar CRLs periodicamente e alarmes caso o OCSP pare de responder.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a confiança protegida de ponta a ponta, estamos prontos para colocar esses certificados em trânsito. Na Introdução do próximo módulo mergulharemos no TLS e mTLS, mostrando como uma conexão segura muda a experiência no balcão digital do cartório.

@@ -37,6 +37,6 @@ Após habilitar TLS e mTLS, o cartório recebeu um relatório externo apontando 
 
 4. **Implemente monitoramento:** configure alertas para expiração de certificados, falhas no stapling e ausência de cabeçalhos críticos.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com o ambiente web fortificado, avançaremos para automação da emissão de certificados. Na Introdução do próximo módulo mergulharemos em ACME e fluxos automatizados, mostrando como liberar certificados sem perder controle.

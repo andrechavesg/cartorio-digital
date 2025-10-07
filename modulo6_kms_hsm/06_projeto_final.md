@@ -18,6 +18,6 @@ Encerrando o módulo, o cartório realizou um hackathon interno para consolidar 
 3. Defina indicadores de sucesso (tempo de emissão, tempo de rotação, incidentes evitados).
 4. Apresente o projeto para stakeholders, recolhendo feedback jurídico e tecnológico.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a infraestrutura de chaves consolidada, seguiremos para o módulo de assinatura de artefatos, onde veremos, inspirados por casos reais, como aplicar essas chaves em documentos, softwares e integrações críticas.

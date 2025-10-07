@@ -25,6 +25,6 @@ Ao longo deste módulo, você compreenderá como esses pilares se entrelaçam pa
 2. Documente por que essa versão atende (ou não) aos requisitos do órgão regulador que inspira o seu cartório digital.
 3. Compartilhe o resultado com a equipe fictícia do projeto, reforçando a importância de validar a fundação criptográfica antes de implantar qualquer serviço.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Agora que confirmamos a base e renovamos a confiança da equipe, surge a pergunta natural: **quais chaves e algoritmos utilizaremos para proteger nossos documentos?** No próximo capítulo mergulharemos, a partir de outro exemplo realista, nas diferenças entre criptografia simétrica e assimétrica e em como combiná-las para manter o ritmo inspirador do cartório digital.

@@ -18,6 +18,6 @@ Um pico de acessos quase derrubou a API do cartório. Graças a dashboards em Gr
 3. Defina SLOs alinhados às expectativas dos cidadãos e acompanhe os resultados.
 4. Registre cada incidente em post-mortems com ações preventivas.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com observabilidade em ação, vamos encarar o desafio final do módulo: construir uma entrega completa de ponta a ponta. Na Introdução do próximo capítulo uniremos todos os elementos em uma jornada prática.

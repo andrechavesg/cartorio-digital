@@ -18,6 +18,6 @@ A equipe criou uma pipeline que valida código, executa testes de assinatura, co
 3. Configure aprovações manuais para deploys críticos, mantendo rastreabilidade.
 4. Armazene artefatos e logs em repositórios seguros para auditorias futuras.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com pipelines definidos, vamos provisionar a infraestrutura com código. No próximo capítulo uma história inspiradora mostrará como Terraform e CloudFormation garantem ambientes consistentes.

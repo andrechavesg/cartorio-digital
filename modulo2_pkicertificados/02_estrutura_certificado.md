@@ -69,6 +69,6 @@ Extensões relevantes:
 
 5. **Experimente curvas elípticas:** gere certificados com `prime256v1` ou `secp384r1` e registre as diferenças percebidas nos campos.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a anatomia do certificado dominada, estamos prontos para construir a espinha dorsal da nossa PKI. Na Introdução do próximo capítulo levantaremos uma CA raiz e uma intermediária, destacando o impacto dessa estrutura na confiança do cartório digital.

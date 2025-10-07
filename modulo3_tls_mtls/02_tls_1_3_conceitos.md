@@ -29,6 +29,6 @@ Durante o lançamento da consulta de certidões on-line, notamos que os cidadão
 
 4. **Planeje suporte a 0-RTT com cautela:** avalie quais requisições podem ser reaplicadas com segurança e documente proteções contra replay.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Compreendido o handshake, chegou a hora de colocá-lo em produção. No próximo capítulo configuraremos um servidor web do cartório com TLS 1.3, iniciando pela cadeia de certificados que você emitiu e terminando com testes inspiradores de acesso seguro.

@@ -18,6 +18,6 @@ Na inauguração do balcão digital, uma cidadã acessou o portal do cartório e
 3. Defina políticas de renovação e distribuição de certificados para garantir continuidade do serviço.
 4. Prepare ambientes de teste que simulem ataques de downgrade ou acesso não autorizado para validar suas configurações.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com o objetivo claro, é hora de mergulhar nos detalhes do handshake. No próximo capítulo veremos, por meio de um exemplo real do cartório, como o TLS 1.3 estabelece sessões seguras e porque suas melhorias tornam a experiência dos cidadãos mais ágil e inspiradora.

@@ -18,6 +18,6 @@ Na plenária de planejamento, o cartório reuniu todas as áreas para visualizar
 3. Defina indicadores de sucesso (tempo de atendimento, incidentes, satisfação).
 4. Documente riscos e planos de mitigação antes de iniciar a execução.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a visão integrada, vamos detalhar as trilhas de entrega. Na Introdução do próximo capítulo veremos como organizar equipes e sprints para construir o cartório digital.

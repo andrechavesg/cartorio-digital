@@ -18,6 +18,6 @@ Durante uma visita guiada, as autoridades conheceram o cofre onde o HSM do cart�
 3. Documente rotinas de backup, transporte e armazenamento em cofres externos.
 4. Teste periodicamente a comunicação entre HSM e aplicações críticas, monitorando latência e disponibilidade.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Depois de consolidar a proteção física, precisamos assegurar auditoria e rotação contínua. No próximo capítulo discutiremos práticas inspiradoras para manter chaves sempre atualizadas e rastreáveis.

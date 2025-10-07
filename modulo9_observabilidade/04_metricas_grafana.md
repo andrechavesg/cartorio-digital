@@ -18,6 +18,6 @@ O cartório montou um painel em Grafana que mostrava a saúde da PKI: certificad
 3. Configure alertas visuais e notificações via e-mail ou chat corporativo.
 4. Revise os painéis periodicamente para garantir que continuem relevantes.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com dashboards poderosos, enfrentaremos o desafio operacional final: coordenar respostas a incidentes e manutenções programadas. Na Introdução do próximo capítulo veremos como manter o cartório sempre operacional.

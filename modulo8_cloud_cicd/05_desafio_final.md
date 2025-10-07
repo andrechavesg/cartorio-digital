@@ -18,6 +18,6 @@ Para concluir o módulo, a equipe entregou uma pipeline completa: código assina
 3. Configure alertas e dashboards específicos para essa aplicação.
 4. Apresente o resultado em uma revisão coletiva, destacando aprendizados.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a automação consolidada, avançaremos para o módulo de observabilidade avançada, onde veremos como monitorar cadeias de certificados e serviços críticos com profundidade ainda maior.

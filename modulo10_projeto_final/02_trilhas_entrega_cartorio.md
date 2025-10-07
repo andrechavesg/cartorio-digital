@@ -18,6 +18,6 @@ O cartório estruturou três trilhas: tecnologia, jurídico e experiência do ci
 3. Estabeleça critérios de pronto alinhados ao cidadão e à legislação.
 4. Documente decisões em atas compartilhadas para manter transparência.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com trilhas definidas, precisamos de governança sólida. No próximo capítulo veremos, inspirados por uma reunião de gabinete, como orquestrar decisões e garantir responsabilidade compartilhada.

@@ -18,6 +18,6 @@ Ao revisar os relatórios de segurança, o cartório descobriu que algumas chave
 3. Documente papéis e responsabilidades para acesso às chaves (operadores, auditores, administradores).
 4. Planeje testes de desastre para validar backups e procedimentos de recuperação.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com o objetivo claro, vamos mergulhar nos conceitos que sustentam essa migração. Na Introdução do próximo capítulo veremos como KMS e HSM trabalham juntos para proteger a espinha dorsal criptográfica do cartório digital.

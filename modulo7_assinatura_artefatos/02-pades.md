@@ -18,6 +18,6 @@ Em uma audiência virtual, o cartório apresentou um PDF assinado com PADES. O s
 3. Verifique o documento em diferentes leitores para garantir que o status aparece como válido.
 4. Documente orientações para cidadãos que desejam conferir a assinatura por conta própria.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Depois de dominar o PADES, vamos abordar assinaturas de artefatos gerais. Na Introdução do próximo capítulo mostraremos como proteger pacotes e arquivos em larga escala.

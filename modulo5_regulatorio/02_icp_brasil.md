@@ -18,6 +18,6 @@ Para obter o selo de cartório digital, a equipe precisou demonstrar conformidad
 3. **Implemente HSM ou módulo equivalente:** documente procedimentos de backup, rotação e controle de acesso.
 4. **Estruture relatórios de auditoria:** mantenha logs assinados com time-stamp e prepare respostas para fiscalizações.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Compreendida a base nacional, ampliaremos a visão para padrões internacionais. Na Introdução do próximo capítulo mergulharemos em eIDAS e ETSI, a partir de uma integração transnacional que expandiu o alcance do cartório digital.

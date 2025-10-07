@@ -18,6 +18,6 @@ O cartório digital decidiu migrar seu portal e APIs para a nuvem com pipelines 
 3. Documente políticas para uso de recursos em nuvem e segredos.
 4. Estabeleça métricas para medir sucesso (tempo de deploy, falhas, satisfação do usuário).
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a visão estratégica definida, vamos construir pipelines concretos. No próximo capítulo veremos, inspirado por um caso real, como organizar estágios de build, segurança e deploy.

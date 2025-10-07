@@ -18,6 +18,6 @@ A equipe do cartório organizou um workshop interno onde todos assinaram um docu
 3. Registre cada passo em um relatório compartilhado, incluindo capturas de tela.
 4. Discuta com a equipe possíveis melhorias e adapte o fluxo para casos reais.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Após consolidar a prática manual, vamos explorar integrações via API. Na Introdução do próximo capítulo veremos como disponibilizar assinatura como serviço para sistemas do cartório.

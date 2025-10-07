@@ -18,6 +18,6 @@ Durante uma fiscalização surpresa, o cartório digital apresentou painéis em 
 3. Realize treinamentos periódicos e registre participação com assinaturas digitais.
 4. Publique relatórios de conformidade para stakeholders, destacando melhorias e planos futuros.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a casa regulatória em ordem, avançaremos para proteger chaves em hardware seguro. Na Introdução do próximo módulo exploraremos KMS e HSMs a partir de uma migração que elevou o patamar de segurança do cartório digital.

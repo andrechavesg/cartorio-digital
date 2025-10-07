@@ -18,6 +18,6 @@ Em um exercício de crise, o cartório simulou a revogação de uma chave compro
 3. Realize exercícios trimestrais de revogação e rotação, registrando lições aprendidas.
 4. Implemente dashboards que mostrem chaves por idade, uso e responsáveis.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Após dominar auditoria e rotação, é hora de aplicar todos os aprendizados em um projeto integrado. No próximo capítulo começaremos o desafio final deste módulo, conectando KMS, HSM e automações para proteger o cartório de ponta a ponta.

@@ -18,6 +18,6 @@ Antes de publicar uma nova versão do sistema de protocolo, o cartório assinou 
 3. Gere manifestos de hash para diretórios críticos e acompanhe mudanças via pipeline.
 4. Documente o processo para que equipes de operações possam validar artefatos antes do deploy.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com os artefatos assinados, precisamos garantir validade temporal. Na Introdução do próximo capítulo exploraremos timestamps RFC 3161, guiados por um caso de preservação de provas digitais.

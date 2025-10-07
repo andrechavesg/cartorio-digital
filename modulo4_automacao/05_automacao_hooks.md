@@ -25,6 +25,6 @@ Após uma renovação automática, uma aplicação deixou de reiniciar e continu
 
 4. **Documente o fluxo:** mantenha um runbook descrevendo ações de emergência caso a automação falhe.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com as renovações sob controle, estamos prontos para navegar pelas exigências regulatórias que sustentam a operação. Na Introdução do módulo seguinte analisaremos normas da ICP-Brasil e padrões internacionais a partir de um caso de conformidade que abriu portas para o cartório digital.

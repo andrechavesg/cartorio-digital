@@ -1,0 +1,24 @@
+openapi: 3.0.3
+info:
+  title: cartorio-digital — Assinaturas e Timestamp
+  version: 0.7.0
+paths:
+  /api/internal/sign/pades:
+    post:
+      summary: Assina PDF em PAdES e aplica timestamp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pdf_url: { type: string }
+                policy_oid: { type: string }
+      responses:
+        '201': { description: PDF assinado }
+  /api/internal/timestamp:
+    post:
+      summary: Gera timestamp (RFC 3161) para arquivo/hash
+      responses:
+        '201': { description: TSR gerada }

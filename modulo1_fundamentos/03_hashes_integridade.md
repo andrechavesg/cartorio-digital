@@ -15,15 +15,17 @@ Algoritmos populares:
 
 ## Exemplo prático
 
-Os analistas do cartório precisam garantir que o lote de certidões exportado pelo sistema de atendimento não seja alterado antes de chegar ao cofre digital estadual. Eles registram o resumo criptográfico de cada arquivo e armazenam essa referência na ata de transmissão. Assim, qualquer divergência futura pode ser detectada com rapidez.
+Em um caso recente, uma remessa de certidões assinadas chegou corrompida ao cofre digital: um PDF foi cortado no meio durante o upload e ninguém percebeu até o protocolo ser rejeitado. Para evitar repetição do incidente, os analistas decidiram registrar o resumo criptográfico de cada arquivo no livro de transmissão, comparando-o no destino para identificar qualquer alteração antes de nova tentativa de registro.
 
-A ferramenta escolhida é o `openssl dgst`, porque gera hashes com algoritmos reconhecidos pelos órgãos de fiscalização e pode ser automatizada em scripts de auditoria. Depois de entender a motivação, calcule o SHA-256 do arquivo `documento.txt`:
+Poucos dias depois, uma unidade do interior relatou que os downloads do sistema central eventualmente vinham truncados quando a conexão caía. Para investigar, o time de infraestrutura passou a calcular hashes locais e cruzá-los com os valores publicados no portal, barrando arquivos suspeitos antes de serem anexados ao processo eletrônico.
+
+Com esses dois incidentes documentados, o comitê técnico padronizou o uso do `openssl dgst`, ferramenta que gera hashes reconhecidos pelos órgãos de fiscalização e pode ser automatizada em scripts de auditoria. Só então o operador responsável executa o comando para calcular o SHA-256 do arquivo `documento.txt`:
 
 ```bash
 openssl dgst -sha256 documento.txt
 ```
 
-O comando exibirá o digest em hexadecimal. Agora edite `documento.txt` (adicione ou remova uma linha) e calcule novamente. O digest será completamente diferente.
+O comando exibirá o digest em hexadecimal. Agora edite `documento.txt` (adicione ou remova uma linha) e calcule novamente. O digest será completamente diferente, permitindo detectar corrupções como as do PDF e validar downloads como no incidente relatado.
 
 Hashes também são usados como parte das assinaturas digitais: em vez de assinar o documento inteiro, assinamos seu hash.
 

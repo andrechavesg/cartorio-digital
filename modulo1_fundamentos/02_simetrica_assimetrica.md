@@ -12,15 +12,15 @@ Algoritmos populares:
 
 ### Exemplo prático
 
-Quando o cartório exporta lotes inteiros de certidões digitais para uma central estadual, a dor é manter essas remessas protegidas enquanto estão armazenadas no servidor de homologação. A equipe de infraestrutura recorre a uma cifra simétrica aprovada pelo comitê de segurança para que apenas usuários autorizados possam abrir os arquivos arquivados.
+Durante os mutirões mensais, o cartório exporta lotes inteiros de certidões digitais para a central estadual. Antes de subir os pacotes para o repositório temporário, a coordenadora de TI descreve no plano de contingência o risco de vazamento dessas certidões enquanto aguardam validação. Para mitigar a dor, ela decide blindar a pasta com uma cifra simétrica aprovada pelo comitê de segurança, garantindo que só os analistas designados consigam abrir o conteúdo arquivado.
 
-Para blindar o pacote com AES-256-CBC e garantir que apenas quem possui a senha consiga reprocessá-lo, utilize:
+Somente depois de registrar o cenário e obter a senha compartilhada, o time executa o comando OpenSSL que aplica a proteção:
 
 ```bash
 openssl enc -aes-256-cbc -salt -in mensagem.txt -out mensagem.enc
 ```
 
-Quando for necessário recuperar o conteúdo para uma conferência da corregedoria, o mesmo time precisa reverter a criptografia de forma íntegra, mantendo a rastreabilidade do acesso:
+Semanas depois, a corregedoria solicita uma conferência aleatória do lote. O mesmo time segue o procedimento documentado para restaurar os arquivos, coletando logs de acesso para manter a rastreabilidade:
 
 ```bash
 openssl enc -d -aes-256-cbc -in mensagem.enc -out mensagem.dec
@@ -39,9 +39,9 @@ Algoritmos populares:
 
 ### Exemplo prático
 
-Sempre que uma unidade do cartório precisa enviar dados sensíveis para outra unidade em outra cidade, o comitê de TI exige a troca segura de chaves para que nenhum intermediário consiga interceptar as credenciais. O processo começa com a geração do par de chaves institucional.
+Em outro cenário, uma unidade distrital precisa enviar dados sensíveis para a sede regional a fim de atender um pedido judicial urgente. A diretoria de tecnologia convoca uma reunião rápida para revisar o protocolo de troca segura de chaves, pois não pode correr o risco de um intermediário interceptar as credenciais. O procedimento aprovado inicia com a geração do par de chaves institucional.
 
-Para gerar uma chave RSA de 2048 bits e disponibilizar a parte pública às demais unidades, execute:
+Somente após registrar o incidente e autorizar a emissão, a equipe dispara os comandos abaixo para gerar a chave RSA de 2048 bits e disponibilizar a parte pública às demais unidades:
 
 ```bash
 openssl genpkey -algorithm RSA -out rsa_private.pem -pkeyopt rsa_keygen_bits:2048
@@ -50,9 +50,9 @@ openssl rsa -pubout -in rsa_private.pem -out rsa_public.pem
 
 O arquivo `rsa_private.pem` contém a chave privada; `rsa_public.pem` contém a chave pública.
 
-Quando a unidade precisa de chaves menores e mais rápidas para autenticação de serviços internos (como assinaturas automáticas de XMLs), o time escolhe curvas elípticas aprovadas pela ICP-Brasil para reduzir o tempo de processamento.
+Mais tarde, ao automatizar a assinatura de XMLs entre sistemas internos do cartório, a equipe percebe que a opção RSA deixa a fila de processamento lenta. Eles registram o problema em ata e decidem migrar para curvas elípticas aprovadas pela ICP-Brasil, ganhando desempenho sem comprometer a conformidade.
 
-Para gerar uma chave Elliptic Curve (P-256) e compartilhar a chave pública com o sistema automatizado, use:
+Com a decisão formalizada, o analista responsável executa os comandos a seguir para gerar a chave Elliptic Curve (P-256) e publicar a parte pública para o sistema automatizado:
 
 ```bash
 openssl genpkey -algorithm EC -out ec_private.pem -pkeyopt ec_paramgen_curve:P-256

@@ -19,9 +19,9 @@ Todas as chaves de aplicação são derivadas com HKDF com base nos segredos ef�
 
 ### Listando suites TLS 1.3 suportadas
 
-**Dor do Cartório Digital**: a equipe de segurança precisa validar rapidamente se o front-end do portal está negociando apenas as suites aprovadas pelo escritório de compliance, evitando regressões quando novos componentes são implantados.
+**Dor do Cartório Digital**: em cada sprint surge a cobrança para auditar se o front-end continua negociando apenas as suites TLS permitidas. Fazer essa verificação manualmente em diferentes servidores consome tempo e deixa espaço para erros que abririam portas para ciphers antigos.
 
-Para responder a essa necessidade, execute o comando abaixo e obtenha exatamente a lista de suites TLS 1.3 que a ferramenta `openssl` reconhece como disponíveis:
+Para responder a essa necessidade recorrente da auditoria, execute o comando abaixo e obtenha exatamente a lista de suites TLS 1.3 que a ferramenta `openssl` reconhece como disponíveis:
 
 ```bash
 openssl ciphers -v -tls1_3

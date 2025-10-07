@@ -4,7 +4,7 @@ TLS assegura a identidade do servidor; mTLS estende isso exigindo que o cliente 
 
 ## Emitindo certificados de cliente
 
-Considere o cenário do cartório digital em que APIs internas sensíveis só podem ser invocadas por escreventes autenticados. O setor de TI precisa comprovar que todo acesso parte de um dispositivo com certificado emitido pela autoridade do cartório, e cada comando a seguir constrói essa cadeia de confiança:
+Considere o cenário do cartório digital em que APIs internas sensíveis só podem ser invocadas por escreventes autenticados. Sem controles fortes, um atacante poderia obter credenciais simples (usuário/senha) e automatizar fraudes em registros eletrônicos. Para impedir esse abuso, o setor de TI exige que cada dispositivo apresente um certificado individual, e os comandos abaixo criam o material criptográfico que permite bloquear qualquer requisição sem o selo oficial do cartório:
 
 ```bash
 # Gerar chave privada do cliente (garante que apenas o escrevente possua o segredo de autenticação)
@@ -18,7 +18,7 @@ openssl ca -config openssl_intermediate.cnf -extensions usr_cert \
     -days 365 -in client.csr -out client.crt -batch
 ```
 
-Caso o escrevente precise importar o certificado em navegadores ou ferramentas como o curl, convertemos para PKCS#12, mantendo a confiança do processo ao empacotar certificado e chave:
+Como parte do plano de continuidade, vários escreventes utilizam navegadores ou estações gerenciadas que só aceitam pacotes PKCS#12. Sem essa conversão, surgem chamados de indisponibilidade que atrasam o atendimento e empurram o time para liberar acessos sem verificação. O comando seguinte empacota certificado e chave de forma segura, eliminando a brecha operacional que poderia forçar a desativação temporária do mTLS:
 
 ```bash
 openssl pkcs12 -export -out client.p12 -inkey client.key -in client.crt -certfile intermediate_ca.crt
@@ -26,7 +26,7 @@ openssl pkcs12 -export -out client.p12 -inkey client.key -in client.crt -certfil
 
 ## Configurando o Nginx para mTLS
 
-A ameaça que queremos mitigar é a fraude: clientes não autorizados tentando registrar escrituras ou consultar bases internas sem qualquer vínculo com o cartório. Para reduzir esse risco, o Nginx passa a validar os certificados emitidos pela nossa CA, usando as diretivas abaixo no bloco `server` configurado no capítulo anterior:
+A ameaça que queremos mitigar é a fraude: clientes não autorizados tentando registrar escrituras ou consultar bases internas sem qualquer vínculo com o cartório. Um endpoint sem verificação derrubaria a confiança do sistema. Para reduzir esse risco, o Nginx passa a validar os certificados emitidos pela nossa CA, usando as diretivas abaixo no bloco `server` configurado no capítulo anterior e derrubando automaticamente conexões suspeitas:
 
 ```nginx
 server {
@@ -46,7 +46,7 @@ server {
 }
 ```
 
-Recarregue o Nginx para aplicar as mudanças:
+Para evitar uma degradação silenciosa, valide a configuração antes de recarregar: um erro de sintaxe poderia derrubar o serviço e forçar a equipe a desabilitar mTLS às pressas. Os comandos seguintes testam e aplicam a mudança com segurança:
 
 ```bash
 sudo nginx -t
@@ -55,7 +55,7 @@ sudo systemctl reload nginx
 
 ## Testando com o curl e o openssl
 
-Os testes a seguir fornecem evidências operacionais de que o controle de acesso está funcionando: a chamada `curl` comprova que uma aplicação do cartório consegue consumir a API apenas quando apresenta o certificado aprovado; sem ele, a negociação falha.
+Falhas de configuração podem degradar o serviço, recusando clientes legítimos ou, pior, aceitando acessos não certificados. Os testes a seguir fornecem evidências operacionais de que o controle de acesso está funcionando: a chamada `curl` comprova que uma aplicação do cartório consegue consumir a API apenas quando apresenta o certificado aprovado; sem ele, a negociação falha e impede o abuso automatizado.
 
 Para acessar o servidor que exige mTLS, o cliente deve apresentar seu certificado:
 
@@ -67,7 +67,7 @@ curl -v https://cartorio.local --cert client.p12 --cert-type P12 --key client.ke
 curl -v https://cartorio.local --cert client.crt --key client.key
 ```
 
-Com `openssl s_client`, os analistas capturam a prova criptográfica do handshake mTLS (cadeia de certificados, verificação de cliente e sessão estabelecida), útil para auditorias do projeto do cartório digital:
+Uma auditoria externa pode questionar se o servidor está, de fato, exigindo certificados antes de liberar operações críticas. Para evitar essa dúvida e reagir rapidamente a qualquer degradação, use `openssl s_client` e capture a prova criptográfica do handshake mTLS (cadeia de certificados, verificação de cliente e sessão estabelecida):
 
 ```bash
 openssl s_client -connect cartorio.local:443 -tls1_3 \

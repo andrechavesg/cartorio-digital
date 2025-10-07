@@ -6,9 +6,9 @@ Além do uso de TLS 1.3 e mTLS, existem cabeçalhos e mecanismos adicionais que
 
 Durante os testes de acesso às certidões digitais, identificamos uma tentativa de downgrade forçado para HTTP simples, explorando uma configuração temporariamente exposta e permitindo a captura das requisições. Como contramedida imediata, o time respondeu com o cabeçalho HSTS para assegurar que os navegadores voltem a consumir o portal exclusivamente por TLS.
 
-HSTS obriga o navegador a acessar um domínio *apenas* via HTTPS, prevenindo ataques de downgrade e de ‘stripping’ de TLS.
+HSTS obriga o navegador a acessar um domínio *apenas* via HTTPS, prevenindo ataques de downgrade e de ‘stripping’ de TLS. Ao configurar o cabeçalho imediatamente após detectar a tentativa de abuso, garantimos que nenhum navegador aceite voltar a HTTP durante a janela de mitigação.
 
-Adicione o cabeçalho no Nginx (após o bloco `ssl_...`):
+Adicione o cabeçalho no Nginx (após o bloco `ssl_...`) para selar o comportamento seguro:
 
 ```nginx
 server {
@@ -28,6 +28,8 @@ Para submeter seu domínio ao preload, consulte <https://hstspreload.org/>.
 
 OCSP (Online Certificate Status Protocol) é um mecanismo para verificar se um certificado foi revogado. Com o stapling, o servidor obtém e “grampeia” (staple) uma resposta OCSP válida ao handshake TLS, evitando que cada cliente precise consultar a CA. Isso responde à reclamação recorrente dos usuários, que percebiam lentidão na revogação de certificados quando dependíamos da consulta direta à autoridade certificadora.
 
+Se o servidor deixar para cada cliente consultar o status de revogação, qualquer instabilidade na CA volta em forma de degradação percebida — requisições ficam lentas e alguns navegadores exibem avisos de segurança, derrubando a confiança no portal. Ao ativar o stapling, o próprio Nginx carrega respostas atualizadas e elimina esse gargalo.
+
 No Nginx, ative:
 
 ```nginx
@@ -46,7 +48,7 @@ server {
 
 ### Testando o stapling
 
-Use `openssl s_client` com a opção `-status` para coletar a evidência de que o cartório digital está entregando o status de revogação atualizado diretamente no handshake:
+Mesmo após a configuração, precisamos comprovar que não há regressão: uma resposta OCSP expirada faria os navegadores apresentarem avisos novamente. Use `openssl s_client` com a opção `-status` para coletar a evidência de que o cartório digital está entregando o status de revogação atualizado diretamente no handshake:
 
 ```bash
 openssl s_client -connect cartorio.local:443 -servername cartorio.local -tls1_3 -status

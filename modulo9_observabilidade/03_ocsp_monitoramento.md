@@ -8,6 +8,7 @@ Antes de aplicar qualquer comando, revisitamos o propósito do **Online Certific
 ## Passos Conectados ao Cartório Digital
 1. **Configurar OCSP stapling** no servidor web oficial (`nginx` presente em `modulo3_tls_mtls/config/nginx.conf`).
 2. **Monitorar respostas** com métricas claras para nosso Prometheus interno (configurado no módulo 8).
+3. **Criar alertas proativos** no Alertmanager para que a central de plantão seja acionada em caso de indisponibilidade, como detalhado no capítulo 5.
 
 Somente após compreender esses pilares partimos para a configuração prática.
 
@@ -20,7 +21,7 @@ resolver_timeout 5s;
 ssl_trusted_certificate /etc/nginx/certs/chain.pem;
 ```
 
-Esse trecho garante que o servidor inclua a resposta OCSP assinada a cada handshake TLS, reduzindo chamadas feitas pelos clientes.
+Esse trecho garante que o servidor inclua a resposta OCSP assinada a cada handshake TLS, reduzindo chamadas feitas pelos clientes e registrando eventos de stapling no log `modulo3_tls_mtls/logs/ocsp.log`, que alimenta o coletor de métricas.
 
 ## Exemplo Guiado de Monitoramento com Prometheus
 Com o conceito em mente, coletamos métricas sobre a latência da consulta OCSP usando um exporter dedicado no namespace `observabilidade`.

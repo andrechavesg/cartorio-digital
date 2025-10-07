@@ -9,13 +9,15 @@ As funções hash são essenciais para garantir a integridade dos dados. Elas re
 - **Determinística:** a mesma entrada sempre produz o mesmo hash.
 
 Algoritmos populares:
-- **SHA‑2** (como SHA‑256, SHA‑384 e SHA‑512).
-- **SHA‑3**, a família mais recente.
+- **SHA-2** (como SHA-256, SHA-384 e SHA-512).
+- **SHA-3**, a família mais recente.
 - **BLAKE2** e **BLAKE3**, rápidos e seguros.
 
 ## Exemplo prático
 
-Crie um arquivo `documento.txt` e calcule seu SHA‑256:
+Os analistas do cartório precisam garantir que o lote de certidões exportado pelo sistema de atendimento não seja alterado antes de chegar ao cofre digital estadual. Eles registram o resumo criptográfico de cada arquivo e armazenam essa referência na ata de transmissão. Assim, qualquer divergência futura pode ser detectada com rapidez.
+
+A ferramenta escolhida é o `openssl dgst`, porque gera hashes com algoritmos reconhecidos pelos órgãos de fiscalização e pode ser automatizada em scripts de auditoria. Depois de entender a motivação, calcule o SHA-256 do arquivo `documento.txt`:
 
 ```bash
 openssl dgst -sha256 documento.txt

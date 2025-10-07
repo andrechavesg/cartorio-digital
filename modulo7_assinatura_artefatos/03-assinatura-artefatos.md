@@ -1,6 +1,8 @@
 # 03 — Assinando Artefatos de Software (JAR/EXE)
 
 ## JAR — `jarsigner` (Java)
+Durante a primeira grande atualização do assinador desktop do **Cartório Digital**, uma biblioteca JAR adulterada quase atrasou toda a entrega. Transformamos o susto em impulso e reforçamos a cultura de confiança ao instituir a assinatura contínua desses componentes: o `jarsigner` passou a ser o guardião que garante que cada build distribuída ao Brasil inteiro traz a identidade legítima do nosso cartório.
+
 Arquivo: `scripts/jarsigner/sign_jar.sh`
 ```bash
 #!/usr/bin/env bash
@@ -21,6 +23,8 @@ jarsigner -verify -verbose -certs "$JAR_IN"
 ```
 
 ## EXE — `signtool` (Windows)
+Quando escalamos o módulo de integração do **Cartório Digital** para centenas de prefeituras, descobrimos que alguns parceiros relutavam em instalar o executável sem uma prova criptográfica da procedência. Adotamos o `signtool` como elo de confiança nessa distribuição massiva, mostrando que cada instalador carrega a assinatura oficial do projeto e pavimenta nossa jornada inspiradora rumo a um cartório 100% digital.
+
 Arquivo: `scripts/signtool/sign_exe.ps1`
 ```powershell
 param(

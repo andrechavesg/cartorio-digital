@@ -19,19 +19,19 @@ Algumas extensões importantes:
 
 ### Explorando um certificado na prática
 
-1. Gere uma chave e um certificado autoassinado temporário (para testes):
+1. Quando o time precisou revisar um incidente envolvendo um certificado provisório, percebemos que faltava um laboratório rápido para experimentar alterações. O problema era testar ajustes sem impactar certificados reais; a solução foi gerar um certificado autoassinado efêmero usando `openssl req -x509`:
 
    ```bash
    openssl req -x509 -newkey rsa:4096 -keyout tmp.key -out tmp.crt -days 30 -nodes -subj "/C=BR/ST=Sao Paulo/L=Santo Andre/O=Cartorio Digital/OU=TI/CN=exemplo.local"
    ```
 
-2. Use o comando `openssl x509` para inspecionar o certificado:
+2. Em outra auditoria, a equipe de conformidade tinha dificuldade em enxergar rapidamente campos como SAN e EKU nos certificados emitidos. O problema residia na falta de visibilidade detalhada; a solução foi usar `openssl x509` para inspecionar o arquivo e desbloquear essas informações de forma legível:
 
    ```bash
    openssl x509 -in tmp.crt -noout -text
    ```
 
-   Observe os campos *Subject*, *Issuer*, *Validity* e as extensões como *Key Usage* e *SAN*. Tente alterar o certificado para incluir uma SAN:
+   Observe os campos *Subject*, *Issuer*, *Validity* e as extensões como *Key Usage* e *SAN*. Quando precisamos garantir que todos os domínios alternativos estivessem documentados, criamos uma configuração dedicada para sanar a lacuna de SAN, solucionando-a com um arquivo `openssl-san.conf` que explicita cada extensão exigida:
 
    ```bash
    # Crie um arquivo openssl.conf minimal com uma seção req e extensions:
@@ -59,7 +59,11 @@ Algumas extensões importantes:
    DNS.2 = www.exemplo.local
    IP.1  = 127.0.0.1
    EOF
+   ```
 
+   O próximo desafio foi confirmar se a nova SAN aparecia corretamente para a auditoria. Geramos novamente o certificado, agora apontando para o arquivo de configuração, e usamos `openssl x509` com `grep` para validar o ajuste, solucionando definitivamente a falta de transparência:
+
+   ```bash
    # Gere outro certificado autoassinado com SAN:
    openssl req -x509 -newkey rsa:4096 -keyout san.key -out san.crt -days 30 -nodes -config openssl-san.conf
    openssl x509 -in san.crt -noout -text | grep -A1 'Subject Alternative Name'

@@ -4,6 +4,8 @@ Além do uso de TLS 1.3 e mTLS, existem cabeçalhos e mecanismos adicionais que
 
 ## HSTS – HTTP Strict Transport Security
 
+Durante os testes de acesso às certidões digitais, identificamos uma tentativa de downgrade forçado para HTTP simples, explorando uma configuração temporariamente exposta e permitindo a captura das requisições. Como contramedida imediata, o time respondeu com o cabeçalho HSTS para assegurar que os navegadores voltem a consumir o portal exclusivamente por TLS.
+
 HSTS obriga o navegador a acessar um domínio *apenas* via HTTPS, prevenindo ataques de downgrade e de ‘stripping’ de TLS.
 
 Adicione o cabeçalho no Nginx (após o bloco `ssl_...`):
@@ -24,7 +26,7 @@ Para submeter seu domínio ao preload, consulte <https://hstspreload.org/>.
 
 ## OCSP Stapling
 
-OCSP (Online Certificate Status Protocol) é um mecanismo para verificar se um certificado foi revogado. Com o stapling, o servidor obtém e “grampeia” (staple) uma resposta OCSP válida ao handshake TLS, evitando que cada cliente precise consultar a CA.
+OCSP (Online Certificate Status Protocol) é um mecanismo para verificar se um certificado foi revogado. Com o stapling, o servidor obtém e “grampeia” (staple) uma resposta OCSP válida ao handshake TLS, evitando que cada cliente precise consultar a CA. Isso responde à reclamação recorrente dos usuários, que percebiam lentidão na revogação de certificados quando dependíamos da consulta direta à autoridade certificadora.
 
 No Nginx, ative:
 
@@ -37,18 +39,20 @@ server {
 }
 ```
 
-- `ssl_trusted_certificate` deve apontar para a cadeia da CA que assina seu certificado, para que o Nginx possa verificar a resposta OCSP.
+- `ssl_stapling on` permite que o próprio servidor apresente o status de revogação, eliminando a espera pelo veredito remoto.
+- `ssl_stapling_verify on` garante que a resposta grampeada seja verificada antes de ser enviada, evitando a distribuição de respostas inválidas.
 - O `resolver` define servidores DNS a serem usados para buscar o endereço do responder OCSP.
+- `ssl_trusted_certificate` deve apontar para a cadeia da CA que assina seu certificado, para que o Nginx possa verificar a resposta OCSP.
 
 ### Testando o stapling
 
-Use `openssl s_client` com a opção `-status`:
+Use `openssl s_client` com a opção `-status` para coletar a evidência de que o cartório digital está entregando o status de revogação atualizado diretamente no handshake:
 
 ```bash
 openssl s_client -connect cartorio.local:443 -servername cartorio.local -tls1_3 -status
 ```
 
-Procure pela seção `OCSP Response Status: successful`. Se aparecer `no response sent`, verifique se a CA suporta OCSP e se a diretiva `ssl_trusted_certificate` está correta.
+Procure pela seção `OCSP Response Status: successful`, acompanhada de um bloco `OCSP Response` contendo o `Cert Status: good` carimbado recentemente. Se aparecer `no response sent`, verifique se a CA suporta OCSP e se a diretiva `ssl_trusted_certificate` está correta.
 
 ## Outras boas práticas
 

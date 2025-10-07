@@ -3,11 +3,11 @@
 A jornada do cartório digital percorreu fundamentos, certificação, automação e nuvem. Este módulo fecha o ciclo mostrando como observabilidade transforma todas essas escolhas em confiança contínua. Ao monitorar certificados, validar revogações e contar histórias por métricas visíveis, o cidadão percebe que cada ato notarial permanece íntegro mesmo após a emissão.
 
 ## Sumário Inspirador
-- [Visão Inspiradora de Observabilidade para o Cartório Digital](01_visao_observabilidade_cartorio.md) – apresenta o problema de transparência pública e mostra CT logs como solução, alimentando scripts e métricas compartilhadas.
-- [Transparência dos Certificados como Vitrine Pública](02_transparencia_certificados.md) – guia a publicação de emissões em logs, cataloga fingerprints do módulo 2 e sincroniza com o inventário versionado.
-- [OCSP Monitorado: Do Medo de Revogação à Confiança Contínua](03_ocsp_monitoramento.md) – revisita o OCSP stapling do módulo 3, conecta métricas coletadas no módulo 8 e aciona alertas operacionais.
-- [Métricas no Grafana: Tornando a Saúde do Cartório Visível](04_metricas_grafana.md) – transforma métricas em dashboards versionados que contam a história operacional.
-- [Desafio Operacional: Orquestrando Alertas que Mobilizam o Cartório](05_desafio_operacional.md) – propõe alertas e runbooks que garantem resposta imediata e alimentam ciclos de melhoria contínua.
+- [Visão Inspiradora de Observabilidade para o Cartório Digital](01_visao_observabilidade_cartorio.md) – apresenta o problema de transparência pública e demonstra como CT logs blindam a credibilidade do ambiente.
+- [Transparência dos Certificados como Vitrine Pública](02_transparencia_certificados.md) – guia a publicação de emissões em logs, documentando fingerprints para rastrear abusos e violações.
+- [OCSP Monitorado: Do Medo de Revogação à Confiança Contínua](03_ocsp_monitoramento.md) – revisita o OCSP stapling e mostra como medir disponibilidade para impedir brechas de revogação.
+- [Métricas no Grafana: Tornando a Saúde do Cartório Visível](04_metricas_grafana.md) – transforma métricas em dashboards versionados que orientam decisões de segurança.
+- [Desafio Operacional: Orquestrando Alertas que Mobilizam o Cartório](05_desafio_operacional.md) – propõe alertas e runbooks que mantêm a equipe pronta para proteger o cidadão.
 
 ## Objetivos de aprendizagem
 

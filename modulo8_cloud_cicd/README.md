@@ -4,11 +4,11 @@ O cartório digital precisa ser implantado com agilidade e segurança em ambient
 
 ## Sumário da jornada
 
-1. [Visão estratégica da jornada em nuvem](./01_visao_estrategica.md) — Diagnostica a falta de padronização e apresenta GitHub Actions e Terraform como pilares da transformação.
-2. [Pipelines do cartório digital](./02_pipelines_cartorio.md) — Converte a visão em uma esteira GitHub Actions completa, conectando requisitos de segurança e conformidade.
-3. [Infraestrutura como código na nuvem](./03_iac_nuvem.md) — Mostra como Terraform recria os ambientes do projeto principal com rastreabilidade total.
-4. [Observabilidade e alertas em pipelines cloud](./04_observabilidade_alertas.md) — Instrumenta pipelines e certificados com Prometheus e Grafana para respostas rápidas.
-5. [Desafio final do módulo](./05_desafio_final.md) — Integra automação, infraestrutura e monitoramento em uma release comprovadamente resiliente.
+1. [Visão estratégica da jornada em nuvem](./01_visao_estrategica.md) — Expõe o problema de entregas inseguras e posiciona GitHub Actions e Terraform como guardiões do pipeline.
+2. [Pipelines do cartório digital](./02_pipelines_cartorio.md) — Ensina a esteira GitHub Actions etapa por etapa, reforçando gates de segurança antes de cada comando crítico.
+3. [Infraestrutura como código na nuvem](./03_iac_nuvem.md) — Demonstra como Terraform replica ambientes com controle rígido de mudanças e trilhas de auditoria.
+4. [Observabilidade e alertas em pipelines cloud](./04_observabilidade_alertas.md) — Conecta métricas e alertas para proteger certificados e detectar falhas antes do cidadão.
+5. [Desafio final do módulo](./05_desafio_final.md) — Provoca a integração total, orientando o desenvolvedor a validar cada risco antes da virada para produção.
 
 Cada capítulo aprofunda a maturidade do cartório digital, guiando a equipe desde a estratégia até a operação contínua na nuvem. Ao concluir a sequência, você estará preparado para consolidar todos os aprendizados no `modulo10_projeto_final`.
 

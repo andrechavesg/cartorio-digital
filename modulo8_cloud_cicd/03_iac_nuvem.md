@@ -54,8 +54,11 @@ resource "aws_acm_certificate" "cartorio" {
 ### Aplicando o plano
 
 ```bash
+# Por que: inicializa plugins e backends garantindo consistência com o estado remoto.
 terraform init
+# Por que: valida a proposta de mudança para revisão entre pares.
 terraform plan -out=tfplan
+# Por que: aplica somente o que foi aprovado, preservando o rastro do plano.
 terraform apply tfplan
 ```
 

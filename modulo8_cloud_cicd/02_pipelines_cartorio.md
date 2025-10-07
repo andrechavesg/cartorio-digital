@@ -37,8 +37,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Instalar dependências
+        # Por que: garantir que usamos exatamente as versões auditadas no lockfile.
         run: npm ci
       - name: Executar testes unitários
+        # Por que: impedir regressões antes de ocupar ambientes compartilhados.
         run: npm test
       - name: Publicar relatórios
         uses: actions/upload-artifact@v4
@@ -54,6 +56,7 @@ jobs:
       - name: Análise SCA
         uses: github/codeql-action/analyze@v3
       - name: Escanear contêiner
+        # Por que: bloquear imagens vulneráveis antes da assinatura e do deploy.
         run: |
           trivy image --exit-code 1 ghcr.io/cartorio-digital/api:latest
 
@@ -62,8 +65,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Baixar imagem
+        # Por que: garantir que o artefato analisado é o mesmo que será assinado.
         run: docker pull ghcr.io/cartorio-digital/api:latest
       - name: Assinar artefato com Sigstore
+        # Por que: adicionar prova criptográfica consumida pelos auditores do módulo 7.
         run: cosign sign --key ${{ secrets.SIGNING_KEY_ID }} ghcr.io/cartorio-digital/api:latest
 
   deploy:
@@ -79,6 +84,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
       - name: Implantar com CDK
+        # Por que: promover o mesmo pacote validado para o ambiente de produção com rastreabilidade.
         run: npx cdk deploy CartorioStack --require-approval never
 ```
 

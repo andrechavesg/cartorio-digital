@@ -8,11 +8,11 @@ Este módulo foi organizado como uma jornada guiada que conecta os aprendizados 
 
 ### Sumário dos capítulos
 
-1. [Visão Integrada do Cartório Digital](01_visao_integrada.md) – alinhe a narrativa do problema aos blocos técnicos e jurídicos que sustentam a plataforma.
-2. [Trilhas de Entrega do Cartório Digital](02_trilhas_entrega_cartorio.md) – planeje e execute o deploy final com confiança e rastreabilidade.
-3. [Governança e Operação Contínua](03_governanca_operacao.md) – mantenha a conformidade viva por meio de observabilidade e auditorias contínuas.
-4. [Orquestração Tecnológica do Cartório Digital](04_orquestracao_tecnologia.md) – conecte automação, segurança e infraestrutura em um fluxo único.
-5. [Apresentação Executiva e Handover](05_apresentacao_execucao.md) – prepare a narrativa de valor e organize a transição para a operação.
+1. [Visão Integrada do Cartório Digital](01_visao_integrada.md) – apresenta o problema dos silos e mostra como unificar controles para proteger o ecossistema.
+2. [Trilhas de Entrega do Cartório Digital](02_trilhas_entrega_cartorio.md) – descreve a sequência de deploy seguro, validando riscos antes da virada final.
+3. [Governança e Operação Contínua](03_governanca_operacao.md) – evidencia como operar com métricas, auditorias e rotação de segredos comprováveis.
+4. [Orquestração Tecnológica do Cartório Digital](04_orquestracao_tecnologia.md) – orienta a alinhar GitOps, políticas e capacidade para manter o ambiente blindado.
+5. [Apresentação Executiva e Handover](05_apresentacao_execucao.md) – ensina a traduzir controles técnicos em narrativa de segurança para stakeholders.
 
 Cada capítulo apresenta o problema real enfrentado pelo cartório digital, relembra os módulos anteriores que apoiam a solução e lista ferramentas e comandos recomendados. Juntos, eles formam uma trilha integrada: da visão estratégica que conecta os módulos 1 a 3, passando pela cadência de entrega apoiada pelos módulos 4 a 8, até chegar à governança e apresentação final potencializadas pelo módulo 9. Use-os como roteiro para montar sua demonstração final, produzir as evidências de conformidade e construir um handover inspirador.
 

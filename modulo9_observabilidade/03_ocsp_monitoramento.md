@@ -27,8 +27,10 @@ Esse trecho garante que o servidor inclua a resposta OCSP assinada a cada handsh
 Com o conceito em mente, coletamos métricas sobre a latência da consulta OCSP usando um exporter dedicado no namespace `observabilidade`.
 
 ```bash
+# Por que: incluir o alvo OCSP no Prometheus sem reiniciar o serviço.
 curl -fsSL https://raw.githubusercontent.com/cartorio-digital/scripts/main/ocsp_exporter.yml \
   | tee /etc/prometheus/file_sd/ocsp_exporter.yml
+# Por que: recarregar a configuração e ativar a coleta imediatamente.
 systemctl reload prometheus
 ```
 

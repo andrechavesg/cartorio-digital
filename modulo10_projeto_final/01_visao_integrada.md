@@ -21,13 +21,16 @@ Lembre-se da jornada: no **Módulo 1** estruturamos os fundamentos regulatórios
   ```
 - **Verificação unificada dos certificados ativos** – quando o auditor solicitar evidências das cadeias digitais, mostre a consolidação com a autoridade construída nos módulos anteriores.
   ```bash
+  # Por que: listar rapidamente quais cadeias estão disponíveis para emissão.
   step ca certificates list --authority cartorio-ca
   ```
 - **Checklist de readiness das integrações** – antes da demonstração final, assegure-se de que todos os serviços estão saudáveis e com certificados válidos em um único comando encadeado.
   ```bash
+  # Por que: conferir a saúde dos deployments e o status das requisições de certificado em uma linha auditável.
   kubectl get deployments -n cartorio && kubectl get certificaterequests.cert-manager.io -n cartorio
   ```
 - **Auditoria de conformidade cruzada** – para validar que as políticas regulatórias permanecem ativas após cada mudança, execute a verificação automatizada no pacote de evidências do projeto principal.
   ```bash
+  # Por que: avaliar se as regras definidas no módulo regulatório seguem aderentes aos dados atuais.
   opa eval --data policies/ --input evidencias/cartorio.json "data.cartorio.conformidade"
   ```

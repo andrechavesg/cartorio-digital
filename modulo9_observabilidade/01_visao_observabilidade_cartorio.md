@@ -12,6 +12,7 @@ No módulo 2 construímos a AC interna e no módulo 3 ativamos TLS para os servi
 Já conscientes da importância dos CT logs, utilizamos o `crt.sh` para verificar se o certificado do domínio `cartorio.digital.gov.br` está presente. Antes de qualquer execução, revisamos como os dados retornam em formato JSON e como esse formato será consumido pelos nossos scripts de auditoria criados no diretório `scripts/`. Só depois de compreender o propósito (dar transparência) recorremos ao comando:
 
 ```bash
+# Por que: buscar evidências públicas de emissão e alimentar os painéis internos.
 curl "https://crt.sh/?q=cartorio.digital.gov.br&output=json" | jq '.[0] | {log: .issuer.name, data_emissao: .not_before}'
 ```
 

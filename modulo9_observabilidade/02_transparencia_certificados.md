@@ -13,9 +13,13 @@ Transparência significa oferecer **linhagem completa** para cada certificado em
 Somente depois de compreendermos esses dois objetivos partimos para os comandos.
 
 ```bash
+# Por que: percorrer todas as emissões pendentes de publicação.
 for cert in modulo2_pkicertificados/output/*.crt; do
+  # Por que: comunicar à equipe qual certificado está em processamento.
   echo "Registrando $(basename "$cert")"
+  # Por que: gerar fingerprint auditável antes de enviar ao log público.
   openssl x509 -in "$cert" -noout -fingerprint -sha256
+  # Por que: publicar o certificado no log Argon usando o payload assinado pelo projeto.
   curl -X POST https://ct.googleapis.com/logs/argon2024/ct/v1/add-chain \
     -H 'Content-Type: application/json' \
     -d @<(python scripts/build_ct_payload.py "$cert")

@@ -19,13 +19,16 @@ Cada módulo construiu não só componentes técnicos, mas histórias de transfo
   ```
 - **Handover estruturado para operação** – quando chegar o momento de transferir o ambiente para a equipe de sustentação, gere o playbook consolidado com os scripts que acompanharam todo o curso.
   ```bash
+  # Por que: produzir um manual oficial com os procedimentos de operação contínua.
   ./scripts/gerar-playbook-operacao.sh --saida handover/cartorio-final.pdf
   ```
 - **Catálogo de serviços e responsabilidades** – para evitar dúvidas futuras, publique o catálogo oficial diretamente a partir do backstage com as entidades do projeto principal.
   ```bash
+  # Por que: atualizar o catálogo reconhecido pela diretoria e distribuir responsabilidades claras.
   backstage-cli generate docs --entity cartorio-digital --format pdf
   ```
 - **Registro de lições aprendidas** – após a cerimônia final, capture os insights coletivos para retroalimentar os módulos anteriores e o roadmap contínuo.
   ```bash
+  # Por que: consolidar conhecimento e alimentar a próxima onda de melhorias regulatórias e técnicas.
   retrotool export --board cartorio-final --output lições-aprendidas.md
   ```

@@ -4,7 +4,9 @@ Com a CA intermediária pronta, podemos emitir certificados para servidores (com
 
 ## 1. Gerar a chave e CSR do servidor
 
-1. Quando o site do cartório foi migrado para Nginx, percebemos que dependíamos de certificados emitidos por terceiros e não conseguíamos incluir SANs específicos para homologação. O problema era garantir identidade completa dos domínios internos; a solução veio ao gerar nosso próprio par de chaves e CSR com `openssl genrsa` e `openssl req`, diretamente no host do serviço:
+1. Quando o site do cartório foi migrado para Nginx, percebemos que dependíamos de certificados emitidos por terceiros e não conseguíamos incluir SANs específicos para homologação. O problema era garantir identidade completa dos domínios internos; a solução veio ao gerar nosso próprio par de chaves e CSR com `openssl genrsa` e `openssl req`, diretamente no host do serviço. **Cenário – serviço novo em produção:** precisamos lançar uma API com segurança imediatamente sem travar o go-live.
+
+   **Impacto na operação segura:** a geração correta das chaves evita que o novo serviço fique exposto com certificados genéricos.
 
    ```bash
    # Gere a chave privada do servidor
@@ -41,7 +43,9 @@ EOF
 
    Esse comando usa uma configuração inline para incluir SANs no CSR.
 
-2. Logo após gerar o CSR, enfrentamos a dor de esperar horas por aprovações externas. Para desbloquear o deploy, assinamos o pedido internamente com a CA intermediária usando `openssl ca`, demonstrando como o cartório pode responder com agilidade às demandas do Nginx:
+2. Logo após gerar o CSR, enfrentamos a dor de esperar horas por aprovações externas. Para desbloquear o deploy, assinamos o pedido internamente com a CA intermediária usando `openssl ca`, demonstrando como o cartório pode responder com agilidade às demandas do Nginx. **Cenário – serviço novo em produção:** a API precisa entrar no ar com um certificado confiável emitido pela própria infraestrutura.
+
+   **Impacto na operação segura:** a assinatura interna mantém o pipeline sob controle e reduz a janela de exposição.
 
    ```bash
    cd ~/pki/intermediate
@@ -57,7 +61,9 @@ EOF
 
 ## 2. Gerar certificados de cliente
 
-Quando habilitamos mTLS entre sistemas do cartório, surgiram tickets de suporte porque usuários não possuíam credenciais confiáveis. O problema era fornecer identidades fortes para pessoas e integrações; replicamos o processo com `openssl genrsa`, `openssl req` e `openssl ca`, emitindo certificados de cliente que devolvem autonomia à operação:
+Quando habilitamos mTLS entre sistemas do cartório, surgiram tickets de suporte porque usuários não possuíam credenciais confiáveis. O problema era fornecer identidades fortes para pessoas e integrações; replicamos o processo com `openssl genrsa`, `openssl req` e `openssl ca`, emitindo certificados de cliente que devolvem autonomia à operação. **Cenário – serviço novo em produção:** uma nova integração precisa consumir a API imediatamente com autenticação mútua.
+
+**Impacto na operação segura:** distribuir certificados corretos evita que o serviço novo seja bloqueado por falta de identidade.
 
 ```bash
 # Chave e CSR do cliente
@@ -84,7 +90,9 @@ O perfil `usr_cert` no `openssl.cnf` deve conter `keyUsage = digitalSignature, k
 - Configure seu serviço web (Nginx, Apache ou ALB) para usar `cartorio.local.cert.pem` e `server.key.pem`, além da cadeia `ca-chain.cert.pem` como `trusted_ca`.
 - Para clientes mTLS, distribua `usuario.exemplo.cert.pem`, `client.key.pem` e a cadeia de CA para importação no navegador ou aplicação.
 
-Para evitar novas interrupções, verificamos se a cadeia estava íntegra e reconhecida pelos parceiros. O comando `openssl verify` fecha o ciclo mostrando que o certificado do Nginx está ancorado na confiança do cartório:
+Para evitar novas interrupções, verificamos se a cadeia estava íntegra e reconhecida pelos parceiros. O comando `openssl verify` fecha o ciclo mostrando que o certificado do Nginx está ancorado na confiança do cartório. **Cenário – serviço novo em produção:** antes de liberar o endpoint, garantimos que a cadeia entregue ao balanceador está correta.
+
+**Impacto na operação segura:** a verificação prévia impede que o lançamento falhe por erros de confiança.
 
 ```bash
 openssl verify -CAfile ~/pki/intermediate/certs/ca-chain.cert.pem certs/cartorio.local.cert.pem

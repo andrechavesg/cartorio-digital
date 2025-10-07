@@ -14,6 +14,7 @@ Antes de construir qualquer dashboard, revisitamos o conceito de **observabilida
 Com o conceito em mente, abrimos o Grafana e importamos um JSON de dashboard preparado pela equipe. Só depois de entender que cada gráfico representa um ponto da jornada do certificado executamos o comando de provisionamento.
 
 ```bash
+# Por que: provisionar o painel como código e manter versionamento auditável.
 cat <<'DASH' > /etc/grafana/provisioning/dashboards/cartorio-observabilidade.json
 {
   "title": "Cartório Digital – Observabilidade PKI",
@@ -24,6 +25,7 @@ cat <<'DASH' > /etc/grafana/provisioning/dashboards/cartorio-observabilidade.jso
   ]
 }
 DASH
+# Por que: aplicar o dashboard imediatamente e validar os painéis na reunião de operação.
 systemctl restart grafana-server
 ```
 

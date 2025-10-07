@@ -36,7 +36,9 @@ jobs:
     steps:
       - name: Enviar métricas para Prometheus Pushgateway
         run: |
+          # Por que: transformar o status do workflow em métrica binária compreensível pelas equipes.
           echo "pipeline_status{workflow=\"delivery\"} ${{ github.event.workflow_run.conclusion == 'success' && 1 || 0 }}" \
+            # Por que: enviar a métrica ao endpoint autenticado do cartório.
             | curl --data-binary @- https://observabilidade.cartorio.digital/metrics
 ```
 

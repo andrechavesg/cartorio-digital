@@ -12,19 +12,25 @@ Os requisitos regulatórios e de auditoria do **Módulo 5** e a observabilidade 
 
 - **Exemplo prático de observabilidade inspiradora** – diante de um incidente de latência percebido pelos cidadãos, use a query consolidada e a importação do dashboard para mostrar que o ecossistema possui visibilidade ponta a ponta.
   ```bash
+  # Por que: investigar o histórico do serviço e correlacionar com eventos de infraestrutura.
   tempo query '{job="cartorio-api"}' --time-range=1h
+  # Por que: expor a leitura visual aos times jurídicos e de negócio.
   grafana dashboards import dashboards/cartorio-operacao.json
   ```
 - **Fluxo de auditoria de assinaturas e selos** – quando a corregedoria requisitar provas das assinaturas emitidas, demonstre como inspecionar rapidamente os certificados associados às certidões digitais.
   ```bash
+  # Por que: apresentar a estrutura do certificado e comprovar vínculos com a ICP-Brasil.
   step certificate inspect --format json artefatos/assinaturas/certidão-*.pem | jq '.extensions'
   ```
 - **Política de rotação de segredos e evidência de execução** – ao revisar o runbook de segurança, prove que a rotação de segredos é automatizada e auditável conforme os padrões definidos nos módulos anteriores.
   ```bash
+  # Por que: forçar a rotação para evitar segredos estagnados e vulneráveis.
   vault write -force secret/data/cartorio/api
+  # Por que: manter registro imutável das requisições ao cofre.
   vault audit enable file file_path=/var/log/vault/auditoria.log
   ```
 - **Gestão de incidentes com livro-razão imutável** – para manter a memória operacional intacta, registre cada evento crítico no ledger e gere o balanço para análise periódica.
   ```bash
+  # Por que: atualizar o livro-caixa operacional e provar diligência contínua.
   ledger-cli --file registros/incidentes.ledger balanco incidentes
   ```

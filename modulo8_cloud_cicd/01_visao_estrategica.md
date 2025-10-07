@@ -43,6 +43,7 @@ jobs:
         with:
           node-version: '20'
       - name: Executar testes
+        # Por que: assegurar qualidade antes que o pipeline avance para fases sensíveis.
         run: npm test
 ```
 

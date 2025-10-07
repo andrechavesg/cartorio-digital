@@ -2,7 +2,9 @@
 
 Integração do **AWS KMS** à aplicação para proteger chaves usadas na emissão/validação de certificados.
 
-### Exemplo de uso com boto3 (Python)
+Antes de mergulhar no código, é importante reconhecer que a aplicação precisava de um mecanismo comprovadamente auditável para cada assinatura emitida, garantindo validade jurídica sem abrir mão da agilidade. A integração com o **AWS KMS** responde a esse desafio ao unir trilhas de auditoria nativas com a governança centralizada do Cartório Digital, inspirando a equipe a buscar sempre o equilíbrio entre segurança e inovação.
+
+### Fluxo de assinatura com boto3 (Python)
 ```python
 import boto3
 
@@ -30,7 +32,9 @@ signature = sign_response['Signature']
 Cada **documento assinado** usa uma **data key** derivada de uma CMK (envelope encryption)
 para garantir segregação e rastreabilidade.
 
-### Provisionamento com Terraform
+Ao expandir a operação para múltiplas contas e ambientes do Cartório Digital, surgia a dor recorrente de manter um padrão consistente de **Customer Master Keys (CMKs)** sem depender de etapas manuais suscetíveis a erro. Adotar o Terraform como linguagem comum de provisionamento trouxe a garantia de que cada conta herda exatamente a mesma configuração de segurança, fortalecendo a governança compartilhada entre os cartórios.
+
+### Provisionamento via IaC (Terraform)
 ```hcl
 resource "aws_kms_key" "assinatura_cartorio" {
   description              = "Chave KMS para assinatura do Cartório Digital"
@@ -44,6 +48,8 @@ resource "aws_kms_alias" "assinatura_cartorio" {
   target_key_id = aws_kms_key.assinatura_cartorio.key_id
 }
 ```
+O snippet evidencia como o projeto principal preserva a padronização ao encapsular a criação da CMK e do alias em código versionado, assegurando que cada cartório virtual receba a mesma estrutura de chaves que sustenta os fluxos de assinatura descritos acima.
+As chaves assimétricas de assinatura (`KeyUsage = "SIGN_VERIFY"`) com `customer_master_key_spec = "RSA_2048"` **não** suportam rotação automática; por isso, a opção `enable_key_rotation` não aparece no recurso acima.
 
 CMKs usadas para **assinatura** (`KeyUsage = "SIGN_VERIFY"`) com `customer_master_key_spec = "RSA_2048"`
 não suportam rotação automática pelo KMS. Para o Cartório Digital, isso significa que a rotação deve ser

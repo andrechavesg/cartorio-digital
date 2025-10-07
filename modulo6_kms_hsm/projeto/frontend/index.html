@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cartório Digital - Integração KMS/HSM</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+      }
+      section {
+        margin-bottom: 2rem;
+      }
+      form {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      input,
+      button {
+        padding: 0.5rem;
+      }
+      pre {
+        background: #f5f5f5;
+        padding: 1rem;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cartório Digital &mdash; Integração KMS/HSM</h1>
+
+    <section>
+      <h2>Emitir credencial com chave protegida</h2>
+      <form id="credential-form">
+        <input type="email" id="email" placeholder="E-mail" required />
+        <input type="text" id="cn" placeholder="Common Name" required />
+        <button type="submit">Emitir</button>
+      </form>
+      <pre id="credentials"></pre>
+    </section>
+
+    <section>
+      <h2>Assinatura via KMS</h2>
+      <form id="sign-form">
+        <input type="text" id="alias" placeholder="Alias da chave" required />
+        <input type="text" id="payload" placeholder="Payload" required />
+        <button type="submit">Assinar</button>
+      </form>
+      <pre id="signature"></pre>
+    </section>
+
+    <section>
+      <h2>Chaves disponíveis</h2>
+      <button id="refresh-keys">Atualizar lista</button>
+      <pre id="keys"></pre>
+    </section>
+
+    <script>
+      const API_BASE = "http://localhost:8000";
+
+      async function refreshCredentials() {
+        const response = await fetch(`${API_BASE}/credentials`);
+        const data = await response.json();
+        document.getElementById("credentials").textContent = JSON.stringify(
+          data.credentials,
+          null,
+          2
+        );
+      }
+
+      async function refreshKeys() {
+        const response = await fetch(`${API_BASE}/kms/keys`);
+        const data = await response.json();
+        document.getElementById("keys").textContent = JSON.stringify(
+          data.keys,
+          null,
+          2
+        );
+      }
+
+      document
+        .getElementById("credential-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          await fetch(`${API_BASE}/credentials`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: document.getElementById("email").value,
+              common_name: document.getElementById("cn").value,
+            }),
+          });
+          refreshCredentials();
+          refreshKeys();
+        });
+
+      document
+        .getElementById("sign-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const response = await fetch(`${API_BASE}/kms/sign`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              alias: document.getElementById("alias").value,
+              payload: document.getElementById("payload").value,
+            }),
+          });
+          const payload = await response.json();
+          document.getElementById("signature").textContent = JSON.stringify(
+            payload,
+            null,
+            2
+          );
+        });
+
+      document.getElementById("refresh-keys").addEventListener("click", () => {
+        refreshKeys();
+      });
+
+      refreshCredentials();
+      refreshKeys();
+    </script>
+  </body>
+</html>

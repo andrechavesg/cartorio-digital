@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cartório Digital - Cloud & CI/CD</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+      }
+      section {
+        margin-bottom: 2rem;
+      }
+      form {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      textarea {
+        grid-column: span 3;
+        height: 120px;
+        padding: 0.5rem;
+      }
+      input,
+      button {
+        padding: 0.5rem;
+      }
+      pre {
+        background: #f5f5f5;
+        padding: 1rem;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cartório Digital &mdash; Cloud & CI/CD</h1>
+
+    <section>
+      <h2>Executar pipeline</h2>
+      <form id="pipeline-form">
+        <input type="text" id="application" placeholder="Aplicação" required />
+        <input type="text" id="environment" placeholder="Ambiente" required />
+        <textarea id="payload" placeholder="Manifesto/artefato" required></textarea>
+        <button type="submit">Executar</button>
+      </form>
+      <pre id="pipelines"></pre>
+    </section>
+
+    <section>
+      <h2>Chaves de assinatura</h2>
+      <button id="refresh-keys">Atualizar</button>
+      <pre id="keys"></pre>
+    </section>
+
+    <script>
+      const API_BASE = "http://localhost:8000";
+
+      async function refreshPipelines() {
+        const response = await fetch(`${API_BASE}/pipelines`);
+        const data = await response.json();
+        document.getElementById("pipelines").textContent = JSON.stringify(
+          data.pipelines,
+          null,
+          2
+        );
+      }
+
+      async function refreshKeys() {
+        const response = await fetch(`${API_BASE}/kms/keys`);
+        const data = await response.json();
+        document.getElementById("keys").textContent = JSON.stringify(
+          data.keys,
+          null,
+          2
+        );
+      }
+
+      document
+        .getElementById("pipeline-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          await fetch(`${API_BASE}/pipelines`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              application: document.getElementById("application").value,
+              environment: document.getElementById("environment").value,
+              payload: document.getElementById("payload").value,
+            }),
+          });
+          refreshPipelines();
+          refreshKeys();
+        });
+
+      document.getElementById("refresh-keys").addEventListener("click", () => {
+        refreshKeys();
+      });
+
+      refreshPipelines();
+      refreshKeys();
+    </script>
+  </body>
+</html>

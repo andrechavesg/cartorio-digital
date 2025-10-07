@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cartório Digital - Automação ACME</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+      }
+      section {
+        margin-bottom: 2rem;
+      }
+      form {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      input,
+      button {
+        padding: 0.5rem;
+      }
+      pre {
+        background: #f5f5f5;
+        padding: 1rem;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cartório Digital &mdash; Automação ACME</h1>
+
+    <section>
+      <h2>Autoridade Certificadora</h2>
+      <button id="fetch-ca">Exibir certificado raiz</button>
+      <pre id="ca"></pre>
+    </section>
+
+    <section>
+      <h2>Criar ordem ACME</h2>
+      <form id="order-form">
+        <input type="text" id="domain" placeholder="dominio.exemplo" required />
+        <button type="submit">Gerar ordem</button>
+      </form>
+      <pre id="orders"></pre>
+    </section>
+
+    <section>
+      <h2>Completar desafio</h2>
+      <form id="challenge-form">
+        <input type="text" id="order-id" placeholder="ID da ordem" required />
+        <input type="text" id="token" placeholder="Token fornecido" required />
+        <button type="submit">Validar token</button>
+      </form>
+      <pre id="certificate"></pre>
+    </section>
+
+    <script>
+      const API_BASE = "http://localhost:8000";
+
+      async function refreshOrders() {
+        const response = await fetch(`${API_BASE}/acme/orders`);
+        const data = await response.json();
+        document.getElementById("orders").textContent = JSON.stringify(
+          data.orders,
+          null,
+          2
+        );
+      }
+
+      document.getElementById("fetch-ca").addEventListener("click", async () => {
+        const response = await fetch(`${API_BASE}/ca`);
+        const data = await response.json();
+        document.getElementById("ca").textContent = data.certificate;
+      });
+
+      document
+        .getElementById("order-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const response = await fetch(`${API_BASE}/acme/orders`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ domain: document.getElementById("domain").value }),
+          });
+          const payload = await response.json();
+          document.getElementById("orders").textContent = JSON.stringify(
+            payload,
+            null,
+            2
+          );
+          refreshOrders();
+        });
+
+      document
+        .getElementById("challenge-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const response = await fetch(
+            `${API_BASE}/acme/orders/${document.getElementById("order-id").value}/complete`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ token: document.getElementById("token").value }),
+            }
+          );
+          const payload = await response.json();
+          document.getElementById("certificate").textContent = JSON.stringify(
+            payload,
+            null,
+            2
+          );
+          refreshOrders();
+        });
+
+      refreshOrders();
+    </script>
+  </body>
+</html>

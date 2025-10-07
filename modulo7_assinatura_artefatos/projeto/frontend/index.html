@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cartório Digital - Assinatura de Artefatos</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+      }
+      section {
+        margin-bottom: 2rem;
+      }
+      form {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      input,
+      button,
+      textarea {
+        padding: 0.5rem;
+      }
+      textarea {
+        width: 400px;
+        height: 100px;
+      }
+      pre {
+        background: #f5f5f5;
+        padding: 1rem;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cartório Digital &mdash; Assinatura de Artefatos</h1>
+
+    <section>
+      <h2>Emitir certificado de code signing</h2>
+      <form id="credential-form">
+        <input type="text" id="cn" placeholder="Common Name" required />
+        <button type="submit">Gerar credencial</button>
+      </form>
+      <pre id="credentials"></pre>
+    </section>
+
+    <section>
+      <h2>Assinar artefato</h2>
+      <form id="artifact-form">
+        <input type="text" id="artifact-id" placeholder="ID do artefato" required />
+        <input type="text" id="alias" placeholder="Alias da chave" required />
+        <textarea id="payload" placeholder="Conteúdo para assinatura" required></textarea>
+        <input type="text" id="description" placeholder="Descrição" />
+        <button type="submit">Assinar</button>
+      </form>
+      <pre id="artifacts"></pre>
+    </section>
+
+    <section>
+      <h2>Chaves ativas</h2>
+      <button id="refresh-keys">Atualizar</button>
+      <pre id="keys"></pre>
+    </section>
+
+    <script>
+      const API_BASE = "http://localhost:8000";
+
+      async function refreshCredentials() {
+        const response = await fetch(`${API_BASE}/signing/credentials`);
+        const data = await response.json();
+        document.getElementById("credentials").textContent = JSON.stringify(
+          data.credentials,
+          null,
+          2
+        );
+      }
+
+      async function refreshArtifacts() {
+        const response = await fetch(`${API_BASE}/signing/artifacts`);
+        const data = await response.json();
+        document.getElementById("artifacts").textContent = JSON.stringify(
+          data.artifacts,
+          null,
+          2
+        );
+      }
+
+      async function refreshKeys() {
+        const response = await fetch(`${API_BASE}/kms/keys`);
+        const data = await response.json();
+        document.getElementById("keys").textContent = JSON.stringify(
+          data.keys,
+          null,
+          2
+        );
+      }
+
+      document
+        .getElementById("credential-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          await fetch(`${API_BASE}/signing/credentials`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              common_name: document.getElementById("cn").value,
+            }),
+          });
+          refreshCredentials();
+          refreshKeys();
+        });
+
+      document
+        .getElementById("artifact-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          await fetch(`${API_BASE}/signing/artifacts`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              artifact_id: document.getElementById("artifact-id").value,
+              key_alias: document.getElementById("alias").value,
+              payload: document.getElementById("payload").value,
+              description: document.getElementById("description").value,
+            }),
+          });
+          refreshArtifacts();
+        });
+
+      document.getElementById("refresh-keys").addEventListener("click", () => {
+        refreshKeys();
+      });
+
+      refreshCredentials();
+      refreshArtifacts();
+      refreshKeys();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cartório Digital - TLS/mTLS</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+      }
+      h2 {
+        margin-top: 2rem;
+      }
+      form {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      input,
+      button,
+      select {
+        padding: 0.5rem;
+      }
+      pre {
+        background: #f5f5f5;
+        padding: 1rem;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cartório Digital &mdash; TLS/mTLS</h1>
+
+    <section>
+      <h2>Cadastro de cidadão</h2>
+      <form id="citizen-form">
+        <input type="text" id="name" placeholder="Nome" required />
+        <input type="email" id="email" placeholder="E-mail" required />
+        <button type="submit">Cadastrar</button>
+      </form>
+      <pre id="citizens"></pre>
+    </section>
+
+    <section>
+      <h2>Certificados</h2>
+      <form id="client-cert-form">
+        <input type="text" id="client-cn" placeholder="Common Name" required />
+        <input type="email" id="client-email" placeholder="E-mail" required />
+        <button type="submit">Emitir cliente</button>
+      </form>
+      <form id="server-cert-form">
+        <input type="text" id="hostname" placeholder="Hostname" required />
+        <button type="submit">Emitir servidor</button>
+      </form>
+      <pre id="certificates"></pre>
+    </section>
+
+    <section>
+      <h2>Simulação mTLS</h2>
+      <form id="handshake-form">
+        <input type="number" id="server-serial" placeholder="Serial servidor" required />
+        <input type="number" id="client-serial" placeholder="Serial cliente" required />
+        <button type="submit">Validar</button>
+      </form>
+      <pre id="handshake-result"></pre>
+    </section>
+
+    <script>
+      const API_BASE = "http://localhost:8000";
+
+      async function fetchCitizens() {
+        const response = await fetch(`${API_BASE}/citizens`);
+        const data = await response.json();
+        document.getElementById("citizens").textContent = JSON.stringify(
+          data.citizens,
+          null,
+          2
+        );
+      }
+
+      async function fetchCertificates() {
+        const response = await fetch(`${API_BASE}/certificates`);
+        const data = await response.json();
+        document.getElementById("certificates").textContent = JSON.stringify(
+          data.certificates,
+          null,
+          2
+        );
+      }
+
+      document
+        .getElementById("citizen-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          await fetch(`${API_BASE}/citizens`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: document.getElementById("name").value,
+              email: document.getElementById("email").value,
+            }),
+          });
+          event.target.reset();
+          fetchCitizens();
+        });
+
+      document
+        .getElementById("client-cert-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          await fetch(`${API_BASE}/certificates/client`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              common_name: document.getElementById("client-cn").value,
+              email: document.getElementById("client-email").value,
+            }),
+          });
+          event.target.reset();
+          fetchCertificates();
+        });
+
+      document
+        .getElementById("server-cert-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          await fetch(`${API_BASE}/certificates/server`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              hostname: document.getElementById("hostname").value,
+            }),
+          });
+          event.target.reset();
+          fetchCertificates();
+        });
+
+      document
+        .getElementById("handshake-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const response = await fetch(`${API_BASE}/tls/handshake`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              server_serial: Number(document.getElementById("server-serial").value),
+              client_serial: Number(document.getElementById("client-serial").value),
+            }),
+          });
+          const payload = await response.json();
+          document.getElementById("handshake-result").textContent = JSON.stringify(
+            payload,
+            null,
+            2
+          );
+        });
+
+      fetchCitizens();
+      fetchCertificates();
+    </script>
+  </body>
+</html>

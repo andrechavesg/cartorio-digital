@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cartorio-mod10-aggregate-outputs
+  namespace: cartorio-mod10
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: cartorio-aws-cli
+      containers:
+        - name: aws-cli
+          image: amazon/aws-cli:2.13.11
+          command: ["/bin/sh", "-c", "chmod +x /scripts/aggregate-outputs.sh && /scripts/aggregate-outputs.sh"]
+          env:
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod10-settings
+                  key: awsRegion
+                  optional: true
+            - name: PARAMETER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod10-settings
+                  key: parameterName
+                  optional: true
+            - name: STACKS
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod10-settings
+                  key: stacks
+                  optional: true
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: scripts
+          configMap:
+            name: cartorio-mod10-script
+            defaultMode: 0755
+  backoffLimit: 1

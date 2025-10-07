@@ -1,0 +1,66 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cartorio-mod8-bootstrap-pipeline
+  namespace: cartorio-mod8
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: cartorio-aws-cli
+      containers:
+        - name: aws-cli
+          image: amazon/aws-cli:2.13.11
+          command: ["/bin/sh", "-c", "chmod +x /scripts/bootstrap-pipeline.sh && /scripts/bootstrap-pipeline.sh"]
+          env:
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod8-settings
+                  key: awsRegion
+                  optional: true
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod8-settings
+                  key: environment
+                  optional: true
+            - name: ARTIFACT_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod8-settings
+                  key: artifactBucket
+                  optional: true
+            - name: GITHUB_OWNER
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod8-settings
+                  key: githubOwner
+                  optional: false
+            - name: GITHUB_REPO
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod8-settings
+                  key: githubRepo
+                  optional: false
+            - name: GITHUB_BRANCH
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod8-settings
+                  key: githubBranch
+                  optional: true
+            - name: GITHUB_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod8-settings
+                  key: githubToken
+                  optional: false
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: scripts
+          configMap:
+            name: cartorio-mod8-script
+            defaultMode: 0755
+  backoffLimit: 1

@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cartorio-mod2-bootstrap-pki
+  namespace: cartorio-mod2
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: cartorio-aws-cli
+      containers:
+        - name: aws-cli
+          image: amazon/aws-cli:2.13.11
+          command: ["/bin/sh", "-c", "chmod +x /scripts/bootstrap-pki.sh && /scripts/bootstrap-pki.sh"]
+          env:
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod2-settings
+                  key: awsRegion
+                  optional: true
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod2-settings
+                  key: environment
+                  optional: true
+            - name: SECRET_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod2-settings
+                  key: rootSecretName
+                  optional: true
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: workspace
+              mountPath: /workspace
+      volumes:
+        - name: scripts
+          configMap:
+            name: cartorio-mod2-script
+            defaultMode: 0755
+        - name: workspace
+          emptyDir: {}
+  backoffLimit: 1

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cartorio-mod3-settings
+  namespace: cartorio-mod3
+data:
+  awsRegion: us-east-1
+  environment: dev
+  domainName: api.dev.cartorio.example
+  trustBucket: ""
+  certArn: ""

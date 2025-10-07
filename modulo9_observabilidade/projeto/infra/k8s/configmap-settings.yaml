@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cartorio-mod9-settings
+  namespace: cartorio-mod9
+data:
+  awsRegion: us-east-1
+  environment: dev

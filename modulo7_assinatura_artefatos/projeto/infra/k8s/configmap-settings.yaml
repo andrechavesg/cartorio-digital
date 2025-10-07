@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cartorio-mod7-settings
+  namespace: cartorio-mod7
+data:
+  awsRegion: us-east-1
+  environment: dev
+  artifactBucket: cartorio-dev-signed-artifacts

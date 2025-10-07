@@ -4,7 +4,7 @@ Com a CA intermediária pronta, podemos emitir certificados para servidores (com
 
 ## 1. Gerar a chave e CSR do servidor
 
-1. No host do serviço (ex.: aplicação web Nginx), crie um par de chaves e um CSR:
+1. Quando o site do cartório foi migrado para Nginx, percebemos que dependíamos de certificados emitidos por terceiros e não conseguíamos incluir SANs específicos para homologação. O problema era garantir identidade completa dos domínios internos; a solução veio ao gerar nosso próprio par de chaves e CSR com `openssl genrsa` e `openssl req`, diretamente no host do serviço:
 
    ```bash
    # Gere a chave privada do servidor
@@ -41,7 +41,7 @@ EOF
 
    Esse comando usa uma configuração inline para incluir SANs no CSR.
 
-2. Assine o CSR com a CA intermediária:
+2. Logo após gerar o CSR, enfrentamos a dor de esperar horas por aprovações externas. Para desbloquear o deploy, assinamos o pedido internamente com a CA intermediária usando `openssl ca`, demonstrando como o cartório pode responder com agilidade às demandas do Nginx:
 
    ```bash
    cd ~/pki/intermediate
@@ -57,7 +57,7 @@ EOF
 
 ## 2. Gerar certificados de cliente
 
-Para autenticar usuários e sistemas, podemos emitir certificados de cliente (mTLS). O processo é similar:
+Quando habilitamos mTLS entre sistemas do cartório, surgiram tickets de suporte porque usuários não possuíam credenciais confiáveis. O problema era fornecer identidades fortes para pessoas e integrações; replicamos o processo com `openssl genrsa`, `openssl req` e `openssl ca`, emitindo certificados de cliente que devolvem autonomia à operação:
 
 ```bash
 # Chave e CSR do cliente
@@ -84,7 +84,7 @@ O perfil `usr_cert` no `openssl.cnf` deve conter `keyUsage = digitalSignature, k
 - Configure seu serviço web (Nginx, Apache ou ALB) para usar `cartorio.local.cert.pem` e `server.key.pem`, além da cadeia `ca-chain.cert.pem` como `trusted_ca`.
 - Para clientes mTLS, distribua `usuario.exemplo.cert.pem`, `client.key.pem` e a cadeia de CA para importação no navegador ou aplicação.
 
-Verifique a cadeia:
+Para evitar novas interrupções, verificamos se a cadeia estava íntegra e reconhecida pelos parceiros. O comando `openssl verify` fecha o ciclo mostrando que o certificado do Nginx está ancorado na confiança do cartório:
 
 ```bash
 openssl verify -CAfile ~/pki/intermediate/certs/ca-chain.cert.pem certs/cartorio.local.cert.pem

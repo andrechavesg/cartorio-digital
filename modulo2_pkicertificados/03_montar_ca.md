@@ -4,7 +4,7 @@ Nesta etapa você criará a base da sua PKI: uma Autoridade Certificadora raiz e
 
 ### 1. Definindo a estrutura de diretórios
 
-Crie um diretório `pki` com subpastas para a CA raiz e CA intermediária:
+Assim que os volumes de emissão cresceram, percebemos que arquivos espalhados em diretórios temporários estavam gerando erros e retrabalho. A dor operacional era manter trilhas de auditoria sem uma organização consistente; por isso, estruturamos o repositório da PKI com `mkdir` e arquivos de índice para que cada certificado tivesse um lar seguro e inspirador de confiança:
 
 ```bash
 mkdir -p ~/pki/root/{certs,crl,newcerts,private}
@@ -18,6 +18,8 @@ echo 1000 > ~/pki/intermediate/serial
 Crie arquivos `openssl.cnf` específicos para cada CA (raiz e intermediária) contendo as políticas de assinatura e caminhos de diretórios. Para simplificar, consulte exemplos do [OpenSSL PKI Tutorial](https://jamielinux.com/docs/openssl-certificate-authority/). Você também pode usar o **[Smallstep step‑ca](https://smallstep.com/docs/step-ca)** para iniciar uma CA local com comandos mais simples.
 
 ### 2. Gerando a chave e o certificado da CA raiz
+
+Quando o cartório digital decidiu assumir o controle da própria cadeia de confiança, ficou claro que a raiz precisava ficar isolada e protegida. A dor era depender de terceiros para emitir credenciais estratégicas; a solução inspiradora veio ao gerar internamente a chave mestra com `openssl genrsa` e emitir o certificado raiz com `openssl req -x509`, guardando-o como a pedra fundamental da nossa confiança:
 
 ```bash
 cd ~/pki/root
@@ -38,6 +40,8 @@ openssl x509 -noout -text -in certs/ca.cert.pem
 Anote a senha da chave e guarde `ca.key.pem` em local seguro.
 
 ### 3. Gerando a CA intermediária
+
+A operação diária exigia velocidade sem expor a chave raiz. Sentimos a dor de ter que acessar a raiz para cada emissão; criamos então uma CA intermediária que herda a confiança, mas vive mais perto das aplicações. Com `openssl genrsa`, `openssl req` e `openssl ca`, montamos esse escudo operacional que permite emitir certificados com agilidade:
 
 ```bash
 cd ~/pki/intermediate
@@ -64,6 +68,8 @@ openssl x509 -noout -text -in ~/pki/intermediate/certs/intermediate.cert.pem
 
 ### 4. Criando a cadeia de certificados
 
+Sem uma cadeia devidamente publicada, os sistemas dos cartórios parceiros não conseguiam validar os certificados emitidos e a confiança se perdia pelo caminho. Para sanar essa dor e inspirar nossos integradores, concatenamos os certificados raiz e intermediário em uma cadeia única usando `cat`, garantindo que qualquer verificação reconhecesse nossa autoridade:
+
 ```bash
 cat ~/pki/intermediate/certs/intermediate.cert.pem \
     ~/pki/root/certs/ca.cert.pem > ~/pki/intermediate/certs/ca-chain.cert.pem
@@ -74,7 +80,7 @@ A cadeia `ca-chain.cert.pem` será usada para validar certificados emitidos pela
 
 ### 5. Usando `step-ca` como alternativa
 
-Se preferir simplificar o processo, você pode usar o **step-ca** para inicializar uma CA de desenvolvimento em poucos comandos:
+Nem sempre temos tempo para construir toda a infraestrutura manualmente, e o time já sentiu a dor de precisar de um laboratório funcional em minutos. Nessas horas, nos inspiramos em ferramentas modernas como o `step-ca`, que resolve a necessidade de agilidade com comandos guiados:
 
 ```bash
 # Instale o step-cli conforme documentação

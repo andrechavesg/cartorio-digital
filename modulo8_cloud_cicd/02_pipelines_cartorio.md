@@ -1,10 +1,14 @@
 # 02 · Pipelines do cartório digital
 
-Neste capítulo, transformamos a visão estratégica em uma esteira viva que entrega valor diariamente. A missão do cartório digital é liberar certidões e atos com rapidez, sem abrir mão da segurança jurídica. Para isso, construímos pipelines que unem testes automatizados, assinatura de artefatos e implantação contínua.
+O cartório digital sofria com builds manuais e liberações inconsistentes entre equipes. Para recuperar a confiança institucional, adotamos GitHub Actions como engrenagem central dos pipelines, transformando cada commit em uma sequência auditável de testes, segurança e implantação.
 
 ## Cenário
 
 Os repositórios do cartório concentram microserviços responsáveis por autenticação, registros e integrações externas. Cada alteração precisa ser validada quanto a conformidade, performance e segurança. A equipe deseja uma solução que reduza erros manuais e garanta rastreabilidade.
+
+## Conceito: esteiras como contratos de entrega
+
+Antes de escrever workflows, alinhamos com o time do projeto principal que os pipelines devem funcionar como contratos: cada estágio só avança quando requisitos dos módulos anteriores são comprovados. Isso significa reaproveitar scripts de certificação (`modulo2`), checagens mTLS (`modulo3`) e políticas regulatórias (`modulo5_regulatorio`).
 
 ## Abordagem com GitHub Actions
 
@@ -78,7 +82,7 @@ jobs:
         run: npx cdk deploy CartorioStack --require-approval never
 ```
 
-Cada bloco é precedido por revisões manuais quando necessário, reforçando governança. O pipeline produz trilhas auditáveis que alimentam a área de conformidade, conectando com os requisitos vistos no `modulo5_regulatorio`.
+Cada bloco é precedido por revisões manuais quando necessário, reforçando governança. O pipeline produz trilhas auditáveis que alimentam a área de conformidade, conectando com os requisitos vistos no `modulo5_regulatorio` e pavimentando o caminho para o `modulo10_projeto_final`.
 
 ## Relacionamento com o projeto principal
 

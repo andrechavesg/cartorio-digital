@@ -1,10 +1,14 @@
 # 04 · Observabilidade e alertas em pipelines cloud
 
-Com a aplicação do cartório digital processando milhares de transações por dia, enxergar o que acontece sob o capô é vital. Este capítulo mostra como nutrimos uma cultura observável, onde métricas, logs e alertas transformam dados em decisões rápidas.
+Após migrar para pipelines automatizados, o cartório digital ainda enfrentava surpresas com certificados expirados e deploys silenciosamente malsucedidos. A solução inspiradora foi unir Prometheus, Grafana e integrações de alerta para transformar dados do projeto principal em respostas rápidas.
 
 ## Contexto
 
 Certificados expiram, pipelines podem falhar e recursos em nuvem sofrem oscilações. Sem monitoramento proativo, corremos o risco de comprometer a confiança dos cidadãos. Precisamos instrumentar cada etapa para detectar incidentes antes que eles impactem o serviço.
+
+## Conceito: observabilidade orientada a decisões
+
+Antes de configurar ferramentas, alinhamos o que precisamos observar: métricas de pipelines, saúde da infraestrutura provisionada pelo Terraform (`modulo3_iac_nuvem`) e indicadores de certificados dos módulos de segurança. A partir desse mapa é que conectamos exportadores e dashboards.
 
 ## Estratégia de observabilidade
 
@@ -68,4 +72,4 @@ Em seguida, criamos uma regra de alerta no Grafana que dispara quando o pipeline
 
 A mesma pilha de observabilidade acompanha os prazos de certificados definidos nos módulos anteriores. Um job adicional lê o `terraform state` para identificar recursos ACM e publica métricas de expiração, reforçando a proteção destacada em `modulo6_kms_hsm`.
 
-Com dados confiáveis e alertas acionáveis, o cartório digital preserva sua reputação e mantém a operação sob controle, mesmo diante de picos de demanda.
+Com dados confiáveis e alertas acionáveis, o cartório digital preserva sua reputação e mantém a operação sob controle, mesmo diante de picos de demanda — preparando o terreno para a entrega integrada no `modulo10_projeto_final`.

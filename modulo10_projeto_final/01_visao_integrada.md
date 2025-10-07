@@ -10,7 +10,7 @@ Lembre-se da jornada: no **Módulo 1** estruturamos os fundamentos regulatórios
 
 ## Ferramentas e comandos como solução
 
-- **Mapa de integração dos serviços críticos**
+- **Mapa de integração dos serviços críticos** – ao explicar para o time executivo como cada módulo contribui para o fluxo de valor, apresente um diagrama único que conecte os serviços essenciais do cartório digital.
   ```mermaid
   graph TD
     A[Frontend do Cartório] -->|TLS 1.3| B[API mTLS]
@@ -19,15 +19,15 @@ Lembre-se da jornada: no **Módulo 1** estruturamos os fundamentos regulatórios
     D -->|Transparência| E[Monitoria de Logs]
     C -->|Carimbo do Tempo| F[Time Stamping Authority]
   ```
-- **Verificação unificada dos certificados ativos**
+- **Verificação unificada dos certificados ativos** – quando o auditor solicitar evidências das cadeias digitais, mostre a consolidação com a autoridade construída nos módulos anteriores.
   ```bash
   step ca certificates list --authority cartorio-ca
   ```
-- **Checklist de readiness das integrações**
+- **Checklist de readiness das integrações** – antes da demonstração final, assegure-se de que todos os serviços estão saudáveis e com certificados válidos em um único comando encadeado.
   ```bash
   kubectl get deployments -n cartorio && kubectl get certificaterequests.cert-manager.io -n cartorio
   ```
-- **Auditoria de conformidade cruzada**
+- **Auditoria de conformidade cruzada** – para validar que as políticas regulatórias permanecem ativas após cada mudança, execute a verificação automatizada no pacote de evidências do projeto principal.
   ```bash
   opa eval --data policies/ --input evidencias/cartorio.json "data.cartorio.conformidade"
   ```

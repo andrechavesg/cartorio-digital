@@ -14,7 +14,7 @@ Este módulo foi organizado como uma jornada guiada que conecta os aprendizados 
 4. [Orquestração Tecnológica do Cartório Digital](04_orquestracao_tecnologia.md) – conecte automação, segurança e infraestrutura em um fluxo único.
 5. [Apresentação Executiva e Handover](05_apresentacao_execucao.md) – prepare a narrativa de valor e organize a transição para a operação.
 
-Cada capítulo apresenta o problema real enfrentado pelo cartório digital, relembra os módulos anteriores que apoiam a solução e lista ferramentas e comandos recomendados. Use-os como roteiro para montar sua demonstração final, produzir as evidências de conformidade e construir um handover inspirador.
+Cada capítulo apresenta o problema real enfrentado pelo cartório digital, relembra os módulos anteriores que apoiam a solução e lista ferramentas e comandos recomendados. Juntos, eles formam uma trilha integrada: da visão estratégica que conecta os módulos 1 a 3, passando pela cadência de entrega apoiada pelos módulos 4 a 8, até chegar à governança e apresentação final potencializadas pelo módulo 9. Use-os como roteiro para montar sua demonstração final, produzir as evidências de conformidade e construir um handover inspirador.
 
 ## Objetivos
 

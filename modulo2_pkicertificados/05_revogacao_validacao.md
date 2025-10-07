@@ -4,7 +4,7 @@
 
 ## 1. Revogando um certificado
 
-No OpenSSL, você mantém um arquivo `index.txt` e uma lista de certificados revogados (`crl`). Para revogar um certificado, identifique seu número de série e execute:
+Quando um colaborador deixou o cartório e esqueceu de devolver o token, percebemos a dor de manter certificados ativos sem controle. Para resolver o risco, usamos os registros do `index.txt` e a lista de revogação (`crl`) para localizar o serial comprometido e aplicar `openssl ca -revoke`, garantindo que a credencial fosse anulada imediatamente:
 
 ```bash
 cd ~/pki/intermediate
@@ -15,14 +15,14 @@ openssl ca -config openssl.cnf -status <serial>
 openssl ca -config openssl.cnf -revoke certs/usuario.exemplo.cert.pem
 ```
 
-Em seguida, gere uma nova lista CRL:
+Em seguida, percebemos que os sistemas externos precisavam receber a notícia da revogação. Geramos uma nova CRL com `openssl ca -gencrl`, distribuindo o arquivo atualizado para que todos rejeitassem a credencial cancelada:
 
 ```bash
 openssl ca -config openssl.cnf -gencrl -out crl/intermediate.crl.pem
 chmod 444 crl/intermediate.crl.pem
 ```
 
-Verifique se o certificado aparece como revogado:
+Para auditar o resultado, confirmamos com `openssl crl` que o certificado revogado aparece na lista, encerrando o incidente com transparência:
 
 ```bash
 openssl crl -in crl/intermediate.crl.pem -noout -text | grep usuario.exemplo
@@ -30,12 +30,12 @@ openssl crl -in crl/intermediate.crl.pem -noout -text | grep usuario.exemplo
 
 ## 2. Verificando revogação
 
-Os clientes precisam consultar a CRL ou usar OCSP (Online Certificate Status Protocol) para saber se um certificado está válido. Há duas abordagens comuns:
+Após alguns incidentes, percebemos que clientes e integrações ainda confiavam em certificados revogados por falta de consulta em tempo real. A dor era monitorar a validade continuamente; por isso reforçamos duas estratégias: CRL offline ou OCSP, destacando como cada uma endereça o problema.
 
 - **CRL offline**: o servidor web carrega a CRL periodicamente e rejeita conexões de certificados revogados.
 - **OCSP**: o servidor delega a verificação a um responder OCSP que informa se o certificado está “good”, “revoked” ou “unknown”.
 
-Para servir OCSP com OpenSSL:
+Quando precisávamos de respostas instantâneas sobre possíveis comprometimentos, montamos um responder OCSP com `openssl ocsp`. Ele consulta o `index.txt` e responde aos clientes em segundos, eliminando a insegurança do time de operações:
 
 ```bash
 # Rode um responder OCSP usando a CA intermediária
@@ -46,7 +46,7 @@ openssl ocsp -port 2560 -text \
     -rsigner certs/intermediate.cert.pem
 ```
 
-No cliente, consulte o status do certificado:
+Do lado do cliente, ensinamos as equipes a validar o status usando também `openssl ocsp`, garantindo que qualquer estação do cartório consiga conferir a saúde das credenciais antes de confiar nelas:
 
 ```bash
 openssl ocsp -issuer certs/intermediate.cert.pem \
@@ -58,7 +58,7 @@ Você também pode adicionar a URL do OCSP ao campo “Authority Information Acc
 
 ## 3. Validando cadeias de confiança
 
-Para verificar se um certificado é válido e não está revogado:
+Quando integramos com órgãos parceiros, eles exigiram provas de que nossos certificados estavam corretos e sem pendências de revogação. Resolvido com `openssl verify`, conseguimos demonstrar a integridade da cadeia e a observância da CRL em um único comando, reforçando a confiança na plataforma:
 
 ```bash
 # Verifique a cadeia e revogação usando a CRL

@@ -1,10 +1,14 @@
 # 03 · Infraestrutura como código na nuvem
 
-A nuvem é o terreno fértil onde o cartório digital floresce. Para manter consistência entre ambientes, convertemos recursos de rede, segurança e aplicação em código. Este capítulo motiva a equipe a ver a infraestrutura como parte integrante do software, permitindo criar e desfazer ambientes com a mesma disciplina aplicada ao código-fonte.
+Os administradores do cartório digital sofriam para reproduzir ambientes de homologação e produção à mão, o que atrasava liberações e fragilizava auditorias. Como resposta inspiradora, adotamos Terraform para descrever cada recurso de nuvem do projeto principal, garantindo que qualquer pessoa consiga recriar a plataforma com o mesmo rigor jurídico.
 
 ## Problema a resolver
 
 Manter ambientes idênticos entre homologação e produção é essencial para evitar surpresas durante a emissão de certidões. Alterações manuais em consoles dificultam auditorias e podem comprometer a conformidade exigida pelos órgãos reguladores.
+
+## Conceito: infraestrutura versionada
+
+Encaramos a infraestrutura como parte do código-fonte. Antes de aplicar qualquer comando, avaliamos dependências com os módulos anteriores: certificados e chaves (módulos 2 e 6), automações (`modulo4_automacao`) e observabilidade (`modulo9_observabilidade`). Só depois de mapear esses relacionamentos definimos o plano Terraform.
 
 ## Escolha do Terraform
 
@@ -62,4 +66,4 @@ Cada execução gera logs versionados que comprovam quem alterou o ambiente e qu
 - O módulo de automação (`modulo4_automacao`) fornece scripts que disparam o `terraform apply` após aprovações.
 - O módulo de observabilidade (`modulo9_observabilidade`) consome *tags* e *outputs* definidos aqui para montar dashboards de saúde da infraestrutura.
 
-Com a infraestrutura sob controle de versão, o cartório digital conquista previsibilidade e pode ampliar sua atuação para novas regiões com confiança.
+Com a infraestrutura sob controle de versão, o cartório digital conquista previsibilidade e pode ampliar sua atuação para novas regiões com confiança — um passo decisivo rumo ao `modulo10_projeto_final`.

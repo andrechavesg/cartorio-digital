@@ -1,10 +1,14 @@
 # 05 · Desafio final do módulo
 
-Para coroar o módulo de Cloud e CI/CD, propomos um desafio que conecta cada peça construída até aqui. É a oportunidade de demonstrar que o cartório digital está pronto para operar em escala nacional, com pipelines confiáveis, infraestrutura resiliente e observabilidade ativa.
+Mesmo com automações implementadas, o cartório digital identificou que nem todos os squads conseguiam orquestrar uma entrega completa em nuvem. Para resolver essa lacuna, propomos um desafio final que obriga a recombinar pipelines GitHub Actions, Terraform e observabilidade em uma narrativa única.
 
 ## Objetivo do desafio
 
 Construir uma release completa do cartório digital, desde o commit até a publicação em ambiente de produção, incluindo monitoramento pós-implantação e documentação das decisões. O resultado deve provar que o time domina automações seguras e pode responder rapidamente a incidentes.
+
+## Conceito: jornada integrada
+
+Antes de iniciar, o time revisita os capítulos anteriores e o `modulo10_projeto_final` para entender como cada componente se encaixa. O desafio é menos sobre scripts isolados e mais sobre contar uma história coerente de entrega contínua.
 
 ## Entregáveis esperados
 

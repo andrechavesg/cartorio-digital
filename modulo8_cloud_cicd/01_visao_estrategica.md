@@ -1,6 +1,6 @@
 # 01 · Visão estratégica da jornada em nuvem
 
-O cartório digital nasce para garantir confiança, rastreabilidade e segurança aos atos jurídicos de cidadãos e empresas. Ao chegar ao módulo de Cloud e CI/CD, carregamos a experiência dos módulos anteriores — onde modelamos certificados, automações e observabilidade — e nos deparamos com o desafio de escalar tudo isso de forma resiliente e repetível. Este capítulo inspira a equipe a enxergar a nuvem e os pipelines como aliados para acelerar entregas sem abrir mão da conformidade regulatória.
+O cartório digital percebeu que cada equipe construía pipelines e ambientes em nuvens distintas, resultando em entregas lentas e falta de confiança nas liberações. Para virar esse jogo, apresentamos GitHub Actions como motor unificado da automação e colocamos a infraestrutura como código no centro da estratégia — dois pilares que inspiram a jornada rumo a uma operação resiliente.
 
 ## Desafio
 
@@ -12,15 +12,17 @@ Como levar o serviço de emissão de certidões, autenticações e selos digitai
 2. **Infraestrutura como código**: Representamos a topologia do cartório digital com Terraform para que ambientes sejam criados em minutos, e não em dias.
 3. **Observabilidade integrada**: Conectamos logs, métricas e alertas para reagir rápido a qualquer ameaça à disponibilidade.
 
-## Exemplo inspirador
+## Conceito aplicado antes da automação
 
-Antes de automatizar, revisamos como os módulos anteriores alimentam esta fase:
+Antes de automatizar, revisitamos como os módulos anteriores alimentam esta fase e validamos a arquitetura do projeto principal (`modulo10_projeto_final`):
 
 - As práticas de certificação de `modulo2` e segurança de transporte de `modulo3` são insumos do pipeline.
 - As integrações regulatórias de `modulo5` e a governança de chaves de `modulo6` definem políticas de aprovação.
 - A assinatura de artefatos de `modulo7` garante confiabilidade nas imagens Docker liberadas pelo pipeline.
 
-Para consolidar essa visão, iniciamos um fluxo de trabalho GitHub Actions minimalista que aciona builds consistentes:
+Somente depois de alinhar esses conceitos é que criamos o primeiro fluxo automatizado.
+
+## Exemplo inspirador com GitHub Actions
 
 ```yaml
 # .github/workflows/cartorio-ci.yml

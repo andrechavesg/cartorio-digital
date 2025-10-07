@@ -14,6 +14,8 @@
 - **TSA (RFC 3161)**: URL, política (OID) e autenticação (se houver).
 
 ## Exemplo (script com JSignPdf — referência)
+Quando lançamos o piloto do **Cartório Digital**, o time percebeu que autenticar as certidões emitidas no módulo 2 em PDF exigia mais do que confiança verbal: precisávamos de um fluxo repetível que blindasse o documento contra fraudes. O comando do **JSignPdf** se tornou o motor dessa virada, pois automatiza a aplicação da assinatura PAdES com carimbo de tempo, garantindo que cada certidão saia do cartório já validada e com evidências criptográficas dignas da nossa ambição digital.
+
 Arquivo: `scripts/pades/sign_pdf_jsignpdf.sh`
 ```bash
 #!/usr/bin/env bash

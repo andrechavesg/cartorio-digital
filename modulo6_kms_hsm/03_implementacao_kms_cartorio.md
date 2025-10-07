@@ -37,10 +37,10 @@ Ao expandir a operação para múltiplas contas e ambientes do Cartório Digital
 ### Provisionamento via IaC (Terraform)
 ```hcl
 resource "aws_kms_key" "assinatura_cartorio" {
-  description             = "Chave KMS para assinatura do Cartório Digital"
-  key_usage               = "SIGN_VERIFY"
+  description              = "Chave KMS para assinatura do Cartório Digital"
+  key_usage                = "SIGN_VERIFY"
   customer_master_key_spec = "RSA_2048"
-  deletion_window_in_days = 30
+  deletion_window_in_days  = 30
 }
 
 resource "aws_kms_alias" "assinatura_cartorio" {
@@ -51,4 +51,12 @@ resource "aws_kms_alias" "assinatura_cartorio" {
 O snippet evidencia como o projeto principal preserva a padronização ao encapsular a criação da CMK e do alias em código versionado, assegurando que cada cartório virtual receba a mesma estrutura de chaves que sustenta os fluxos de assinatura descritos acima.
 As chaves assimétricas de assinatura (`KeyUsage = "SIGN_VERIFY"`) com `customer_master_key_spec = "RSA_2048"` **não** suportam rotação automática; por isso, a opção `enable_key_rotation` não aparece no recurso acima.
 
-> **Planejamento de rotação manual:** para renovar chaves de assinatura, crie uma nova CMK com as mesmas características, atualize a aplicação/alias para apontar para a nova chave, valide as novas assinaturas e, somente após a transição completa, desative e agende a exclusão da chave antiga. Registre o processo e mantenha evidências de teste para auditoria.
+CMKs usadas para **assinatura** (`KeyUsage = "SIGN_VERIFY"`) com `customer_master_key_spec = "RSA_2048"`
+não suportam rotação automática pelo KMS. Para o Cartório Digital, isso significa que a rotação deve ser
+planejada e executada manualmente, obedecendo às janelas de mudança e aos controles de conformidade
+estabelecidos para os selos digitais.
+
+> **Nota sobre rotação manual planejada:** crie uma nova CMK com a mesma configuração, atualize aliases
+> e políticas para apontar para a nova chave, valide a aplicação e os fluxos de assinatura, e somente após
+> a transição controlada desative e agende a exclusão da CMK anterior. Registre os passos, evidências de
+> teste e aprovações para sustentar auditorias futuras.

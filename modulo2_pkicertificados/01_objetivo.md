@@ -1,21 +1,25 @@
 # Objetivo do módulo
 
-Neste primeiro capítulo do Módulo 2, você descobrirá por que precisamos de uma Infraestrutura de Chaves Públicas (PKI) no cartório digital. No capítulo anterior, você aprendeu a gerar chaves, calcular hashes e assinar digitalmente arquivos. Mas, sem uma cadeia de confiança, qualquer pessoa poderia gerar um par de chaves e se passar por outra.
+## Exemplo Inspirador
 
-Uma PKI permite:
-- Associar uma identidade (pessoa ou entidade) a uma chave pública por meio de um certificado digital, emitido por uma Autoridade Certificadora (CA) confiável.
-- Provar a autenticidade de assinaturas digitais: ao verificar a assinatura, o sistema confia na cadeia de certificados que liga o certificado do assinante a uma raiz confiável.
-- Revogar credenciais comprometidas e controlar o ciclo de vida dos certificados.
+Logo após concluir o módulo de fundamentos, a diretoria do cartório digital convocou uma reunião extraordinária: as primeiras integrações com órgãos parceiros estavam prestes a iniciar e todos queriam certeza de que as assinaturas digitais seriam reconhecidas sem questionamentos. Na tela gigante, o time de arquitetura apresentou um mapa da futura infraestrutura de chaves públicas (PKI) que conectaria cidadãos, servidores e aplicações. O entusiasmo tomou conta da sala — estava claro que uma cadeia de confiança própria seria o próximo salto inspirador.
 
-### Por que isso importa para o cartório digital?
+## Conceitos Fundamentais
 
-No cartório digital, os cidadãos solicitarão serviços e assinarão documentos eletronicamente. É imprescindível que os servidores e os clientes saibam com quem estão se comunicando e possam confiar nas assinaturas. Para isso, precisaremos construir nossa própria CA interna, emitir certificados para serviços e clientes, e configurar aplicações para confiar nessa cadeia. Este módulo guiará você por essas etapas.
+- **PKI (Public Key Infrastructure):** conjunto de processos, políticas e tecnologias para vincular identidades a chaves públicas.
+- **Certificados X.509:** documentos digitais que unem uma identidade validada à respectiva chave pública emitida por uma Autoridade Certificadora (CA).
+- **Cadeia de confiança:** sequência de certificados que conecta o assinante final a uma raiz confiável reconhecida por todos.
+- **Gestão do ciclo de vida:** emissão, renovação, revogação e auditoria contínua de certificados garantem que apenas identidades válidas permaneçam ativas.
 
-Ao final deste módulo, você será capaz de:
+Sem essa estrutura, qualquer pessoa poderia gerar um par de chaves e se passar por outra, comprometendo a credibilidade do cartório digital.
 
-- Ler um certificado X.509 e entender seus principais campos.
-- Criar uma CA raiz e uma CA intermediária.
-- Emitir certificados de servidor e de cliente, e revogá‑los quando necessário.
-- Validar uma cadeia de confiança e preparar as bases para usar esses certificados no TLS (módulo seguinte).
+## Práticas Reais
 
-Vamos começar construindo a base: entendendo a estrutura de um certificado X.509.
+1. **Mapeie os atores do cartório digital:** liste serviços, cidadãos, integrações governamentais e sistemas internos que precisam de certificados.
+2. **Desenhe a cadeia desejada:** identifique quem atuará como CA raiz, quem será a CA intermediária operacional e quais ambientes exigem segregação.
+3. **Defina políticas iniciais:** determine prazos de validade, algoritmos aprovados e critérios de revogação para cada tipo de certificado.
+4. **Crie um cronograma de implantação:** alinhe o plano com equipes jurídicas e de compliance para garantir que as decisões técnicas tenham respaldo regulatório.
+
+## Gancho para o Próximo Capítulo
+
+Com a visão inspiradora definida, precisamos entender a anatomia de um certificado X.509 para construir a cadeia com segurança. No próximo capítulo vamos dissecar cada campo e extensão, começando por um exemplo prático que ilumina o caminho das nossas futuras emissões.

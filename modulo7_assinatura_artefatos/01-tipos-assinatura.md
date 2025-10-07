@@ -1,16 +1,23 @@
-# 01 — Tipos de Assinatura: Avançada vs Qualificada
+# Tipos de Assinatura Digital
 
-## Assinatura Digital Qualificada
-- Certificado emitido por **AC reconhecida** (ex.: **ICP‑Brasil**, **QTSP/eIDAS**).
-- Chave privada em **dispositivo seguro** (token, smartcard, **HSM**).
-- **Presunção máxima** de autenticidade e **equivalência** à assinatura manuscrita.
+## Exemplo Inspirador
 
-## Assinatura Digital Avançada
-- Certificado controlado **exclusivamente** pelo signatário (sem exigir dispositivo certificado).
-- Deve garantir **vínculo único**, **controle exclusivo da chave** e **detecção de alterações**.
-- Tem **validade legal**, mas a prova de autoria pode demandar **demonstração técnica** adicional.
+Um cliente apresentou ao cartório um lote de documentos em PDF, XML e JSON. Para cada formato, a equipe indicou o tipo de assinatura ideal, garantindo validade jurídica e compatibilidade com sistemas parceiros. O atendimento foi elogiado pela clareza e pela rapidez.
 
-## Quando usar no cartório digital
-- **Atos de maior risco/valor**: prefira **qualificada**.
-- **Fluxos de agilidade** com baixo risco: **avançada** pode ser suficiente (com trilhas de auditoria robustas).
-- Use o **carimbo do tempo** para prolongar a validade e reforçar a prova temporal.
+## Conceitos Fundamentais
+
+- **PADES:** assinaturas embutidas em PDFs com visualização amigável.
+- **CADES:** assinaturas baseadas em CMS/PKCS#7, comuns para arquivos binários.
+- **XAdES:** assinaturas XML avançadas, usadas em integrações governamentais.
+- **Assinaturas de código:** protegem executáveis, pacotes e contêineres.
+
+## Práticas Reais
+
+1. Liste quais departamentos produzem PDFs, XMLs ou outros formatos.
+2. Defina o tipo de assinatura oficial para cada formato e documente requisitos legais.
+3. Monte exemplos de cada assinatura para servir como referência interna.
+4. Estabeleça políticas de armazenamento e distribuição dos arquivos assinados.
+
+## Gancho para o Próximo Capítulo
+
+Com os tipos mapeados, vamos mergulhar no PADES, formato favorito para documentos em PDF. No próximo capítulo um exemplo inspirador mostrará como gerar assinaturas visíveis e confiáveis.

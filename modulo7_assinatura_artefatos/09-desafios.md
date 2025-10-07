@@ -1,6 +1,23 @@
-# 09 — Desafios
+# Desafios e Lições Aprendidas
 
-1. Evoluir PAdES para **LTA** (cadeia/OCSP/CRL embutidos e arquivamento).
-2. Assinar **contêiner** (ex.: ZIP com múltiplos arquivos) e manter prova de integridade por **árvore de Merkle**.
-3. Integrar com **HSM** (PKCS#11) e fluxo de **chaves rotativas**.
-4. Tornar a validação **auditável** com geração de **relatório PDF** assinado do próprio verificador.
+## Exemplo Inspirador
+
+Mesmo com automação, o cartório enfrentou incidentes como certificados expirados ou formatos incompatíveis. Cada desafio foi documentado e transformado em melhoria de processo, reforçando a cultura de aprendizado contínuo.
+
+## Conceitos Fundamentais
+
+- **Gestão de incidentes:** respostas rápidas evitam interrupções.
+- **Melhoria contínua:** cada problema gera atualização em políticas e scripts.
+- **Comunicação transparente:** stakeholders são informados sobre status e soluções.
+- **Resiliência operacional:** redundância e backups garantem continuidade.
+
+## Práticas Reais
+
+1. Mantenha um registro de incidentes com causa raiz e ações corretivas.
+2. Estabeleça planos de contingência para queda de TSA, indisponibilidade de HSM ou falhas na API.
+3. Realize retrospectivas com todas as equipes envolvidas para compartilhar aprendizados.
+4. Atualize documentação e treinamentos sempre que um desafio for superado.
+
+## Gancho para o Próximo Capítulo
+
+Depois de superar desafios, encerramos o módulo com referências e materiais complementares. No próximo capítulo você encontrará fontes inspiradoras para continuar evoluindo.

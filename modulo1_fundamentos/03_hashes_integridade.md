@@ -1,34 +1,37 @@
 # 3. Funções Hash e Integridade
 
-As funções hash são essenciais para garantir a integridade dos dados. Elas recebem qualquer entrada e produzem um **resumo (digest)** de tamanho fixo. Pequenas alterações na entrada resultam em resumos totalmente diferentes.
+## Exemplo Inspirador
 
-## Propriedades importantes
+Uma remessa de certidões recém-assinadas chega ao cofre digital com uma falha misteriosa: um único PDF foi truncado durante o upload e o protocolo quase foi rejeitado. A equipe de infraestrutura reúne-se ao redor do dashboard, calcula rapidamente o hash do arquivo de origem e o compara com o hash armazenado no livro de transmissão. A discrepância acende um alerta vermelho, mas também desperta a certeza de que a integridade pode ser monitorada com maestria. A partir desse episódio, nenhum documento sai do cartório sem o seu resumo criptográfico acompanhado.
 
-- **Unidirecionalidade:** dado um hash, é praticamente impossível descobrir a entrada original.
-- **Colisão resistente:** é improvável encontrar duas entradas diferentes que gerem o mesmo hash.
-- **Determinística:** a mesma entrada sempre produz o mesmo hash.
+## Conceitos Fundamentais
 
-Algoritmos populares:
-- **SHA-2** (como SHA-256, SHA-384 e SHA-512).
-- **SHA-3**, a família mais recente.
-- **BLAKE2** e **BLAKE3**, rápidos e seguros.
+- **Funções hash** transformam qualquer entrada em um resumo de tamanho fixo.
+- **Sensibilidade extrema:** alterar um único bit gera um digest completamente diferente (efeito avalanche).
+- **Unidirecionalidade:** é inviável recuperar o conteúdo original apenas a partir do hash.
+- **Resistência a colisões:** encontrar duas entradas com o mesmo hash é impraticável quando usamos algoritmos modernos como **SHA-256**, **SHA-3** ou **BLAKE3**.
+- **Assinaturas digitais dependem de hashes:** em vez de assinar o documento inteiro, assinamos seu digest para obter desempenho e segurança.
 
-## Exemplo prático
+## Práticas Reais
 
-Em um caso recente, uma remessa de certidões assinadas chegou corrompida ao cofre digital: um PDF foi cortado no meio durante o upload e ninguém percebeu até o protocolo ser rejeitado. Para evitar repetição do incidente, os analistas decidiram registrar o resumo criptográfico de cada arquivo no livro de transmissão, comparando-o no destino para identificar qualquer alteração antes de nova tentativa de registro.
+1. **Padronize a verificação de remessas:**
+   ```bash
+   openssl dgst -sha256 documento.txt
+   ```
+   Registre o valor obtido e inclua-o no livro de transmissão do cartório.
 
-Poucos dias depois, uma unidade do interior relatou que os downloads do sistema central eventualmente vinham truncados quando a conexão caía. Para investigar, o time de infraestrutura passou a calcular hashes locais e cruzá-los com os valores publicados no portal, barrando arquivos suspeitos antes de serem anexados ao processo eletrônico.
+2. **Teste a detecção de alterações:**
+   - Edite `documento.txt` adicionando ou removendo uma linha.
+   - Recalcule o hash e compare com o original para visualizar a diferença.
 
-Com esses dois incidentes documentados, o comitê técnico padronizou o uso do `openssl dgst`, ferramenta que gera hashes reconhecidos pelos órgãos de fiscalização e pode ser automatizada em scripts de auditoria. Só então o operador responsável executa o comando para calcular o SHA-256 do arquivo `documento.txt`:
+3. **Audite downloads oficiais:**
+   - Baixe um software ou biblioteca com hash publicado pelo fornecedor.
+   - Compare o valor divulgado com o calculado localmente para reforçar a disciplina de integridade.
 
-```bash
-openssl dgst -sha256 documento.txt
-```
+4. **Prepare-se para assinaturas digitais:**
+   - Documente como o hash será integrado ao fluxo jurídico descrito no capítulo anterior.
+   - Liste quais algoritmos são aceitos pelo órgão regulador do seu cartório digital.
 
-O comando exibirá o digest em hexadecimal. Agora edite `documento.txt` (adicione ou remova uma linha) e calcule novamente. O digest será completamente diferente, permitindo detectar corrupções como as do PDF e validar downloads como no incidente relatado.
+## Gancho para o Próximo Capítulo
 
-Hashes também são usados como parte das assinaturas digitais: em vez de assinar o documento inteiro, assinamos seu hash.
-
-### Exemplo de integridade
-
-Baixe um arquivo qualquer (por exemplo, um programa ou biblioteca) e calcule seu hash. Muitos sites oficiais fornecem o hash esperado do arquivo; você pode comparar com seu resultado para garantir que o download não foi corrompido ou alterado.
+Agora que você domina a arte de detectar qualquer alteração, está pronto para dar o próximo salto: **transformar esses hashes em assinaturas digitais que comprovem autoria e validade jurídica**. No capítulo seguinte veremos, a partir de uma situação real do cartório, como unir chaves e resumos para carimbar documentos com confiança absoluta.

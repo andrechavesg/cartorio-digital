@@ -1,52 +1,23 @@
-# Práticas de Auditoria e Rotação de Chaves
+# Auditoria e Rotação de Chaves
 
-A proteção de chaves vai além da criação inicial. Este capítulo descreve o ciclo de vida completo, controles de auditoria e respostas a incidentes.
+## Exemplo Inspirador
 
-## Políticas de rotação
+Em um exercício de crise, o cartório simulou a revogação de uma chave comprometida. Graças aos relatórios de auditoria e ao plano de rotação automática, o incidente foi solucionado em minutos. A direção destacou o episódio como prova de que processos bem desenhados evitam danos reais.
 
-- **Automática (CMKs simétricas):** habilite `enable_key_rotation` para chaves `KeyUsage = "ENCRYPT_DECRYPT"` com `KeySpec = "SYMMETRIC_DEFAULT"`; o KMS executa a rotação anual de forma transparente.
-- **Manual (CMKs assimétricas e HSM):** para chaves de assinatura (`KeyUsage = "SIGN_VERIFY"`) com `KeySpec` assimétrica (RSA/ECC) ou materiais hospedados em HSMs externos, defina calendário com *change windows* aprovadas pelo comitê de segurança e execute o plano de migração de alias/ARN documentado.
-- **Documentação:** mantenha histórico de versões, motivos da rotação, responsáveis e artefatos de teste em cada ciclo.
+## Conceitos Fundamentais
 
-### Script de exemplo (Python/boto3)
+- **Rotação periódica:** reduz a janela de exposição em caso de vazamento.
+- **Logs imutáveis:** garantem rastreabilidade e suporte a investigações.
+- **Segregação de funções:** separa quem administra, quem opera e quem audita.
+- **Planos de contingência:** definem passos claros diante de comprometimentos.
 
-```python
-import boto3
+## Práticas Reais
 
+1. Configure políticas de rotação automática em seu KMS e documente os intervalos definidos.
+2. Armazene logs em repositórios imutáveis (WORM, SIEM) e crie alertas para eventos suspeitos.
+3. Realize exercícios trimestrais de revogação e rotação, registrando lições aprendidas.
+4. Implemente dashboards que mostrem chaves por idade, uso e responsáveis.
 
-def ativar_rotacao(key_id: str) -> None:
-    kms = boto3.client("kms")
-    metadata = kms.describe_key(KeyId=key_id)["KeyMetadata"]
+## Gancho para o Próximo Capítulo
 
-    if metadata["KeySpec"] != "SYMMETRIC_DEFAULT":
-        print(
-            "Chave",
-            key_id,
-            "usa KeySpec",
-            metadata["KeySpec"],
-            "e requer rotação manual planejada (sem chamada a enable_key_rotation).",
-        )
-        return
-
-    kms.enable_key_rotation(KeyId=key_id)
-    print("Rotação automática habilitada para:", key_id)
-```
-
-## Auditoria contínua
-
-1. **CloudTrail + Lake Formation:** armazene logs imutáveis por no mínimo 5 anos.
-2. **Integração com SIEM:** crie alertas para eventos `DisableKey`, `ScheduleKeyDeletion` e acessos fora do horário comercial.
-3. **Relatórios mensais:** consolide métricas de uso, falhas e tentativas negadas; compartilhe com o time de compliance.
-
-## Controles complementares
-
-- **MFA e separação de funções:** operadores que aprovam o uso da chave não devem ter acesso direto ao código.
-- **Break-glass:** defina procedimento emergencial com tokens selados em cofre físico, monitorado por circuito interno.
-- **Testes de restauração:** realize simulações trimestrais de recuperação de chave a partir do backup do HSM.
-
-## Resposta a incidentes
-
-1. **Revogação imediata:** use `schedule_key_deletion` (com janelas curtas) ou inative a chave no HSM.
-2. **Geração de novos certificados:** reprovisione certificados dependentes da chave comprometida.
-3. **Comunicação oficial:** notifique ITI/ICP-Brasil quando aplicável e emita boletim para clientes.
-4. **Lições aprendidas:** atualize playbooks e automatizações para evitar recorrência.
+Após dominar auditoria e rotação, é hora de aplicar todos os aprendizados em um projeto integrado. No próximo capítulo começaremos o desafio final deste módulo, conectando KMS, HSM e automações para proteger o cartório de ponta a ponta.

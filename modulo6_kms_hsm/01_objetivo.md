@@ -1,13 +1,23 @@
-# Objetivo do Módulo
+# Objetivo do Módulo – KMS e HSM
 
-Neste módulo você irá projetar e implementar a camada de **custódia de chaves** do Cartório Digital. O objetivo é dominar as
-estratégias para gerar, armazenar, rotacionar e auditar material criptográfico sensível sem expor segredos na aplicação.
+## Exemplo Inspirador
 
-Ao final, o time será capaz de:
+Ao revisar os relatórios de segurança, o cartório descobriu que algumas chaves privadas ainda estavam armazenadas em servidores comuns. A equipe decidiu migrá-las para um HSM integrado a um KMS gerenciado, garantindo proteção com hardware certificado. A mudança elevou instantaneamente a confiança de todos os envolvidos.
 
-- Definir uma política de uso de chaves que diferencia certificados de produção, homologação e laboratório.
-- Operar o **AWS Key Management Service (KMS)** para criar chaves mestres de assinatura, criptografia e selagem de dados.
-- Integrar um **Hardware Security Module (HSM)** para cenários que exijam certificação FIPS/ICP-Brasil.
-- Monitorar operações críticas e reagir a incidentes que envolvam o comprometimento de chaves.
+## Conceitos Fundamentais
 
-> **Importante:** os conhecimentos aqui consolidados são requeridos para atender aos requisitos do DOC-ICP-05 (política de certificação) e para a construção do fluxo de assinatura qualificada do módulo 7.
+- **HSM (Hardware Security Module):** dispositivo físico que guarda chaves com alto nível de proteção.
+- **KMS (Key Management Service):** serviço que orquestra geração, rotação e uso de chaves.
+- **Integração com aplicativos:** APIs e políticas controlam quem pode usar cada chave.
+- **Auditoria contínua:** logs e métricas garantem transparência e conformidade.
+
+## Práticas Reais
+
+1. Levante todas as chaves críticas do cartório (assinaturas, criptografia de base de dados, tokens) e classifique riscos.
+2. Defina quais chaves migrarão para HSM dedicado e quais podem permanecer em KMS gerenciado.
+3. Documente papéis e responsabilidades para acesso às chaves (operadores, auditores, administradores).
+4. Planeje testes de desastre para validar backups e procedimentos de recuperação.
+
+## Gancho para o Próximo Capítulo
+
+Com o objetivo claro, vamos mergulhar nos conceitos que sustentam essa migração. No próximo capítulo veremos, por meio de um exemplo inspirador, como KMS e HSM trabalham juntos para proteger a espinha dorsal criptográfica do cartório digital.

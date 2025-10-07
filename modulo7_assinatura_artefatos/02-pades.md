@@ -1,33 +1,23 @@
-# 02 — PAdES: Assinando PDF + Timestamp
+# PADES – Assinaturas para PDFs
 
-> **PAdES** (ETSI EN 319 142‑1) é o padrão para **PDF Advanced Electronic Signatures**.
+## Exemplo Inspirador
 
-## Caminhos de implementação
-1. **Ferramenta CLI/GUI** (ex.: **JSignPdf**, **DSS CLI** ou equivalente) para assinar PDF/A.
-2. **Linguagens/bibliotecas** (Java/.NET) com suporte PAdES.
-3. **Serviço externo** (fornecedor QTSP) — útil em produção.
+Em uma audiência virtual, o cartório apresentou um PDF assinado com PADES. O selo visível no documento transmitia confiança imediata ao juiz e às partes. Todos puderam verificar a assinatura sem ferramentas adicionais, reforçando a transparência do processo.
 
-## Parâmetros essenciais
-- **Certificado** (arquivo `.p12`/`.pfx`, token, smartcard, ou HSM).
-- **Algoritmo**: SHA‑256+RSA/ECDSA.
-- **PAdES-LT**/**LTA** (ideal com **timestamp** e cadeia/OCSP/CRL embutidos).
-- **TSA (RFC 3161)**: URL, política (OID) e autenticação (se houver).
+## Conceitos Fundamentais
 
-## Exemplo (script com JSignPdf — referência)
-Quando lançamos o piloto do **Cartório Digital**, o time percebeu que autenticar as certidões emitidas no módulo 2 em PDF exigia mais do que confiança verbal: precisávamos de um fluxo repetível que blindasse o documento contra fraudes. O comando do **JSignPdf** se tornou o motor dessa virada, pois automatiza a aplicação da assinatura PAdES com carimbo de tempo, garantindo que cada certidão saia do cartório já validada e com evidências criptográficas dignas da nossa ambição digital.
+- **Estrutura do PADES:** assinatura embutida no PDF com camadas de validação.
+- **Selo visual:** campos de assinatura exibem dados do signatário, carimbo do tempo e status.
+- **Compatibilidade:** leitores populares (Adobe Reader, LibreOffice) validam automaticamente.
+- **Padrões:** ETSI TS 102 778 define requisitos técnicos.
 
-Arquivo: `scripts/pades/sign_pdf_jsignpdf.sh`
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
+## Práticas Reais
 
-PDF_IN=${1:?Informe o PDF de entrada}
-PDF_OUT=${2:-signed.pdf}
-P12=${P12_PATH:?Defina P12_PATH para o certificado .p12}
-P12_PASS=${P12_PASS:?Defina P12_PASS para a senha}
-TSA_URL=${TSA_URL:?Defina TSA_URL RFC 3161}
+1. Gere um PDF de teste e aplique PADES usando ferramentas como iText, DSS ou OpenPDF.
+2. Configure selos visuais com informações relevantes (nome, cargo, data, identificador do cartório).
+3. Verifique o documento em diferentes leitores para garantir que o status aparece como válido.
+4. Documente orientações para cidadãos que desejam conferir a assinatura por conta própria.
 
-java -jar JSignPdf.jar   --visible false   --in "$PDF_IN"   --out "$PDF_OUT"   --ks-type PKCS12   --ks "$P12"   --ks-pass "$P12_PASS"   --tsa-url "$TSA_URL"   --digest SHA256   --pades true
-```
+## Gancho para o Próximo Capítulo
 
-> Ajuste ao executor real do projeto. Em produção, prefira **HSM** e política PAdES **LTA**.
+Depois de dominar o PADES, vamos abordar assinaturas de artefatos gerais. No próximo capítulo mostraremos, com um exemplo inspirador, como proteger pacotes e arquivos em larga escala.

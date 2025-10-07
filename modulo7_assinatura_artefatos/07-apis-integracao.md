@@ -1,11 +1,23 @@
-# 07 — Integração no cartorio-digital (APIs & Jobs)
+# APIs de Integração para Assinatura
 
-## Propostas de endpoints
-- `POST /api/internal/sign/pades`: recebe `file_id`/`pdf_url`, aplica PAdES + timestamp e retorna `signed_url`.
-- `POST /api/internal/sign/jar`: recebe `artifact_url`, assina JAR e retorna artefato assinado.
-- `POST /api/internal/timestamp`: recebe `hash`/`file_url`, retorna `tsr` e metadados.
-- `GET /api/public/verificacao/{hash}`: exibe status e evidências (conecta com verificação pública do Cap. 6/7).
+## Exemplo Inspirador
 
-## Jobs/Filas
-- Orquestrar assinatura e timestamp como **tarefas** assíncronas com **reprocessamento** idempotente.
-- Persistir **metadados** das assinaturas e **TSR** no storage do projeto.
+O cartório implementou um serviço REST que recebe documentos, aplica assinatura e carimbo de tempo e devolve os artefatos validados. Sistemas internos passaram a consumir a API, acelerando fluxos que antes dependiam de etapas manuais.
+
+## Conceitos Fundamentais
+
+- **Autenticação e mTLS:** protegem o acesso à API de assinatura.
+- **Fluxo síncrono x assíncrono:** escolha conforme o tamanho dos arquivos e SLA.
+- **Versionamento:** endpoints devem suportar evoluções sem quebrar integrações.
+- **Monitoramento:** métricas de uso, latência e falhas orientam melhorias.
+
+## Práticas Reais
+
+1. Defina endpoints (`/assinar`, `/validar`, `/status`) e contratos JSON ou XML.
+2. Exija mTLS e tokens de autorização para cada cliente da API.
+3. Registre cada requisição em logs auditáveis, incluindo hash dos documentos.
+4. Forneça SDKs ou exemplos para facilitar adoção pelos sistemas parceiros.
+
+## Gancho para o Próximo Capítulo
+
+Após expor a API, precisamos garantir que novas versões funcionem. No próximo capítulo exploraremos testes automatizados e suites de regressão inspirados por casos reais.

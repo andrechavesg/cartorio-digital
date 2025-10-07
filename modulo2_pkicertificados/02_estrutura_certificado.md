@@ -1,40 +1,40 @@
 # Estrutura de um certificado X.509
 
-Um certificado digital é um arquivo que associa a chave pública de alguém (ou de um servidor) a uma identidade verificada. No padrão X.509, o certificado contém vários campos que precisamos conhecer:
+## Exemplo Inspirador
 
-| Campo        | Descrição |
-|-------------|-----------|
-| **Subject** | Identidade do titular do certificado (pessoa, servidor, ou entidade). |
-| **Issuer**  | Autoridade Certificadora (CA) que emitiu o certificado. |
-| **Validity**| Intervalo de datas em que o certificado é válido (Not Before / Not After). |
-| **Public Key** | A chave pública do titular, com algoritmo e tamanho. |
-| **Extensions** | Campos adicionais que especificam usos permitidos, nomes alternativos e políticas.|
+Durante uma auditoria surpresa, o time de conformidade solicitou que o cartório digital comprovasse, em minutos, que todas as APIs internas estavam cobertas por certificados com SAN e EKU corretos. Em vez de entrar em pânico, a equipe de segurança abriu um laboratório, gerou um certificado temporário e exibiu cada campo na tela, mostrando como a estrutura X.509 torna visível a confiança que sustentamos. A demonstração arrancou aplausos e reforçou a importância de dominar cada detalhe.
 
-Algumas extensões importantes:
+## Conceitos Fundamentais
 
-- **Key Usage**: indica operações permitidas (assinatura digital, cifra de chave, assinatura de certificado, etc.).
-- **Extended Key Usage (EKU)**: define finalidades adicionais (autenticação de servidor, cliente, assinatura de código, e‑mail seguro).
-- **Subject Alternative Name (SAN)**: lista domínios ou IPs adicionais para os quais o certificado é válido.
-- **CRL Distribution Points / Authority Information Access**: URLs para verificar revogação via CRL ou OCSP.
+- **Subject:** identifica quem é o titular (pessoa, servidor ou sistema).
+- **Issuer:** indica qual Autoridade Certificadora (CA) emitiu o certificado.
+- **Validity:** define o intervalo de tempo em que o certificado é aceito.
+- **Public Key:** apresenta o algoritmo e o tamanho da chave pública associada.
+- **Extensions:** ampliam o comportamento, informando usos permitidos e pontos de validação.
 
-### Explorando um certificado na prática
+Extensões relevantes:
 
-1. Quando o time precisou revisar um incidente envolvendo um certificado provisório, percebemos que faltava um laboratório rápido para experimentar alterações. **Problema (auditar SAN/EKU para APIs do cartório):** validar ajustes sem arriscar certificados reais. **Solução (inspeção preparatória):** gerar um certificado autoassinado efêmero com `openssl req -x509` para conduzir os testes de auditoria.
+- **Key Usage:** delimita operações (assinatura digital, cifra de chave, assinatura de certificados).
+- **Extended Key Usage (EKU):** especifica finalidades adicionais (autenticação de servidor, cliente, assinatura de código, e-mail seguro).
+- **Subject Alternative Name (SAN):** lista domínios e IPs adicionais aceitos.
+- **CRL Distribution Points / Authority Information Access:** revelam onde consultar revogação via CRL ou OCSP.
 
+## Práticas Reais
+
+1. **Monte um certificado de laboratório para auditorias rápidas:**
    ```bash
-   openssl req -x509 -newkey rsa:4096 -keyout tmp.key -out tmp.crt -days 30 -nodes -subj "/C=BR/ST=Sao Paulo/L=Santo Andre/O=Cartorio Digital/OU=TI/CN=exemplo.local"
+   openssl req -x509 -newkey rsa:4096 -keyout tmp.key -out tmp.crt -days 30 -nodes \
+       -subj "/C=BR/ST=Sao Paulo/L=Santo Andre/O=Cartorio Digital/OU=TI/CN=exemplo.local"
    ```
 
-2. Em outra auditoria, a equipe de conformidade tinha dificuldade em enxergar rapidamente campos como SAN e EKU nos certificados emitidos. **Problema (auditar SAN/EKU para APIs do cartório):** ausência de visibilidade detalhada para comprovar as extensões exigidas. **Solução (inspeção analítica):** usar `openssl x509` para inspecionar o arquivo e desbloquear essas informações de forma legível.
-
+2. **Inspecione campos e extensões com clareza:**
    ```bash
    openssl x509 -in tmp.crt -noout -text
    ```
+   Anote os elementos que precisam aparecer obrigatoriamente nos certificados oficiais.
 
-   Observe os campos *Subject*, *Issuer*, *Validity* e as extensões como *Key Usage* e *SAN*. Quando precisamos garantir que todos os domínios alternativos estivessem documentados, reiteramos o desafio principal — **problema (auditar SAN/EKU para APIs do cartório):** cumprir o checklist das APIs internas. **Solução (inspeção configurada):** criar uma configuração dedicada com `openssl-san.conf` que explicita cada extensão exigida.
-
+3. **Crie um arquivo de configuração dedicado às extensões exigidas:**
    ```bash
-   # Crie um arquivo openssl.conf minimal com uma seção req e extensions:
    cat > openssl-san.conf <<'EOF'
    [req]
    distinguished_name = dn
@@ -61,14 +61,14 @@ Algumas extensões importantes:
    EOF
    ```
 
-   O próximo desafio foi confirmar se a nova SAN aparecia corretamente para a auditoria. **Problema (auditar SAN/EKU para APIs do cartório):** provar que a extensão exigida ficou registrada na emissão final. **Solução (inspeção validatória):** gerar novamente o certificado apontando para o arquivo de configuração e usar `openssl x509` com `grep` para validar o ajuste.
-
+4. **Valide se as extensões foram aplicadas corretamente:**
    ```bash
-   # Gere outro certificado autoassinado com SAN:
    openssl req -x509 -newkey rsa:4096 -keyout san.key -out san.crt -days 30 -nodes -config openssl-san.conf
    openssl x509 -in san.crt -noout -text | grep -A1 'Subject Alternative Name'
    ```
 
-3. Experimente criar certificados EC (ECDSA) com curvas `prime256v1` ou `secp384r1` e compare os tamanhos das chaves e extensões.
+5. **Experimente curvas elípticas:** gere certificados com `prime256v1` ou `secp384r1` e registre as diferenças percebidas nos campos.
 
-Compreender a estrutura de um certificado é essencial para definir os campos corretos ao emitirmos nossos próprios certificados no cartório digital. No próximo capítulo, criaremos uma CA raiz e uma CA intermediária para começar a emitir certificados confiáveis.
+## Gancho para o Próximo Capítulo
+
+Com a anatomia do certificado dominada, estamos prontos para construir a espinha dorsal da nossa PKI. No próximo capítulo levantaremos uma CA raiz e uma intermediária, iniciando com um exemplo inspirador que mostra o impacto dessa estrutura na confiança do cartório digital.

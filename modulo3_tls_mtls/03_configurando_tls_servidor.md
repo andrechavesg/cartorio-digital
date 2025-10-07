@@ -1,92 +1,55 @@
-# Configurando TLS 1.3 em um Servidor
+# Configurando TLS 1.3 em um Servidor
 
-Com os certificados emitidos pela sua CA (módulo 2) e o entendimento dos conceitos de TLS 1.3, você está pronto para proteger um serviço web. Neste capítulo vamos configurar o Nginx (ou outro servidor) para oferecer TLS 1.3 com a cadeia completa de certificação.
+## Exemplo Inspirador
 
-## Preparando a cadeia de certificados
+Ao ativar o novo site do cartório, a equipe realizou um ritual simbólico: com todos reunidos, o administrador aplicou a configuração de TLS 1.3 e reiniciou o Nginx. Em seguida, o time jurídico acessou o portal e viu o cadeado verde, acompanhado de um relatório automático confirmando o uso da nossa cadeia interna. Esse instante consolidou a percepção de que tecnologia e confiança caminham lado a lado.
 
-Suporte relatou que alguns clientes corporativos estão vendo alertas de "cadeia incompleta" ao acessar o portal do cartório. O motivo é que o servidor entrega apenas o certificado da aplicação, sem a intermediária que faz a ponte até a raiz confiável. Para corrigir a situação, reúna e encadeie os certificados antes de colocá-los no servidor.
+## Conceitos Fundamentais
 
-Reúna os seguintes arquivos:
+- **Cadeia completa:** servidor deve apresentar certificado, chave privada e cadeia intermediária.
+- **Protocolos e cifras:** restringir versões a TLS 1.3 e ciphers modernos.
+- **Segurança adicional:** HSTS, OCSP stapling e redirecionamento HTTP→HTTPS fortalecem a experiência.
+- **Automação:** scripts de deploy garantem consistência e reduzem erro humano.
 
-- `server.crt`: o certificado do servidor assinado pela CA intermediária.
-- `server.key`: a chave privada do servidor.
-- `intermediate_ca.crt`: o certificado da CA intermediária.
-- `root_ca.crt`: o certificado da CA raiz (opcional para clientes, mas útil para teste local).
+## Práticas Reais
 
-Em seguida, monte o *fullchain* concatenando o certificado do servidor com o da intermediária. O comando abaixo passa a ser parte do procedimento padrão sempre que um novo certificado for emitido e encerra os chamados de cadeia incompleta:
+1. **Prepare os arquivos necessários:**
+   - `cartorio.local.cert.pem` – certificado do servidor.
+   - `server.key.pem` – chave privada correspondente.
+   - `ca-chain.cert.pem` – cadeia raiz + intermediária.
 
-```bash
-cat server.crt intermediate_ca.crt > fullchain.pem
-```
+2. **Configure o Nginx com TLS 1.3:**
+   ```nginx
+   server {
+       listen 443 ssl http2;
+       server_name cartorio.local;
 
-## Configurando o Nginx
+       ssl_certificate     /etc/nginx/certs/cartorio.local.cert.pem;
+       ssl_certificate_key /etc/nginx/certs/server.key.pem;
+       ssl_trusted_certificate /etc/nginx/certs/ca-chain.cert.pem;
 
-O próximo desafio é garantir que o portal do cartório atenda apenas via HTTPS moderno, com HTTP/2, TLS 1.3 e OCSP stapling para reduzir advertências nos navegadores. Cada diretiva a seguir foi escolhida para resolver uma dor específica:
+       ssl_protocols TLSv1.3;
+       ssl_ciphers   TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256;
+       ssl_prefer_server_ciphers off;
 
-- `listen 443 ssl http2;`: força o servidor virtual a responder somente via HTTPS e habilita HTTP/2 para melhorar a experiência dos usuários.
-- `ssl_certificate`/`ssl_certificate_key`: apontam para o *fullchain* recém-gerado e a chave privada, evitando a falha de cadeia relatada.
-- `ssl_protocols TLSv1.3;`: restringe o tráfego à versão mais moderna suportada, atendendo às exigências da auditoria.
-- `ssl_ciphers ...;`: mantém um conjunto compatível com o legado, mas alinhado às suites robustas aprovadas pela equipe de segurança.
-- `ssl_ecdh_curve ...;`: define curvas que entregam sigilo perfeito, cobrindo a necessidade de proteção contra vazamentos futuros de chaves.
-- `ssl_stapling`/`ssl_stapling_verify` e `resolver`: habilitam OCSP stapling para acelerar a validação de revogação, eliminando atrasos percebidos pelos usuários finais.
+       add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+       ssl_stapling on;
+       ssl_stapling_verify on;
 
-No arquivo de configuração (`nginx.conf` ou um `server` dentro de `sites-available`), adicione um `server` ouvindo na porta 443:
+       root /var/www/html;
+   }
+   ```
+   Documente onde os arquivos foram armazenados e quais permissões de sistema protegem as chaves.
 
-```nginx
-server {
-    listen 443 ssl http2;
-    server_name cartorio.local;
+3. **Teste a conexão:**
+   ```bash
+   curl -I https://cartorio.local --cacert ca-chain.cert.pem
+   openssl s_client -connect cartorio.local:443 -tls1_3
+   ```
+   Registre capturas de tela ou logs mostrando a negociação bem-sucedida.
 
-    ssl_certificate      /etc/nginx/certs/fullchain.pem;
-    ssl_certificate_key  /etc/nginx/certs/server.key;
+4. **Automatize verificações de configuração:** integre ferramentas como `sslscan` ou `testssl.sh` na pipeline para detectar regressões.
 
-    # Usar somente TLS 1.3
-    ssl_protocols       TLSv1.3;
-    # Suites permitidas (TLS 1.3 ignora esta diretiva, mas mantemos para retrocompatibilidade)
-    ssl_ciphers         TLS_AES_256_GCM_SHA384:TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256;
+## Gancho para o Próximo Capítulo
 
-    # Curvas ECDH para PFS (X25519 e secp384r1 são recomendadas)
-    ssl_ecdh_curve      X25519:secp384r1;
-
-    # Opcional: Habilitar stapling OCSP (detalhado no capítulo 5)
-    ssl_stapling on;
-    ssl_stapling_verify on;
-    resolver 1.1.1.1 8.8.8.8 valid=300s;
-
-    # Restante das diretivas do seu site...
-    location / {
-        root /var/www/cartorio;
-        index index.html;
-    }
-}
-```
-
-Recarregue o Nginx para aplicar as mudanças:
-
-```bash
-sudo nginx -t
-sudo systemctl reload nginx
-```
-
-### Testando a configuração
-
-Com a configuração aplicada, a equipe precisa comprovar para a diretoria que o serviço entrega a cadeia completa com TLS 1.3 antes de prosseguir para a etapa de mTLS. Primeiro, confirme com `openssl` que o handshake mostra a cadeia correta e negocia a suite esperada:
-
-```bash
-openssl s_client -connect cartorio.local:443 -tls1_3 -servername cartorio.local -showcerts
-```
-
-O comando deve listar os certificados da cadeia intermediária logo após o `server.crt` e exibir uma suite TLS 1.3 (por exemplo, `TLS_AES_256_GCM_SHA384`). Esse resultado valida a entrega correta e libera a equipe para configurar autenticação mútua no capítulo seguinte. Em seguida, use o `curl` para garantir que os clientes HTTP/2 do portal também funcionem sem advertências:
-
-```bash
-curl -v https://cartorio.local --http2
-```
-
-O `curl` deve concluir o handshake sem erros de certificado, mostrar `ALPN, server accepted to use h2` e retornar `HTTP/2 200`. Com esse relatório positivo, a próxima etapa do projeto (habilitar mTLS no módulo 4) fica desbloqueada. Caso contrário, investigue a *trust store* local e importe a CA, se necessário.
-
-### Outras plataformas
-
-- **Apache**: use as diretivas `SSLEngine on`, `SSLCertificateFile`, `SSLCertificateKeyFile`, `SSLCertificateChainFile` e defina `SSLProtocol TLSv1.3`.
-- **AWS Application Load Balancer**: importe o certificado (fullchain + private key) no ACM (Amazon Certificate Manager) e associe-o ao listener 443 do ALB. Certifique-se de selecionar uma *security policy* que suporte TLS 1.2/1.3.
-
-Uma vez que o servidor aceita conexões TLS 1.3, o próximo capítulo mostra como exigir certificados de cliente para implementar mTLS.
+Com o servidor seguro, precisamos garantir que apenas clientes autorizados acessem as APIs confidenciais. No próximo capítulo ativaremos mTLS, começando por um exemplo inspirador de cooperação entre equipes técnicas e de atendimento do cartório.

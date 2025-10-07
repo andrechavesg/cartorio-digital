@@ -1,31 +1,23 @@
-# Projeto Final do Módulo 6
+# Projeto Integrado de KMS/HSM
 
-O desafio final consolida todo o aprendizado em uma entrega tangível: o **módulo de custódia de chaves** do Cartório Digital.
+## Exemplo Inspirador
 
-## Objetivo
+Encerrando o módulo, o cartório realizou um hackathon interno para consolidar todos os aprendizados. As equipes criaram fluxos que iam da geração de chaves no HSM até a emissão de certificados e assinatura de documentos, tudo monitorado por dashboards. O resultado foi apresentado à diretoria, que aprovou a implantação oficial do projeto.
 
-Construir um serviço automatizado capaz de criar chaves, assinar documentos, rotacionar material criptográfico e registrar trilhas de auditoria completas.
+## Conceitos Fundamentais
 
-## Entregáveis obrigatórios
+- **Arquitetura integrada:** PKI, KMS, HSM, automação e auditoria trabalhando em conjunto.
+- **Segurança por design:** políticas e controles incorporados desde o planejamento.
+- **Escalabilidade:** capacidade de suportar novos serviços e integrações.
+- **Documentação viva:** diagramas, playbooks e runbooks atualizados continuamente.
 
-1. **Infraestrutura como Código** que cria:
-   - Uma CMK de assinatura (`SIGN_VERIFY`) e outra de criptografia (`ENCRYPT_DECRYPT`).
-   - Um *custom key store* integrado a um cluster CloudHSM (ou documento descrevendo a integração se estiver usando HSM físico).
-   - Políticas de acesso separando operadores, aplicações e pipelines.
-2. **Aplicação de referência** (script ou microserviço) que:
-   - Recebe um documento JSON e retorna a assinatura digital usando o KMS.
-   - Registra metadados da operação (ID da chave, timestamp, operador) em um banco auditável.
-   - Disponibiliza endpoint para verificação da assinatura.
-3. **Playbook de operação** contendo:
-   - Procedimentos de rotação planejada e emergência (*break-glass*).
-   - Plano de resposta a incidentes envolvendo suspeita de vazamento de chave.
-   - Evidências de auditoria (consultas CloudTrail, dashboards).
+## Práticas Reais
 
-## Critérios de avaliação
+1. Elabore um plano de projeto descrevendo objetivos, responsáveis e cronograma.
+2. Construa ambientes de teste para validar cada integração antes da produção.
+3. Defina indicadores de sucesso (tempo de emissão, tempo de rotação, incidentes evitados).
+4. Apresente o projeto para stakeholders, recolhendo feedback jurídico e tecnológico.
 
-- **Segurança:** nenhuma chave exportada, uso consistente de políticas mínimas necessárias.
-- **Automação:** criação e rotação executadas por pipeline (GitHub Actions, GitLab CI, etc.).
-- **Documentação:** README do serviço descrevendo dependências, variáveis e passos para execução dos scripts.
-- **Demonstração:** vídeo curto ou *screencast* (opcional) mostrando a assinatura de uma certidão com auditoria habilitada.
+## Gancho para o Próximo Capítulo
 
-> Concluindo esta etapa você terá a base para suportar assinaturas qualificadas no módulo 7 e para atender às exigências regulatórias avaliadas no módulo 5.
+Com a infraestrutura de chaves consolidada, seguiremos para o módulo de assinatura de artefatos, onde veremos, inspirados por casos reais, como aplicar essas chaves em documentos, softwares e integrações críticas.

@@ -1,56 +1,34 @@
 # TLS 1.3 – Conceitos e Handshake
 
-O TLS (Transport Layer Security) é o protocolo de camada de transporte usado para proteger conexões HTTPS e muitos outros serviços. A versão 1.3 simplificou o handshake e eliminou algoritmos inseguros das versões anteriores. As principais mudanças incluem:
+## Exemplo Inspirador
 
-- **Redução de ida e volta**: o handshake completo requer apenas 1‑RTT (uma única viagem de ida e volta), acelerando o estabelecimento da sessão.
-- **Forward secrecy obrigatória**: todo handshake usa um algoritmo de troca de chaves efêmero (ECDHE), garantindo que a captura da chave privada do servidor no futuro não permita descriptografar sessões passadas.
-- **Remoção de ciphers antigos**: suites com RC4, 3DES, AES‑CBC e handshake RSA foram removidas. Apenas AEAD (GCM ou ChaCha20‑Poly1305) e SHA‑2 são permitidos.
-- **0‑RTT**: opcionalmente o cliente pode enviar dados no primeiro voo (early data), melhorando latência, mas com risco de replay.
+Durante o lançamento da consulta de certidões on-line, notamos que os cidadãos aguardavam ansiosos pelo carregamento inicial. Após habilitar TLS 1.3 com 0-RTT para clientes conhecidos, a primeira página passou a responder quase instantaneamente. A equipe celebrou: o protocolo moderno não só protegia a comunicação, como também entregava agilidade percebida por quem mais importa — o usuário final.
 
-O fluxo de mensagens no handshake 1.3 é resumido a seguir:
+## Conceitos Fundamentais
 
-1. **ClientHello**: o cliente anuncia a versão TLS suportada, ciphers preferidos e envia sua `key_share` (ponto ECC para ECDHE) e o `pre_shared_key` se retomando sessão.
-2. **ServerHello**: o servidor escolhe a versão/cipher, devolve sua `key_share` e inicia a derivação de chaves. A partir daqui as mensagens seguintes já são protegidas.
-3. **EncryptedExtensions**: o servidor envia extensões (ALPN, SNI) dentro do canal já criptografado.
-4. **Certificate**: o servidor envia seu certificado (cadeia completa) e prova de posse da chave (`CertificateVerify`).
-5. **Finished**: cada lado envia um hash de todas as mensagens anteriores para confirmar a integridade e finalizar o handshake.
+- **Handshake simplificado:** apenas uma ida e volta (1-RTT) para estabelecer a sessão, com suporte a 0-RTT para clientes que retornam.
+- **Cifradores modernos:** AES-GCM e ChaCha20-Poly1305 com Perfect Forward Secrecy via curvas elípticas (X25519, P-256).
+- **Chaves efêmeras:** cada sessão utiliza chaves temporárias, limitando o impacto de vazamentos futuros.
+- **Extensões essenciais:** SNI para indicar o domínio, ALPN para negociar protocolos de aplicação e OCSP stapling para status de certificados.
 
-Todas as chaves de aplicação são derivadas com HKDF com base nos segredos efêmeros. Assim, cada sessão é criptograficamente independente.
+## Práticas Reais
 
-### Listando suites TLS 1.3 suportadas
+1. **Observe o handshake com `openssl s_client`:**
+   ```bash
+   openssl s_client -connect cartorio.local:443 -tls1_3 -msg
+   ```
+   Analise as mensagens ClientHello e ServerHello, confirmando o uso de chaves efêmeras.
 
-**Dor do Cartório Digital**: em cada sprint surge a cobrança para auditar se o front-end continua negociando apenas as suites TLS permitidas. Fazer essa verificação manualmente em diferentes servidores consome tempo e deixa espaço para erros que abririam portas para ciphers antigos.
+2. **Compare tempos com 1.2 vs 1.3:** execute testes de latência entre um servidor de homologação configurado com TLS 1.2 e outro com TLS 1.3, documentando os ganhos percebidos.
 
-Para responder a essa necessidade recorrente da auditoria, execute o comando abaixo e obtenha exatamente a lista de suites TLS 1.3 que a ferramenta `openssl` reconhece como disponíveis:
+3. **Liste os cifradores habilitados:**
+   ```bash
+   openssl ciphers -v 'TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256'
+   ```
+   Garanta que apenas conjuntos modernos estejam presentes na configuração do servidor.
 
-```bash
-openssl ciphers -v -tls1_3
-```
+4. **Planeje suporte a 0-RTT com cautela:** avalie quais requisições podem ser reaplicadas com segurança e documente proteções contra replay.
 
-Isto deve retornar suites como:
+## Gancho para o Próximo Capítulo
 
-```
-TLS_AES_256_GCM_SHA384      TLSv1.3 Kx=any   Au=any Enc=AESGCM(256) Mac=AEAD
-TLS_AES_128_GCM_SHA256      TLSv1.3 Kx=any   Au=any Enc=AESGCM(128) Mac=AEAD
-TLS_CHACHA20_POLY1305_SHA256 TLSv1.3 Kx=any   Au=any Enc=CHACHA20_POLY1305 Mac=AEAD
-```
-
-Validar essa lista é o primeiro passo antes de configurar o servidor do módulo seguinte, garantindo que cada ajuste mantenha o portal do cartório alinhado às políticas internas.
-
-### Testando um handshake TLS 1.3
-
-**Problema concreto**: o time precisa auditar o handshake do portal do cartório para ter certeza de que a cadeia de certificados enviada aos clientes está completa e confiável, além de confirmar que a negociação está ocorrendo com TLS 1.3.
-
-O comando `openssl s_client` permite estabelecer uma sessão controlada com o serviço e imprimir o passo a passo do handshake, expondo certificados, extensões e mensagens para comparação com os requisitos internos.
-
-```bash
-# Conectar ao site do seu cartório (quando configurado)
-openssl s_client -connect localhost:443 -tls1_3 -servername localhost -showcerts
-
-# Para analisar as mensagens do handshake, use:
-openssl s_client -connect google.com:443 -tls1_3 -tlsextdebug -msg
-```
-
-No output, repare nas mensagens `ClientHello`, `ServerHello`, `EncryptedExtensions`, `Certificate`, `CertificateVerify` e `Finished`. Esses comandos ajudam a visualizar o fluxo e a cadeia de certificados enviada pelo servidor.
-
-Nos próximos capítulos você irá usar estes conceitos para configurar um servidor real com TLS 1.3 e, em seguida, habilitar mTLS, assegurando que as verificações realizadas aqui orientem cada decisão de configuração e reforcem a confiança digital do cartório.
+Compreendido o handshake, chegou a hora de colocá-lo em produção. No próximo capítulo configuraremos um servidor web do cartório com TLS 1.3, iniciando pela cadeia de certificados que você emitiu e terminando com testes inspiradores de acesso seguro.

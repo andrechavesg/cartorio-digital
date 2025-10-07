@@ -1,25 +1,30 @@
 # 1. Objetivo e Inspiração
 
-Neste capítulo inicial, vamos explorar por que a criptografia é a base de todo o projeto de cartório digital. O objetivo é inspirar você a enxergar além dos algoritmos e perceber como o uso correto da criptografia permite transformar serviços públicos, garantindo **segurança**, **confidencialidade**, **autenticidade** e **integridade**. Sem esses pilares, um cartório digital seria apenas um site sem valor jurídico.
+## Exemplo Inspirador
 
-## Por que estudar criptografia?
-
-- **Confidencialidade:** Imagine que todos os documentos dos cartórios fossem transmitidos na internet sem proteção. Qualquer pessoa poderia interceptá-los. A criptografia protege o conteúdo para que somente os participantes legítimos possam lê-lo.
-- **Autenticidade:** É necessário saber quem gerou ou assinou um documento. Usamos criptografia assimétrica e certificados digitais para garantir que somente o titular da chave privada possa assinar.
-- **Integridade:** Mesmo que um documento seja confidencial, ele pode ser alterado por terceiros. Funções hash e assinaturas digitais permitem detectar qualquer modificação.
-
-## Conectando com o projeto do cartório digital
-
-Ao longo do curso construiremos um cartório digital completo. Neste módulo, você aprenderá a manipular chaves e entender como os algoritmos funcionam na prática. Nos próximos capítulos, utilizaremos esses conhecimentos para emitir certificados X.509, proteger conexões (TLS/mTLS), automatizar emissões (ACME) e assinar documentos.
-
-## Cenário inicial do cartório
-
-A equipe técnica do cartório digital precisa homologar a infraestrutura base antes de liberar novas certidões. O primeiro requisito da auditoria é comprovar que a ferramenta criptográfica oficial está instalada na versão aprovada pelo órgão regulador. Sem essa validação, nenhuma assinatura digital pode ser emitida.
-
-Para responder a essa necessidade, verifique a versão do OpenSSL disponível no ambiente:
+Imagine que o cartório digital acabe de nascer e a primeira auditoria bata à porta exigindo evidências de que toda a base criptográfica está pronta para proteger certidões sensíveis. O time técnico reúne-se na sala principal, projeta o terminal na parede e, diante da diretoria, executa o comando que comprova a versão homologada do OpenSSL. Quando o resultado aparece, todos respiram aliviados: a fundação tecnológica está firme e o sonho de um cartório plenamente digital segue vivo.
 
 ```bash
 openssl version
 ```
 
-A confirmação da versão documenta que a fundação criptográfica está alinhada com o padrão mínimo exigido pelo cartório. Agora que você sabe por que está aqui, vamos mergulhar nas técnicas!
+Esse momento de validação inspira confiança no projeto — uma simples verificação abre caminho para processos digitais com validade jurídica.
+
+## Conceitos Fundamentais
+
+- **Confidencialidade:** sem criptografia, qualquer interceptador poderia ler certidões e escrituras. Cifrar os dados garante que apenas os envolvidos enxerguem o conteúdo.
+- **Autenticidade:** precisamos provar quem gerou ou assinou cada documento. Chaves assimétricas e certificados digitais evitam que alguém falsifique a autoria.
+- **Integridade:** documentos podem ser alterados sem que ninguém perceba. Funções hash e assinaturas digitais apontam qualquer modificação, preservando a confiança.
+- **Disponibilidade segura:** ferramentas e versões homologadas asseguram que os algoritmos sejam confiáveis, auditáveis e prontos para auditorias.
+
+Ao longo deste módulo, você compreenderá como esses pilares se entrelaçam para sustentar o cartório digital. O conhecimento será expandido nos módulos seguintes, onde as peças se transformam em uma infraestrutura completa.
+
+## Práticas Reais
+
+1. Registre em seu diário técnico a versão do OpenSSL utilizada em seu ambiente de estudo ou trabalho.
+2. Documente por que essa versão atende (ou não) aos requisitos do órgão regulador que inspira o seu cartório digital.
+3. Compartilhe o resultado com a equipe fictícia do projeto, reforçando a importância de validar a fundação criptográfica antes de implantar qualquer serviço.
+
+## Gancho para o Próximo Capítulo
+
+Agora que confirmamos a base e renovamos a confiança da equipe, surge a pergunta natural: **quais chaves e algoritmos utilizaremos para proteger nossos documentos?** No próximo capítulo mergulharemos, a partir de outro exemplo realista, nas diferenças entre criptografia simétrica e assimétrica e em como combiná-las para manter o ritmo inspirador do cartório digital.

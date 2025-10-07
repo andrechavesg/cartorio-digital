@@ -1,48 +1,23 @@
-# HSM e Criptografia de Hardware
+# HSM e Criptografia em Hardware
 
-A camada de HSM (Hardware Security Module) garante que chaves críticas permaneçam dentro de um dispositivo com controles físicos e lógicos robustos.
+## Exemplo Inspirador
 
-## Benefícios principais
+Durante uma visita guiada, as autoridades conheceram o cofre onde o HSM do cartório opera. Verificaram sensores de intrusão, procedimentos de dupla custódia e backups selados. Ao final, declararam que o cartório superava as expectativas de segurança física e lógica. O investimento em hardware provou seu valor.
 
-1. **Armazenamento seguro:** chaves privadas nunca deixam o hardware; exportação é bloqueada por design.
-2. **Processamento isolado:** operações de assinatura e descriptografia ocorrem dentro do módulo, reduzindo a superfície de ataque.
-3. **Conformidade:** necessário para certificações como FIPS 140-2 Nível 3, requisito para Autoridades Certificadoras na ICP-Brasil e QTSPs europeus.
-4. **Alta disponibilidade:** clusters HSM oferecem replicação e failover, evitando *single point of failure*.
+## Conceitos Fundamentais
 
-## Arquitetura recomendada
+- **Certificações:** FIPS 140-2/3, Common Criteria asseguram padrões internacionais.
+- **Dupla custódia:** operações críticas exigem duas pessoas com tokens ou smartcards.
+- **Backup seguro:** chaves são exportadas apenas em formato criptografado e com múltiplos fatores de autenticação.
+- **Integração com softwares:** bibliotecas PKCS#11 ou APIs proprietárias conectam aplicações ao HSM.
 
-```
-Aplicação → API interna → AWS KMS → (CloudHSM / HSM dedicado)
-                        ↘ CloudTrail / SIEM
-```
+## Práticas Reais
 
-1. A aplicação invoca um serviço interno (por exemplo, `kms-service`) que abstrai as operações de assinatura.
-2. O KMS envia a requisição ao cluster HSM para execução dentro do hardware.
-3. Logs de auditoria são encaminhados ao SIEM e correlacionados com eventos de aplicação.
+1. Revise contratos para garantir suporte e atualizações de firmware do HSM.
+2. Treine a equipe na inserção de smartcards e execução de procedimentos de emergência.
+3. Documente rotinas de backup, transporte e armazenamento em cofres externos.
+4. Teste periodicamente a comunicação entre HSM e aplicações críticas, monitorando latência e disponibilidade.
 
-## Opções de implantação
+## Gancho para o Próximo Capítulo
 
-- **CloudHSM (AWS):** cluster gerenciado, integra-se ao KMS via *custom key store*. Adequado para produção.
-- **Appliance on-premises:** indicado quando a legislação exige data center próprio. Necessita rede dedicada, energia redundante e equipe treinada.
-- **HSM portátil:** útil para laboratórios, provas de conceito e recuperação de desastre offline.
-
-## Fluxo de geração de chaves
-
-1. **Inicialização:** duas ou mais pessoas (modelo de múltipla custódia) desbloqueiam o HSM com smartcards ou tokens.
-2. **Criação da chave raiz:** executada dentro do HSM; o identificador da chave é exportado para ser referenciado pelo KMS.
-3. **Replicação/backup:** cópia criptografada armazenada em cofre físico, seguindo política de desastre.
-
-### Exemplo conceitual (pseudo-código)
-
-```python
-def gerar_chave_raiz():
-    # Chamada abstrata ao HSM
-    handle = hsm_client.generate_key_pair(
-        key_type="RSA_4096",
-        token_label="CartorioDigitalRAIZ",
-        certificate_label="CartorioDigitalRAIZCert"
-    )
-    return handle
-```
-
-> **Dica:** documente o procedimento de rotação e recuperação do HSM; auditores costumam solicitar *runbooks* assinados pelas partes responsáveis.
+Depois de consolidar a proteção física, precisamos assegurar auditoria e rotação contínua. No próximo capítulo discutiremos práticas inspiradoras para manter chaves sempre atualizadas e rastreáveis.

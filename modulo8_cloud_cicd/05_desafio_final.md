@@ -1,37 +1,23 @@
-# 05 · Desafio final do módulo
+# Desafio Final de Nuvem e CI/CD
 
-Mesmo com automações implementadas, o cartório digital identificou que nem todos os squads conseguiam orquestrar uma entrega completa em nuvem. Para resolver essa lacuna, propomos um desafio final que obriga a recombinar pipelines GitHub Actions, Terraform e observabilidade em uma narrativa única.
+## Exemplo Inspirador
 
-## Objetivo do desafio
+Para concluir o módulo, a equipe entregou uma pipeline completa: código assinado, infraestrutura provisionada, testes executados e monitoramento configurado. Ao final do dia, o cartório tinha uma entrega contínua pronta para receber novas funcionalidades com segurança.
 
-Construir uma release completa do cartório digital, desde o commit até a publicação em ambiente de produção, incluindo monitoramento pós-implantação e documentação das decisões. O resultado deve provar que o time domina automações seguras e pode responder rapidamente a incidentes.
+## Conceitos Fundamentais
 
-## Conceito: jornada integrada
+- **Integração ponta a ponta:** código → build → segurança → deploy → observabilidade.
+- **Automação confiável:** reduz falhas humanas e acelera entregas.
+- **Documentação e treinamento:** garantem que todos saibam operar o pipeline.
+- **Melhoria contínua:** métricas alimentam ajustes constantes.
 
-Antes de iniciar, o time revisita os capítulos anteriores e o `modulo10_projeto_final` para entender como cada componente se encaixa. O desafio é menos sobre scripts isolados e mais sobre contar uma história coerente de entrega contínua.
+## Práticas Reais
 
-## Entregáveis esperados
+1. Construa um pipeline que vá do commit ao deploy em ambiente de produção simulada.
+2. Inclua etapas de assinatura de artefatos e verificação de certificados.
+3. Configure alertas e dashboards específicos para essa aplicação.
+4. Apresente o resultado em uma revisão coletiva, destacando aprendizados.
 
-1. **Pipeline orquestrado** que inclua build, testes, segurança, assinatura, provisionamento e deploy.
-2. **Infraestrutura como código** com Terraform ou AWS CDK versionado e acompanhado de *pipelines* de `plan` e `apply`.
-3. **Stack de observabilidade** com alertas de expiração de certificados e falhas de deploy.
-4. **Relatório executivo** apresentando ganhos de velocidade, confiabilidade e conformidade.
+## Gancho para o Próximo Capítulo
 
-## Roteiro sugerido
-
-1. **Preparar o repositório**
-   - Revisar *secrets*, variáveis e branch protection rules.
-   - Conectar repositórios de módulos anteriores para reutilizar componentes (scripts de assinatura, templates Terraform, dashboards).
-2. **Executar o pipeline completo**
-   - Disparar o workflow `Cartorio Delivery Pipeline` com uma alteração real (ex.: atualização de schema de certidão).
-   - Registrar evidências de cada etapa (logs, artefatos, prints de dashboards).
-3. **Validar operação em produção**
-   - Usar scripts do `modulo3_tls_mtls` para confirmar que certificados foram renovados.
-   - Monitorar alertas no Grafana e responder a uma simulação de incidente.
-4. **Apresentar lições aprendidas**
-   - Documentar como os controles do `modulo5_regulatorio` foram atendidos.
-   - Sugerir melhorias para o `modulo10_projeto_final`.
-
-## Inspiração para a apresentação final
-
-Encerre com uma demo onde o pipeline é acionado ao vivo, o Terraform cria recursos e o dashboard confirma a saúde do ambiente. Mostre como cada módulo contribuiu para um ecossistema confiável, reforçando que o cartório digital está apto a proteger a cidadania digital do país.
+Com a automação consolidada, avançaremos para o módulo de observabilidade avançada, onde veremos como monitorar cadeias de certificados e serviços críticos com profundidade ainda maior.

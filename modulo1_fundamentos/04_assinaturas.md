@@ -1,44 +1,43 @@
 # 4. Assinaturas Digitais
 
-A assinatura digital combina criptografia assimétrica e hash para garantir **autenticidade**, **integridade** e **não repúdio**. Ela permite provar que determinada pessoa (ou serviço) assinou um documento e que o documento não foi alterado após a assinatura.
+## Exemplo Inspirador
 
-## Como funciona
+A sessão de assinatura de uma escritura de compra e venda começa com expectativa. A tabeliã posiciona o token conectado ao HSM, confirma a identidade dos envolvidos e aciona o fluxo automatizado: o documento `contrato.txt` é preparado, o hash é calculado e a assinatura digital é aplicada diante das partes. Quando o comprovante eletrônico aparece com o carimbo “válido”, um silêncio reverente toma conta da sala. O cartório prova que a confiança pode ser traduzida em bytes.
 
-1. Calcula-se o hash do documento.
-2. O hash é cifrado com a **chave privada** do signatário — isso gera a assinatura.
-3. Para verificar, recalcula-se o hash do documento e decifra-se a assinatura com a **chave pública**. Se os valores coincidirem, a assinatura é válida.
+## Conceitos Fundamentais
 
-## Exemplo prático
+- **Assinatura digital** combina a força das chaves assimétricas com a precisão das funções hash.
+- **Passos essenciais:**
+  1. Calcular o hash do documento.
+  2. Cifrar o hash com a **chave privada** do signatário (gerando a assinatura).
+  3. Distribuir a **chave pública** para que qualquer pessoa valide a assinatura.
+- **Garantias oferecidas:** autenticidade, integridade e não repúdio.
+- **Conformidade:** a cadeia de certificação (ICP-Brasil, no nosso contexto) precisa estar válida para que a assinatura tenha valor jurídico.
 
-1. Gere um par de chaves RSA (caso ainda não tenha).
-2. Crie um arquivo `contrato.txt` com um texto qualquer.
+## Práticas Reais
 
-Imagine o fluxo jurídico de uma escritura de compra e venda. Após a conferência documental, a tabeliã redige o instrumento, envia para revisão da parte interessada e agenda a sessão de assinatura. O regulamento interno determina que, antes de protocolar o título no tribunal, a versão digital deve ser assinada com a chave privada protegida no HSM e carimbada com o hash correspondente. Só depois dessa etapa é que o registro pode avançar, garantindo autenticidade e não repúdio.
+1. **Prepare o ambiente:** gere um par de chaves RSA se ainda não possuir e crie o arquivo `contrato.txt` com o texto da escritura.
 
-Com o processo jurídico descrito em ata, o operador inicia a fase técnica e utiliza o `openssl dgst` porque o comando atende à política de assinatura e integra-se aos robôs que preparam os dossiês eletrônicos. Para emitir a assinatura criptográfica do arquivo, execute:
+2. **Assine com propósito:**
+   ```bash
+   openssl dgst -sha256 -sign rsa_private.pem -out contrato.sig contrato.txt
+   ```
+   Registre quem autorizou a assinatura e onde a chave privada está armazenada (idealmente, em HSM ou cofre seguro).
 
-```bash
-openssl dgst -sha256 -sign rsa_private.pem -out contrato.sig contrato.txt
-```
+3. **Verifique com rigor:**
+   ```bash
+   openssl dgst -sha256 -verify rsa_public.pem -signature contrato.sig contrato.txt
+   ```
+   Documente a evidência de que o documento permaneceu íntegro desde a sessão de assinatura.
 
-Assim que a assinatura é emitida, o setor de controle de qualidade assume o processo jurídico. Ele precisa validar o documento antes de transmiti-lo ao órgão regulador, confirmando que nenhum ajuste foi feito entre a sessão de assinatura e o protocolo externo. Essa checagem é realizada com o mesmo `openssl dgst`, agora em modo de verificação, comparando a assinatura com a chave pública institucional e acusando qualquer tentativa de fraude. Verifique a assinatura com:
+4. **Comprove a cadeia de confiança:**
+   ```bash
+   openssl verify -CAfile cadeia_ca.pem certificado_tabelia.pem
+   ```
+   Garanta que a hierarquia ICP-Brasil esteja atualizada e arquive o relatório para auditorias futuras.
 
-```bash
-openssl dgst -sha256 -verify rsa_public.pem -signature contrato.sig contrato.txt
-```
+5. **Experimente a resiliência:** altere `contrato.txt` e repita a verificação para sentir, na prática, como a assinatura denuncia qualquer mudança.
 
-Por fim, o jurídico não encerra o processo sem confirmar a validade do certificado da tabeliã. A legislação exige que o documento esteja amparado por uma cadeia reconhecida pela ICP-Brasil e dentro do prazo de vigência. O time de compliance registra essa checagem na ata e utiliza o `openssl verify`, que analisa a cadeia de certificação antes de liberar a escritura para o protocolo externo. Verifique a cadeia de confiança do certificado da tabeliã (assumindo que `cadeia_ca.pem` contém os certificados da hierarquia):
+## Gancho para o Próximo Capítulo
 
-```bash
-openssl verify -CAfile cadeia_ca.pem certificado_tabelia.pem
-```
-
-Se a assinatura for válida, o comando exibirá `Verified OK`. Tente modificar `contrato.txt` e verificar novamente — a assinatura deixará de ser válida.
-
-## Assinaturas no mundo real
-
-- **Certificados digitais:** as autoridades certificadoras (CAs) assinam certificados X.509 com sua chave privada, permitindo que qualquer pessoa verifique sua autenticidade.
-- **Código e artefatos:** sistemas como a Apple, Microsoft e repositórios de pacotes exigem assinaturas de desenvolvedores para evitar distribuições maliciosas.
-- **Documentos eletrônicos:** contratos, escrituras e outros documentos são assinados digitalmente para ter validade jurídica, como veremos nos módulos posteriores.
-
-Agora que você entende os componentes básicos — cifras, chaves, hashes e assinaturas — está pronto para avançar para a PKI e começar a emitir seus próprios certificados!
+Você agora domina os blocos fundamentais: cifras, chaves, hashes e assinaturas. O próximo passo é ousado e inspirador — construir uma **infraestrutura de chave pública completa** para emitir certificados confiáveis. No início do próximo módulo abriremos o capítulo de PKI mostrando como esse poder se organiza em autoridades certificadoras a serviço do cartório digital.

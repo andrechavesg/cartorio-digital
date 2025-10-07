@@ -1,36 +1,23 @@
-# Governança e Operação Contínua
+# Governança e Operação
 
-## Problema vivido pelo cartório digital
+## Exemplo Inspirador
 
-Após o go-live, o cartório digital percebe que a confiabilidade operacional não acompanha as exigências legais: faltam evidências consolidadas, os alertas são ruidosos e a auditoria tem dificuldade em seguir o trilho de decisões.
+Em uma reunião de governança, representantes das trilhas apresentaram indicadores de progresso, riscos e decisões necessárias. A transparência criou um ambiente colaborativo onde todos sabiam exatamente o que fazer.
 
-## Conexão inspiradora com os módulos anteriores
+## Conceitos Fundamentais
 
-Os requisitos regulatórios e de auditoria do **Módulo 5** e a observabilidade estruturada no **Módulo 9** mostraram que governança não é um departamento, mas sim uma prática contínua. Some os controles de identidade do **Módulo 3** e as políticas de certificação do **Módulo 2** para construir um painel que fale a linguagem do auditor e da operação.
+- **Comitê de governança:** alinhamento periódico entre tecnologia, jurídico e atendimento.
+- **Matriz RACI:** define responsabilidades (responsável, aprovador, consultado, informado).
+- **Gestão de riscos:** identifica, prioriza e acompanha mitigação.
+- **Operação contínua:** runbooks e SLAs garantem serviço 24/7.
 
-## Ferramentas e comandos como solução
+## Práticas Reais
 
-- **Exemplo prático de observabilidade inspiradora** – diante de um incidente de latência percebido pelos cidadãos, use a query consolidada e a importação do dashboard para mostrar que o ecossistema possui visibilidade ponta a ponta.
-  ```bash
-  # Por que: investigar o histórico do serviço e correlacionar com eventos de infraestrutura.
-  tempo query '{job="cartorio-api"}' --time-range=1h
-  # Por que: expor a leitura visual aos times jurídicos e de negócio.
-  grafana dashboards import dashboards/cartorio-operacao.json
-  ```
-- **Fluxo de auditoria de assinaturas e selos** – quando a corregedoria requisitar provas das assinaturas emitidas, demonstre como inspecionar rapidamente os certificados associados às certidões digitais.
-  ```bash
-  # Por que: apresentar a estrutura do certificado e comprovar vínculos com a ICP-Brasil.
-  step certificate inspect --format json artefatos/assinaturas/certidão-*.pem | jq '.extensions'
-  ```
-- **Política de rotação de segredos e evidência de execução** – ao revisar o runbook de segurança, prove que a rotação de segredos é automatizada e auditável conforme os padrões definidos nos módulos anteriores.
-  ```bash
-  # Por que: forçar a rotação para evitar segredos estagnados e vulneráveis.
-  vault write -force secret/data/cartorio/api
-  # Por que: manter registro imutável das requisições ao cofre.
-  vault audit enable file file_path=/var/log/vault/auditoria.log
-  ```
-- **Gestão de incidentes com livro-razão imutável** – para manter a memória operacional intacta, registre cada evento crítico no ledger e gere o balanço para análise periódica.
-  ```bash
-  # Por que: atualizar o livro-caixa operacional e provar diligência contínua.
-  ledger-cli --file registros/incidentes.ledger balanco incidentes
-  ```
+1. Estabeleça reuniões regulares com pauta clara e registro de decisões.
+2. Utilize matriz RACI para processos críticos (renovação de certificados, incidentes).
+3. Mantenha um repositório de riscos atualizado com status e responsáveis.
+4. Crie painéis operacionais que integrem métricas de desempenho e conformidade.
+
+## Gancho para o Próximo Capítulo
+
+Com governança definida, vamos orquestrar tecnologia e processos em uma arquitetura final. No próximo capítulo veremos, através de um exemplo inspirador, como conectar todos os componentes do cartório digital.

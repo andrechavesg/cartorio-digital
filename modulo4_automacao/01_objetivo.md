@@ -1,25 +1,23 @@
-# Objetivo do Módulo 4 – Automção com ACME e Let's Encrypt
+# Objetivo do Módulo – Automação com ACME
 
-No módulo anterior você configurou TLS 1.3 e mTLS usando os certificados da sua própria CA. Para um cartório digital em produção, porém, a emissão e renovação manual não é prática: certificados têm prazos curtos e esquecer de renová‑los derruba serviços.
+## Exemplo Inspirador
 
-Neste módulo você vai aprender a **automatizar o ciclo de vida** dos certificados públicos usando o protocolo ACME (RFC 8555) e serviços como o **Let's Encrypt**, mantendo sua aplicação sempre protegida sem intervenção humana. Ao final, você será capaz de emitir, instalar e renovar certificados de forma automática, tanto via desafios HTTP‑​01 quanto DNS‑​01 em provedores como Route 53.
+Em uma madrugada de implantação, o certificado do ambiente de homologação expirou e quase interrompeu os testes regulatórios. A equipe decidiu que nunca mais dependeria de processos manuais. Ao amanhecer, tinham um plano: automatizar renovações usando ACME e integrações seguras. Essa virada de chave mostrou que disciplina e automação caminham juntas para manter o cartório sempre disponível.
 
-**O que você vai aprender?**
+## Conceitos Fundamentais
 
-- Por que automatizar a emissão e renovação de certificados é crítico para sistemas online;
-- Como funciona o protocolo ACME e seus atores (Cliente, Servidor ACME, Autorizações e Desafios);
-- Quando usar desafios HTTP‑ 01, DNS‑ 01 e TLS‑ALPN‑ 01 e quais os prós e contras de cada um;
-- Como instalar e usar clientes ACME como `certbot` e `step-cli`;
-- Boas práticas para integrar a renovação automática no Nginx/ALB e notificar serviços.
+- **ACME (Automated Certificate Management Environment):** protocolo que permite solicitar e renovar certificados automaticamente.
+- **Desafios HTTP e DNS:** diferentes maneiras de provar controle sobre um domínio.
+- **Ferramentas de automação:** Certbot, lego, step-ca e integrações customizadas.
+- **Hooks e pipelines:** scripts que integram emissão com deploy e validações de segurança.
 
-**Conectando com o projeto do cartório digital**
+## Práticas Reais
 
-Os certificados emitidos por CA pública como o Let's Encrypt são usados para expor seu serviço ao público (por exemplo, o site do cartório). Já os certificados emitidos pela sua CA interna continuam sendo usados para comunicação interna (mTLS). Aqui você vai aprender a automatizar a parte externa, mas pode adaptar os scripts para renovar certificados da CA privada usando `step-ca`.
+1. Levante quais domínios do cartório precisam de renovações automáticas.
+2. Escolha a autoridade emissora (Let’s Encrypt, CA interna com ACME, etc.) e defina responsabilidades.
+3. Planeje janelas de renovação, notificações e monitoramento para evitar expirações.
+4. Documente políticas de fallback caso a automação falhe, garantindo continuidade do serviço.
 
-**Tarefa inicial**
+## Gancho para o Próximo Capítulo
 
-1. Garanta que você tem um domínio público ou subdomínio apontando para sua máquina de testes (pode usar um DNS dinâmico gratuito).
-2. Instale `certbot` ou `step-cli` no servidor e verifique a versão instalada (`certbot --version`).
-3. Leia o arquivo `README.md` deste módulo para entender os objetivos práticos que serão realizados.
-
-Nos próximos capítulos você irá explorar o protocolo ACME em detalhes e colocar em prática a emissão automática de certificados.
+Com o propósito definido, vamos explorar o protocolo que torna essa mágica possível. No próximo capítulo estudaremos, por meio de um exemplo inspirador, como o ACME funciona passo a passo e por que ele é a espinha dorsal da automação no cartório digital.

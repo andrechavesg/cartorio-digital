@@ -1,101 +1,86 @@
 # Gerando CSRs e emitindo certificados
 
-Com a CA intermediária pronta, podemos emitir certificados para servidores (como o site do cartório) e para clientes (usuários ou sistemas internos). O processo envolve gerar um par de chaves e um CSR (Certificate Signing Request), e então assinar esse CSR com a CA intermediária.
+## Exemplo Inspirador
 
-## 1. Gerar a chave e CSR do servidor
+Quando o cartório digital lançou sua primeira API pública, o deploy travou porque o provedor externo não entregaria um certificado personalizado a tempo. Em minutos, o time de infraestrutura abriu o terminal, gerou o CSR com todas as SANs necessárias e usou a CA intermediária recém-criada para assinar o pedido. Ver o endpoint responder com o nosso próprio certificado foi o combustível perfeito para provar que dominar a emissão interna nos torna ágeis e confiáveis.
 
-1. Quando o site do cartório foi migrado para Nginx, percebemos que dependíamos de certificados emitidos por terceiros e não conseguíamos incluir SANs específicos para homologação. O problema era garantir identidade completa dos domínios internos; a solução veio ao gerar nosso próprio par de chaves e CSR com `openssl genrsa` e `openssl req`, diretamente no host do serviço. **Cenário – serviço novo em produção:** precisamos lançar uma API com segurança imediatamente sem travar o go-live.
+## Conceitos Fundamentais
 
-   **Impacto na operação segura:** a geração correta das chaves evita que o novo serviço fique exposto com certificados genéricos.
+- **CSR (Certificate Signing Request):** arquivo que contém a chave pública e as informações do solicitante, usado para pedir a assinatura de um certificado.
+- **Extensões alinhadas ao perfil:** SAN, Key Usage e EKU devem refletir o uso (servidor ou cliente).
+- **Fluxo completo:** gerar chaves → criar CSR → assinar com a intermediária → instalar certificado.
+- **Documentação de emissão:** cada certificado deve estar registrado com responsável, propósito e data de expiração.
 
+## Práticas Reais
+
+1. **Crie a chave e o CSR do servidor do cartório:**
    ```bash
-   # Gere a chave privada do servidor
    openssl genrsa -out ~/pki/reqs/server.key.pem 2048
-
-   # Crie o CSR
    openssl req -new -key ~/pki/reqs/server.key.pem \
        -out ~/pki/reqs/server.csr.pem \
        -subj "/C=BR/ST=Sao Paulo/L=Santo Andre/O=Cartorio Digital/OU=Servicos/CN=cartorio.local" \
        -reqexts req_ext \
-       -config <(cat <<'EOF'
-[req]
-distinguished_name = dn
-req_extensions = req_ext
-prompt = no
+       -config <(cat <<'CONF'
+   [req]
+   distinguished_name = dn
+   req_extensions = req_ext
+   prompt = no
 
-[dn]
-C = BR
-ST = Sao Paulo
-L = Santo Andre
-O = Cartorio Digital
-OU = Servicos
-CN = cartorio.local
+   [dn]
+   C = BR
+   ST = Sao Paulo
+   L = Santo Andre
+   O = Cartorio Digital
+   OU = Servicos
+   CN = cartorio.local
 
-[req_ext]
-subjectAltName = @alt_names
+   [req_ext]
+   subjectAltName = @alt_names
 
-[alt_names]
-DNS.1 = cartorio.local
-DNS.2 = www.cartorio.local
-EOF
-)
+   [alt_names]
+   DNS.1 = cartorio.local
+   DNS.2 = www.cartorio.local
+   CONF
+   )
    ```
+   Registre no inventário qual serviço utilizará essa chave.
 
-   Esse comando usa uma configuração inline para incluir SANs no CSR.
-
-2. Logo após gerar o CSR, enfrentamos a dor de esperar horas por aprovações externas. Para desbloquear o deploy, assinamos o pedido internamente com a CA intermediária usando `openssl ca`, demonstrando como o cartório pode responder com agilidade às demandas do Nginx. **Cenário – serviço novo em produção:** a API precisa entrar no ar com um certificado confiável emitido pela própria infraestrutura.
-
-   **Impacto na operação segura:** a assinatura interna mantém o pipeline sob controle e reduz a janela de exposição.
-
+2. **Assine o CSR com a CA intermediária:**
    ```bash
    cd ~/pki/intermediate
    openssl ca -config openssl.cnf \
        -extensions server_cert -days 375 -notext -md sha256 \
        -in csr/server.csr.pem \
        -out certs/cartorio.local.cert.pem
-
    chmod 444 certs/cartorio.local.cert.pem
    ```
+   Confirme que o perfil `server_cert` contém `extendedKeyUsage = serverAuth`.
 
-   A extensão `server_cert` deve estar definida no `openssl.cnf` da intermediária com `keyUsage = digitalSignature, keyEncipherment` e `extendedKeyUsage = serverAuth`.
+3. **Emita certificados de cliente para mTLS:**
+   ```bash
+   openssl genrsa -out ~/pki/reqs/client.key.pem 2048
+   openssl req -new -key ~/pki/reqs/client.key.pem \
+       -out ~/pki/reqs/client.csr.pem \
+       -subj "/C=BR/ST=Sao Paulo/L=Santo Andre/O=Cartorio Digital/OU=Usuarios/CN=usuario.exemplo"
 
-## 2. Gerar certificados de cliente
+   cd ~/pki/intermediate
+   openssl ca -config openssl.cnf \
+       -extensions usr_cert -days 375 -notext -md sha256 \
+       -in csr/client.csr.pem \
+       -out certs/usuario.exemplo.cert.pem
+   chmod 444 certs/usuario.exemplo.cert.pem
+   ```
+   Adapte o perfil `usr_cert` para incluir `extendedKeyUsage = clientAuth` (e `emailProtection` se aplicável).
 
-Quando habilitamos mTLS entre sistemas do cartório, surgiram tickets de suporte porque usuários não possuíam credenciais confiáveis. O problema era fornecer identidades fortes para pessoas e integrações; replicamos o processo com `openssl genrsa`, `openssl req` e `openssl ca`, emitindo certificados de cliente que devolvem autonomia à operação. **Cenário – serviço novo em produção:** uma nova integração precisa consumir a API imediatamente com autenticação mútua.
+4. **Teste a instalação e a cadeia:**
+   ```bash
+   openssl verify -CAfile ~/pki/intermediate/certs/ca-chain.cert.pem \
+       certs/cartorio.local.cert.pem
+   ```
+   Configure seu servidor (Nginx, Apache etc.) para usar a chave privada, o certificado e a cadeia `ca-chain.cert.pem`.
 
-**Impacto na operação segura:** distribuir certificados corretos evita que o serviço novo seja bloqueado por falta de identidade.
+5. **Documente o ciclo de vida:** registre datas de expiração, responsáveis e sistemas que dependem de cada certificado para facilitar renovações.
 
-```bash
-# Chave e CSR do cliente
-openssl genrsa -out ~/pki/reqs/client.key.pem 2048
-openssl req -new -key ~/pki/reqs/client.key.pem \
-    -out ~/pki/reqs/client.csr.pem \
-    -subj "/C=BR/ST=Sao Paulo/L=Santo Andre/O=Cartorio Digital/OU=Usuarios/CN=usuario.exemplo"
+## Gancho para o Próximo Capítulo
 
-# Assinatura com extensão client_cert
-cd ~/pki/intermediate
-openssl ca -config openssl.cnf \
-    -extensions usr_cert -days 375 -notext -md sha256 \
-    -in csr/client.csr.pem \
-    -out certs/usuario.exemplo.cert.pem
-
-chmod 444 certs/usuario.exemplo.cert.pem
-```
-
-O perfil `usr_cert` no `openssl.cnf` deve conter `keyUsage = digitalSignature, keyEncipherment` e `extendedKeyUsage = clientAuth, emailProtection` se desejar usar o certificado para S/MIME.
-
-## 3. Instalando e testando os certificados
-
-- Combine a chave privada e o certificado do servidor em um único arquivo (`.pem`) se necessário.
-- Configure seu serviço web (Nginx, Apache ou ALB) para usar `cartorio.local.cert.pem` e `server.key.pem`, além da cadeia `ca-chain.cert.pem` como `trusted_ca`.
-- Para clientes mTLS, distribua `usuario.exemplo.cert.pem`, `client.key.pem` e a cadeia de CA para importação no navegador ou aplicação.
-
-Para evitar novas interrupções, verificamos se a cadeia estava íntegra e reconhecida pelos parceiros. O comando `openssl verify` fecha o ciclo mostrando que o certificado do Nginx está ancorado na confiança do cartório. **Cenário – serviço novo em produção:** antes de liberar o endpoint, garantimos que a cadeia entregue ao balanceador está correta.
-
-**Impacto na operação segura:** a verificação prévia impede que o lançamento falhe por erros de confiança.
-
-```bash
-openssl verify -CAfile ~/pki/intermediate/certs/ca-chain.cert.pem certs/cartorio.local.cert.pem
-```
-
-No próximo capítulo, veremos como revogar um certificado e verificar seu status via CRL e OCSP.
+Agora que emitimos e instalamos certificados, precisamos planejar o que fazer quando uma credencial é comprometida ou expira antes do previsto. No próximo capítulo veremos, inspirados por um caso real de revogação, como manter a confiança viva com CRL, OCSP e verificações constantes.

@@ -1,36 +1,23 @@
-# Métricas no Grafana: Tornando a Saúde do Cartório Visível
+# Métricas e Dashboards no Grafana
 
-Quando o time percebeu que a expiração de um certificado estava próxima e ninguém havia sido alertado, entendemos que métricas isoladas não bastam. Precisávamos contar a história do cartório digital por painéis claros e inspiradores.
+## Exemplo Inspirador
 
-## Conceito: Observabilidade Quantitativa
-Antes de construir qualquer dashboard, revisitamos o conceito de **observabilidade quantitativa**: transformar eventos invisíveis em indicadores contínuos. A coleta iniciada no módulo 8 com Prometheus precisa agora ser traduzida em visualizações que conectem segurança e operações.
+O cartório montou um painel em Grafana que mostrava a saúde da PKI: certificados próximos do vencimento, latência do OCSP e uso das APIs. Durante um comitê, a diretoria conseguiu tomar decisões em minutos, graças à visualização clara dos dados.
 
-## Integração com o Projeto
-- **Fonte de dados:** Prometheus já configurado para coletar métricas de certificados e OCSP, com scraping definido em `modulo8_cloud_cicd/prometheus/prometheus.yml`.
-- **Indicadores-chave:** tempo até expiração (`cert_expiry_seconds`), latência de OCSP (`ocsp_latency_seconds`) e contagem de alertas (`cartorio_tls_alerts_total`).
-- **Histórico versionado:** o JSON de painel fica armazenado em `modulo9_observabilidade/dashboards/` para ser aplicado automaticamente pelos pipelines de entrega contínua.
+## Conceitos Fundamentais
 
-## Exemplo Guiado: Construindo o Painel no Grafana
-Com o conceito em mente, abrimos o Grafana e importamos um JSON de dashboard preparado pela equipe. Só depois de entender que cada gráfico representa um ponto da jornada do certificado executamos o comando de provisionamento.
+- **Datasources:** Prometheus, Loki ou Elasticsearch alimentando o Grafana.
+- **Painéis temáticos:** agrupam métricas por contexto (PKI, TLS, automação).
+- **Alertas integrados:** Grafana envia notificações baseadas em thresholds definidos.
+- **Compartilhamento:** dashboards acessíveis a equipes técnicas e executivas.
 
-```bash
-# Por que: provisionar o painel como código e manter versionamento auditável.
-cat <<'DASH' > /etc/grafana/provisioning/dashboards/cartorio-observabilidade.json
-{
-  "title": "Cartório Digital – Observabilidade PKI",
-  "panels": [
-    {"type": "gauge", "title": "Dias até expiração", "targets": [{"expr": "(cert_expiry_seconds/86400)"}]},
-    {"type": "graph", "title": "Latência do OCSP", "targets": [{"expr": "ocsp_latency_seconds"}]},
-    {"type": "stat", "title": "Alertas ativos", "targets": [{"expr": "cartorio_tls_alerts_total"}]}
-  ]
-}
-DASH
-# Por que: aplicar o dashboard imediatamente e validar os painéis na reunião de operação.
-systemctl restart grafana-server
-```
+## Práticas Reais
 
-- **Mensagem transmitida pelo painel:** cada colaborador vê, em tempo real, quanto tempo temos até a expiração e se existe algum alerta pendente. A barra de gauge alimenta a SLO semanal definida pela diretoria.
-- **Impacto cultural:** dashboards tornam-se rituais diários, reforçando a missão de entregar atos notariais totalmente confiáveis e orientando retrospectivas técnicas.
+1. Conecte o Grafana aos dados coletados (logs, métricas, status de certificados).
+2. Crie painéis específicos para expiração, revogação e desempenho.
+3. Configure alertas visuais e notificações via e-mail ou chat corporativo.
+4. Revise os painéis periodicamente para garantir que continuem relevantes.
 
-## Visualizações como História Viva
-Esse painel fecha o ciclo dos módulos anteriores mostrando, de forma tangível, como nossas decisões de PKI, automação e infraestrutura garantem confiança contínua.
+## Gancho para o Próximo Capítulo
+
+Com dashboards poderosos, enfrentaremos o desafio operacional final: coordenar respostas a incidentes e manutenções programadas. No próximo capítulo um exemplo inspirador mostrará como manter o cartório sempre operacional.

@@ -1,8 +1,23 @@
-# 10 — Referências
+# Referências Inspiradoras
 
-- **RFC 3161** — Protocolo de carimbo do tempo.
-- **ETSI EN 319 142-1** — PAdES (PDF Advanced Electronic Signatures).
-- **Lei 14.063/2020** e **MP 2.200‑2/2001** — Assinaturas eletrônicas no Brasil; ICP‑Brasil.
-- Ferramentas:
-  - `jarsigner` (Oracle/Java), `signtool` (Microsoft).
-  - Soluções de timestamp compatíveis com **RFC 3161**.
+## Exemplo Inspirador
+
+Ao finalizar o módulo, o cartório montou uma biblioteca digital com livros, artigos e normas sobre assinatura de artefatos. A coleção tornou-se ponto de encontro para quem busca aprofundar conhecimentos.
+
+## Conceitos Fundamentais
+
+- **Normas técnicas:** ETSI, ICP-Brasil e RFCs.
+- **Ferramentas:** bibliotecas e plataformas que suportam assinaturas.
+- **Casos de uso:** estudos publicados por órgãos públicos e empresas.
+- **Comunidades:** fóruns e grupos que discutem boas práticas.
+
+## Práticas Reais
+
+1. Organize links e documentos em um repositório interno acessível a toda equipe.
+2. Atualize periodicamente a lista com novas publicações e eventos.
+3. Incentive a participação em comunidades técnicas e jurídicas.
+4. Registre insights de cada leitura para inspirar projetos futuros.
+
+## Gancho para o Próximo Capítulo
+
+Com as referências em mãos, partiremos para o módulo de nuvem e CI/CD, onde veremos como automatizar todo o ciclo de entrega mantendo a segurança conquistada até aqui.

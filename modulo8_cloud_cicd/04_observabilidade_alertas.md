@@ -1,77 +1,23 @@
-# 04 · Observabilidade e alertas em pipelines cloud
+# Observabilidade e Alertas
 
-Após migrar para pipelines automatizados, o cartório digital ainda enfrentava surpresas com certificados expirados e deploys silenciosamente malsucedidos. A solução inspiradora foi unir Prometheus, Grafana e integrações de alerta para transformar dados do projeto principal em respostas rápidas.
+## Exemplo Inspirador
 
-## Contexto
+Um pico de acessos quase derrubou a API do cartório. Graças a dashboards em Grafana, logs estruturados e alertas no PagerDuty, a equipe escalou recursos e resolveu o problema antes que os cidadãos percebessem. O episódio consolidou a importância da observabilidade.
 
-Certificados expiram, pipelines podem falhar e recursos em nuvem sofrem oscilações. Sem monitoramento proativo, corremos o risco de comprometer a confiança dos cidadãos. Precisamos instrumentar cada etapa para detectar incidentes antes que eles impactem o serviço.
+## Conceitos Fundamentais
 
-## Conceito: observabilidade orientada a decisões
+- **Logs, métricas, traces:** pilares da observabilidade.
+- **Alertas acionáveis:** notificações com contexto para resposta rápida.
+- **SLOs e SLAs:** metas mensuráveis de disponibilidade e desempenho.
+- **Integração com segurança:** correlaciona eventos para detectar incidentes.
 
-Antes de configurar ferramentas, alinhamos o que precisamos observar: métricas de pipelines, saúde da infraestrutura provisionada pelo Terraform (`modulo3_iac_nuvem`) e indicadores de certificados dos módulos de segurança. A partir desse mapa é que conectamos exportadores e dashboards.
+## Práticas Reais
 
-## Estratégia de observabilidade
+1. Configure Prometheus/Grafana ou serviços gerenciados para monitorar pipelines e aplicações.
+2. Crie alertas para expiração de certificados, falhas de deploy e aumento de latência.
+3. Defina SLOs alinhados às expectativas dos cidadãos e acompanhe os resultados.
+4. Registre cada incidente em post-mortems com ações preventivas.
 
-1. **Coletar métricas do pipeline**: Exportamos dados do GitHub Actions para o Prometheus do cartório.
-2. **Monitorar certificados**: Reutilizamos scripts do `modulo3_tls_mtls` para verificar validade e publicar métricas.
-3. **Alertas acionáveis**: Definimos gatilhos no Grafana que notificam o time via Slack e PagerDuty.
+## Gancho para o Próximo Capítulo
 
-## Exemplo guiado com Prometheus e Grafana
-
-Primeiro, configuramos um *exporter* que captura resultados dos jobs:
-
-```yaml
-# .github/workflows/metrics-export.yml
-name: Exportar métricas do pipeline
-
-on:
-  workflow_run:
-    workflows: ["Cartorio Delivery Pipeline"]
-    types:
-      - completed
-
-jobs:
-  publicar-metricas:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Enviar métricas para Prometheus Pushgateway
-        run: |
-          # Por que: transformar o status do workflow em métrica binária compreensível pelas equipes.
-          echo "pipeline_status{workflow=\"delivery\"} ${{ github.event.workflow_run.conclusion == 'success' && 1 || 0 }}" \
-            # Por que: enviar a métrica ao endpoint autenticado do cartório.
-            | curl --data-binary @- https://observabilidade.cartorio.digital/metrics
-```
-
-Em seguida, criamos uma regra de alerta no Grafana que dispara quando o pipeline falha três vezes consecutivas:
-
-```hcl
-# grafana/provisioning/alerting/cartorio-pipeline.json
-{
-  "title": "Falhas consecutivas no pipeline",
-  "condition": "C",
-  "data": [
-    {
-      "refId": "A",
-      "queryType": "timeSeriesQuery",
-      "relativeTimeRange": {"from": 900, "to": 0},
-      "datasourceUid": "prometheus",
-      "model": {
-        "expr": "sum_over_time(pipeline_status{workflow=\"delivery\"} == 0 [15m]) >= 3"
-      }
-    }
-  ],
-  "noDataState": "OK",
-  "execErrState": "Alerting",
-  "for": "0m",
-  "annotations": {
-    "summary": "Pipeline do cartório falhou 3 vezes em 15 minutos"
-  },
-  "contactPoints": ["slack-cartorio", "pagerduty-certidoes"]
-}
-```
-
-## Ligação com alertas de certificados
-
-A mesma pilha de observabilidade acompanha os prazos de certificados definidos nos módulos anteriores. Um job adicional lê o `terraform state` para identificar recursos ACM e publica métricas de expiração, reforçando a proteção destacada em `modulo6_kms_hsm`.
-
-Com dados confiáveis e alertas acionáveis, o cartório digital preserva sua reputação e mantém a operação sob controle, mesmo diante de picos de demanda — preparando o terreno para a entrega integrada no `modulo10_projeto_final`.
+Com observabilidade em ação, vamos encarar o desafio final do módulo: construir uma entrega completa de ponta a ponta. No próximo capítulo um exemplo inspirador unirá todos os elementos em uma jornada prática.

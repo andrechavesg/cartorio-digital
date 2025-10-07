@@ -1,6 +1,6 @@
 # Revogação e validação de certificados
 
-## Exemplo Inspirador
+## Introdução
 
 Certa manhã, a equipe do cartório recebeu a notícia de que um colaborador havia perdido o token criptográfico durante uma viagem. Em vez de pânico, veio a ação coordenada: o analista abriu o índice da CA, localizou o serial comprometido e, em poucos minutos, a credencial estava revogada, uma nova CRL publicada e o responder OCSP emitindo alertas em tempo real. O incidente transformou-se em demonstração pública de maturidade, provando que confiança também significa saber retirar acessos com rapidez e clareza.
 
@@ -54,4 +54,4 @@ Certa manhã, a equipe do cartório recebeu a notícia de que um colaborador hav
 
 ## Gancho para o Próximo Capítulo
 
-Com a confiança protegida de ponta a ponta, estamos prontos para colocar esses certificados em trânsito. No próximo módulo mergulharemos no TLS e mTLS, começando por um exemplo inspirador de como uma conexão segura muda a experiência no balcão digital do cartório.
+Com a confiança protegida de ponta a ponta, estamos prontos para colocar esses certificados em trânsito. Na Introdução do próximo módulo mergulharemos no TLS e mTLS, mostrando como uma conexão segura muda a experiência no balcão digital do cartório.

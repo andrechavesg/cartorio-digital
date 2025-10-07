@@ -1,6 +1,6 @@
 # Certificados Qualificados e Avançados
 
-## Exemplo Inspirador
+## Introdução
 
 Uma cidadã precisou assinar digitalmente um testamento e buscou orientação no cartório digital. A equipe explicou a diferença entre certificados qualificados e avançados, ajudou-a a escolher o nível adequado e assegurou que o processo estaria em conformidade com a legislação. Ao final, ela relatou sentir-se protegida e esclarecida — o objetivo máximo de um serviço público digital.
 

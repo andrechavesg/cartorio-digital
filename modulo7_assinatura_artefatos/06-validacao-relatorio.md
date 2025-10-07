@@ -1,6 +1,6 @@
 # Validação e Relatórios
 
-## Exemplo Inspirador
+## Introdução
 
 Após assinar centenas de documentos, o cartório gerou relatórios automáticos com o status de cada assinatura e carimbo de tempo. A auditoria ficou encantada ao receber um dashboard atualizado que mostrava 100% de conformidade.
 
@@ -20,4 +20,4 @@ Após assinar centenas de documentos, o cartório gerou relatórios automáticos
 
 ## Gancho para o Próximo Capítulo
 
-Com validação sob controle, vamos expor esses recursos como APIs. No próximo capítulo veremos, com um exemplo inspirador, como integrar assinatura digital aos sistemas do cartório de forma escalável.
+Com validação sob controle, vamos expor esses recursos como APIs. Na Introdução do próximo capítulo veremos como integrar assinatura digital aos sistemas do cartório de forma escalável.

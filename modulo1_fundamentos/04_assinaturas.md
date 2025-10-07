@@ -1,6 +1,6 @@
 # 4. Assinaturas Digitais
 
-## Exemplo Inspirador
+## Introdução
 
 A sessão de assinatura de uma escritura de compra e venda começa com expectativa. A tabeliã posiciona o token conectado ao HSM, confirma a identidade dos envolvidos e aciona o fluxo automatizado: o documento `contrato.txt` é preparado, o hash é calculado e a assinatura digital é aplicada diante das partes. Quando o comprovante eletrônico aparece com o carimbo “válido”, um silêncio reverente toma conta da sala. O cartório prova que a confiança pode ser traduzida em bytes.
 

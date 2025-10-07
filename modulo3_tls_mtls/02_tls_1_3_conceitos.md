@@ -1,6 +1,6 @@
 # TLS 1.3 – Conceitos e Handshake
 
-## Exemplo Inspirador
+## Introdução
 
 Durante o lançamento da consulta de certidões on-line, notamos que os cidadãos aguardavam ansiosos pelo carregamento inicial. Após habilitar TLS 1.3 com 0-RTT para clientes conhecidos, a primeira página passou a responder quase instantaneamente. A equipe celebrou: o protocolo moderno não só protegia a comunicação, como também entregava agilidade percebida por quem mais importa — o usuário final.
 

@@ -1,6 +1,6 @@
 # Desafios e Lições Aprendidas
 
-## Exemplo Inspirador
+## Introdução
 
 Mesmo com automação, o cartório enfrentou incidentes como certificados expirados ou formatos incompatíveis. Cada desafio foi documentado e transformado em melhoria de processo, reforçando a cultura de aprendizado contínuo.
 

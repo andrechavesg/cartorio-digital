@@ -1,6 +1,6 @@
 # ICP-Brasil na Prática
 
-## Exemplo Inspirador
+## Introdução
 
 Para obter o selo de cartório digital, a equipe precisou demonstrar conformidade com a ICP-Brasil diante de uma banca avaliadora. Eles apresentaram o fluxo completo de emissão, guarda e revogação, incluindo logs assinados e controles de acesso ao HSM. A banca reconheceu o esforço e concedeu a autorização. O episódio provou que compliance pode ser motivo de orgulho.
 
@@ -20,4 +20,4 @@ Para obter o selo de cartório digital, a equipe precisou demonstrar conformidad
 
 ## Gancho para o Próximo Capítulo
 
-Compreendida a base nacional, ampliaremos a visão para padrões internacionais. No próximo capítulo mergulharemos em eIDAS e ETSI, usando um exemplo inspirador de integração transnacional que expandiu o alcance do cartório digital.
+Compreendida a base nacional, ampliaremos a visão para padrões internacionais. Na Introdução do próximo capítulo mergulharemos em eIDAS e ETSI, a partir de uma integração transnacional que expandiu o alcance do cartório digital.

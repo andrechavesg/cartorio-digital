@@ -1,6 +1,6 @@
 # Monitorando OCSP e Status de Certificados
 
-## Exemplo Inspirador
+## Introdução
 
 Durante uma integração com um órgão parceiro, o responder OCSP do cartório ficou indisponível por alguns minutos. Graças ao monitoramento ativo, a equipe recebeu alertas e restabeleceu o serviço rapidamente, evitando impacto nos cidadãos.
 

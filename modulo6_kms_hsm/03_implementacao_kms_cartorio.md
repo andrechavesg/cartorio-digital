@@ -1,6 +1,6 @@
 # Implementando o KMS do Cartório
 
-## Exemplo Inspirador
+## Introdução
 
 O cartório decidiu centralizar todas as chaves em uma arquitetura híbrida: HSM on-premises para chaves raiz e KMS em nuvem para operações diárias. Durante a inauguração do novo centro de dados, a equipe mostrou como as aplicações solicitavam chaves via API, recebiam respostas assinadas e mantinham registros detalhados. O sentimento foi de missão cumprida.
 
@@ -20,4 +20,4 @@ O cartório decidiu centralizar todas as chaves em uma arquitetura híbrida: HSM
 
 ## Gancho para o Próximo Capítulo
 
-Com a arquitetura operacionalizada, precisamos entender os diferenciais do hardware criptográfico dedicado. No próximo capítulo analisaremos, através de um exemplo inspirador, como HSMs garantem proteção física e lógica incomparável.
+Com a arquitetura operacionalizada, precisamos entender os diferenciais do hardware criptográfico dedicado. Na Introdução do próximo capítulo analisaremos como HSMs garantem proteção física e lógica incomparável.

@@ -1,6 +1,6 @@
 # Objetivo do Módulo – KMS e HSM
 
-## Exemplo Inspirador
+## Introdução
 
 Ao revisar os relatórios de segurança, o cartório descobriu que algumas chaves privadas ainda estavam armazenadas em servidores comuns. A equipe decidiu migrá-las para um HSM integrado a um KMS gerenciado, garantindo proteção com hardware certificado. A mudança elevou instantaneamente a confiança de todos os envolvidos.
 
@@ -20,4 +20,4 @@ Ao revisar os relatórios de segurança, o cartório descobriu que algumas chave
 
 ## Gancho para o Próximo Capítulo
 
-Com o objetivo claro, vamos mergulhar nos conceitos que sustentam essa migração. No próximo capítulo veremos, por meio de um exemplo inspirador, como KMS e HSM trabalham juntos para proteger a espinha dorsal criptográfica do cartório digital.
+Com o objetivo claro, vamos mergulhar nos conceitos que sustentam essa migração. Na Introdução do próximo capítulo veremos como KMS e HSM trabalham juntos para proteger a espinha dorsal criptográfica do cartório digital.

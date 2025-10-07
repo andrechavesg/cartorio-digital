@@ -1,6 +1,6 @@
 # Configurando mTLS (Autenticação Mútua)
 
-## Exemplo Inspirador
+## Introdução
 
 Durante uma auditoria de integração, a secretaria estadual exigiu prova de que apenas sistemas autorizados acessavam a API de protestos. Em uma reunião ao vivo, a equipe do cartório habilitou mTLS, distribuiu certificados de cliente e demonstrou que requisições sem credenciais eram imediatamente bloqueadas. O auditor aplaudiu: a confiança ganhou uma camada extra de proteção tangível.
 

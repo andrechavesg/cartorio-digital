@@ -1,6 +1,6 @@
 # Visão Integrada do Projeto Final
 
-## Exemplo Inspirador
+## Introdução
 
 Na plenária de planejamento, o cartório reuniu todas as áreas para visualizar o projeto final: um serviço digital completo, seguro e inspirado nas melhores práticas que você estudou. A visão compartilhada motivou todos para a fase decisiva.
 
@@ -20,4 +20,4 @@ Na plenária de planejamento, o cartório reuniu todas as áreas para visualizar
 
 ## Gancho para o Próximo Capítulo
 
-Com a visão integrada, vamos detalhar as trilhas de entrega. No próximo capítulo um exemplo inspirador mostrará como organizar equipes e sprints para construir o cartório digital.
+Com a visão integrada, vamos detalhar as trilhas de entrega. Na Introdução do próximo capítulo veremos como organizar equipes e sprints para construir o cartório digital.

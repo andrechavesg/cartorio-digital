@@ -1,6 +1,6 @@
 # Hooks, Pipelines e Governança
 
-## Exemplo Inspirador
+## Introdução
 
 Após uma renovação automática, uma aplicação deixou de reiniciar e continuou usando o certificado antigo. O time respondeu criando hooks que reiniciavam os serviços e notificavam as áreas envolvidas. Na renovação seguinte, tudo ocorreu sem intervenção manual, e o registro detalhado ficou disponível para auditoria. A automação passou a ser sinônimo de governança.
 
@@ -27,4 +27,4 @@ Após uma renovação automática, uma aplicação deixou de reiniciar e continu
 
 ## Gancho para o Próximo Capítulo
 
-Com as renovações sob controle, estamos prontos para navegar pelas exigências regulatórias que sustentam a operação. No módulo seguinte analisaremos normas da ICP-Brasil e padrões internacionais, começando por um exemplo inspirador de conformidade que abriu portas para o cartório digital.
+Com as renovações sob controle, estamos prontos para navegar pelas exigências regulatórias que sustentam a operação. Na Introdução do módulo seguinte analisaremos normas da ICP-Brasil e padrões internacionais a partir de um caso de conformidade que abriu portas para o cartório digital.

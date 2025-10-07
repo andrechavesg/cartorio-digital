@@ -1,6 +1,6 @@
 # Objetivo do módulo
 
-## Exemplo Inspirador
+## Introdução
 
 Logo após concluir o módulo de fundamentos, a diretoria do cartório digital convocou uma reunião extraordinária: as primeiras integrações com órgãos parceiros estavam prestes a iniciar e todos queriam certeza de que as assinaturas digitais seriam reconhecidas sem questionamentos. Na tela gigante, o time de arquitetura apresentou um mapa da futura infraestrutura de chaves públicas (PKI) que conectaria cidadãos, servidores e aplicações. O entusiasmo tomou conta da sala — estava claro que uma cadeia de confiança própria seria o próximo salto inspirador.
 

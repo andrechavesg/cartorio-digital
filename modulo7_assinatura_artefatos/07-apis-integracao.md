@@ -1,6 +1,6 @@
 # APIs de Integração para Assinatura
 
-## Exemplo Inspirador
+## Introdução
 
 O cartório implementou um serviço REST que recebe documentos, aplica assinatura e carimbo de tempo e devolve os artefatos validados. Sistemas internos passaram a consumir a API, acelerando fluxos que antes dependiam de etapas manuais.
 

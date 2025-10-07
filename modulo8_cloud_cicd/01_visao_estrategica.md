@@ -1,6 +1,6 @@
 # Visão Estratégica de Nuvem e CI/CD
 
-## Exemplo Inspirador
+## Introdução
 
 O cartório digital decidiu migrar seu portal e APIs para a nuvem com pipelines automatizados. Em um comitê estratégico, a equipe apresentou como infraestrutura como código, esteiras de CI/CD e segurança integrada acelerariam a entrega de novos serviços ao cidadão. A proposta foi aprovada com entusiasmo.
 

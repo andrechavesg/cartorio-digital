@@ -1,6 +1,6 @@
 # Auditoria e Rotação de Chaves
 
-## Exemplo Inspirador
+## Introdução
 
 Em um exercício de crise, o cartório simulou a revogação de uma chave comprometida. Graças aos relatórios de auditoria e ao plano de rotação automática, o incidente foi solucionado em minutos. A direção destacou o episódio como prova de que processos bem desenhados evitam danos reais.
 

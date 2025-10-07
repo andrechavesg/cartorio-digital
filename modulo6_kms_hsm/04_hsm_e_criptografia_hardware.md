@@ -1,6 +1,6 @@
 # HSM e Criptografia em Hardware
 
-## Exemplo Inspirador
+## Introdução
 
 Durante uma visita guiada, as autoridades conheceram o cofre onde o HSM do cartório opera. Verificaram sensores de intrusão, procedimentos de dupla custódia e backups selados. Ao final, declararam que o cartório superava as expectativas de segurança física e lógica. O investimento em hardware provou seu valor.
 

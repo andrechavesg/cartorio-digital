@@ -1,6 +1,6 @@
 # Tipos de Assinatura Digital
 
-## Exemplo Inspirador
+## Introdução
 
 Um cliente apresentou ao cartório um lote de documentos em PDF, XML e JSON. Para cada formato, a equipe indicou o tipo de assinatura ideal, garantindo validade jurídica e compatibilidade com sistemas parceiros. O atendimento foi elogiado pela clareza e pela rapidez.
 
@@ -20,4 +20,4 @@ Um cliente apresentou ao cartório um lote de documentos em PDF, XML e JSON. Par
 
 ## Gancho para o Próximo Capítulo
 
-Com os tipos mapeados, vamos mergulhar no PADES, formato favorito para documentos em PDF. No próximo capítulo um exemplo inspirador mostrará como gerar assinaturas visíveis e confiáveis.
+Com os tipos mapeados, vamos mergulhar no PADES, formato favorito para documentos em PDF. Na Introdução do próximo capítulo veremos como gerar assinaturas visíveis e confiáveis.

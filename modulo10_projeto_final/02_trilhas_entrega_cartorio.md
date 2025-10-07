@@ -1,6 +1,6 @@
 # Trilhas de Entrega do Cartório Digital
 
-## Exemplo Inspirador
+## Introdução
 
 O cartório estruturou três trilhas: tecnologia, jurídico e experiência do cidadão. Cada trilha tinha metas semanais que se encontravam em checkpoints conjuntos. A sincronia transformou um projeto complexo em progresso constante.
 

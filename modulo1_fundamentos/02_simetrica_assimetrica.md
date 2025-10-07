@@ -1,6 +1,6 @@
 # 2. Criptografia Simétrica e Assimétrica
 
-## Exemplo Inspirador
+## Introdução
 
 Durante o mutirão mensal de emissão de certidões, o cartório digital precisa enviar lotes completos para a central estadual enquanto atende, ao mesmo tempo, um pedido judicial urgente que exige confidencialidade extrema. A coordenadora de TI conduz a equipe por um plano em duas fases: primeiro, proteger o lote com criptografia simétrica para ganhar velocidade; em seguida, distribuir novas chaves através de um par assimétrico para que apenas as unidades autorizadas acessem o conteúdo. O brilho nos olhos do time mostra que a combinação correta de estratégias transforma desafios logísticos em vitórias inspiradoras.
 

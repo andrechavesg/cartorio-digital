@@ -1,6 +1,6 @@
 # Métricas e Dashboards no Grafana
 
-## Exemplo Inspirador
+## Introdução
 
 O cartório montou um painel em Grafana que mostrava a saúde da PKI: certificados próximos do vencimento, latência do OCSP e uso das APIs. Durante um comitê, a diretoria conseguiu tomar decisões em minutos, graças à visualização clara dos dados.
 
@@ -20,4 +20,4 @@ O cartório montou um painel em Grafana que mostrava a saúde da PKI: certificad
 
 ## Gancho para o Próximo Capítulo
 
-Com dashboards poderosos, enfrentaremos o desafio operacional final: coordenar respostas a incidentes e manutenções programadas. No próximo capítulo um exemplo inspirador mostrará como manter o cartório sempre operacional.
+Com dashboards poderosos, enfrentaremos o desafio operacional final: coordenar respostas a incidentes e manutenções programadas. Na Introdução do próximo capítulo veremos como manter o cartório sempre operacional.

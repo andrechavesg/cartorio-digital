@@ -1,6 +1,6 @@
 # HSTS, OCSP Stapling e Melhores Práticas
 
-## Exemplo Inspirador
+## Introdução
 
 Após habilitar TLS e mTLS, o cartório recebeu um relatório externo apontando oportunidades de endurecimento. A equipe reuniu-se em um war room, aplicou HSTS, ativou OCSP stapling e ajustou as cifras. Quando repetiram o scanner de segurança e viram a nota máxima, todos comemoraram — a jornada de proteção havia atingido um novo patamar de excelência.
 
@@ -39,4 +39,4 @@ Após habilitar TLS e mTLS, o cartório recebeu um relatório externo apontando 
 
 ## Gancho para o Próximo Capítulo
 
-Com o ambiente web fortificado, avançaremos para automação da emissão de certificados. No próximo módulo mergulharemos em ACME e fluxos automatizados, começando por um exemplo inspirador de como liberar certificados sem perder controle.
+Com o ambiente web fortificado, avançaremos para automação da emissão de certificados. Na Introdução do próximo módulo mergulharemos em ACME e fluxos automatizados, mostrando como liberar certificados sem perder controle.

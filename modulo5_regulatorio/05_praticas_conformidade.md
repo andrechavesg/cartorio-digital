@@ -1,6 +1,6 @@
 # Práticas Contínuas de Conformidade
 
-## Exemplo Inspirador
+## Introdução
 
 Durante uma fiscalização surpresa, o cartório digital apresentou painéis em tempo real com indicadores de conformidade: cadastros atualizados, certificados válidos, logs assinados e treinamentos concluídos. Os auditores ficaram impressionados e registraram o cartório como referência nacional. Esse reconhecimento provou que compliance contínuo é um diferencial competitivo.
 
@@ -20,4 +20,4 @@ Durante uma fiscalização surpresa, o cartório digital apresentou painéis em 
 
 ## Gancho para o Próximo Capítulo
 
-Com a casa regulatória em ordem, avançaremos para proteger chaves em hardware seguro. No próximo módulo exploraremos KMS e HSMs, iniciando com um exemplo inspirador de migração que elevou o patamar de segurança do cartório digital.
+Com a casa regulatória em ordem, avançaremos para proteger chaves em hardware seguro. Na Introdução do próximo módulo exploraremos KMS e HSMs a partir de uma migração que elevou o patamar de segurança do cartório digital.

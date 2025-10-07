@@ -1,6 +1,6 @@
 # Referências Inspiradoras
 
-## Exemplo Inspirador
+## Introdução
 
 Ao finalizar o módulo, o cartório montou uma biblioteca digital com livros, artigos e normas sobre assinatura de artefatos. A coleção tornou-se ponto de encontro para quem busca aprofundar conhecimentos.
 

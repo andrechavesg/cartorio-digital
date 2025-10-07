@@ -1,6 +1,6 @@
 # Configurando TLS 1.3 em um Servidor
 
-## Exemplo Inspirador
+## Introdução
 
 Ao ativar o novo site do cartório, a equipe realizou um ritual simbólico: com todos reunidos, o administrador aplicou a configuração de TLS 1.3 e reiniciou o Nginx. Em seguida, o time jurídico acessou o portal e viu o cadeado verde, acompanhado de um relatório automático confirmando o uso da nossa cadeia interna. Esse instante consolidou a percepção de que tecnologia e confiança caminham lado a lado.
 
@@ -52,4 +52,4 @@ Ao ativar o novo site do cartório, a equipe realizou um ritual simbólico: com 
 
 ## Gancho para o Próximo Capítulo
 
-Com o servidor seguro, precisamos garantir que apenas clientes autorizados acessem as APIs confidenciais. No próximo capítulo ativaremos mTLS, começando por um exemplo inspirador de cooperação entre equipes técnicas e de atendimento do cartório.
+Com o servidor seguro, precisamos garantir que apenas clientes autorizados acessem as APIs confidenciais. Na Introdução do próximo capítulo veremos como ativar mTLS a partir de uma cooperação entre equipes técnicas e de atendimento do cartório.

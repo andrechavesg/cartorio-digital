@@ -1,6 +1,6 @@
 # Protocolo ACME em Ação
 
-## Exemplo Inspirador
+## Introdução
 
 Quando a equipe precisou renovar 20 certificados em um único fim de semana, perceberam que manualmente seria inviável. Eles configuraram um servidor ACME interno, registraram a conta do cartório e, em poucas horas, toda a frota estava renovada automaticamente. O sentimento foi de libertação: a infraestrutura passou a trabalhar em ritmo próprio, sem depender de plantões heroicos.
 
@@ -27,4 +27,4 @@ Quando a equipe precisou renovar 20 certificados em um único fim de semana, per
 
 ## Gancho para o Próximo Capítulo
 
-Agora que entendemos o protocolo, vamos colocá-lo em prática com uma ferramenta popular. No próximo capítulo acompanharemos, com um exemplo inspirador, como o Certbot automatiza desafios HTTP e entrega certificados renovados sem drama.
+Agora que entendemos o protocolo, vamos colocá-lo em prática com uma ferramenta popular. Na Introdução do próximo capítulo acompanharemos como o Certbot automatiza desafios HTTP e entrega certificados renovados sem drama.

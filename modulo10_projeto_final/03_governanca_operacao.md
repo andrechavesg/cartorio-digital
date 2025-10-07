@@ -1,6 +1,6 @@
 # Governança e Operação
 
-## Exemplo Inspirador
+## Introdução
 
 Em uma reunião de governança, representantes das trilhas apresentaram indicadores de progresso, riscos e decisões necessárias. A transparência criou um ambiente colaborativo onde todos sabiam exatamente o que fazer.
 
@@ -20,4 +20,4 @@ Em uma reunião de governança, representantes das trilhas apresentaram indicado
 
 ## Gancho para o Próximo Capítulo
 
-Com governança definida, vamos orquestrar tecnologia e processos em uma arquitetura final. No próximo capítulo veremos, através de um exemplo inspirador, como conectar todos os componentes do cartório digital.
+Com governança definida, vamos orquestrar tecnologia e processos em uma arquitetura final. Na Introdução do próximo capítulo veremos como conectar todos os componentes do cartório digital.

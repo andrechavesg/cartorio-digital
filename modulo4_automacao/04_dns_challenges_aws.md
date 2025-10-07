@@ -1,6 +1,6 @@
 # Desafios DNS-01 na AWS
 
-## Exemplo Inspirador
+## Introdução
 
 Para emitir certificados wildcard para o domínio corporativo, o cartório precisou provar controle via DNS. Durante uma noite de integração com a AWS, o time automatizou a criação de registros TXT temporários e viu o certificado ser liberado minutos depois. O processo parecia mágico: infraestrutura como código cuidando da segurança automaticamente.
 
@@ -28,4 +28,4 @@ Para emitir certificados wildcard para o domínio corporativo, o cartório preci
 
 ## Gancho para o Próximo Capítulo
 
-Depois de automatizar as renovações, precisamos acionar tarefas complementares em cada emissão. No próximo capítulo veremos, com um exemplo inspirador, como hooks e pipelines garantem deploys seguros e coerentes em todo o cartório digital.
+Depois de automatizar as renovações, precisamos acionar tarefas complementares em cada emissão. Na Introdução do próximo capítulo veremos como hooks e pipelines garantem deploys seguros e coerentes em todo o cartório digital.

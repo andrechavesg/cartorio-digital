@@ -1,6 +1,6 @@
 # Assinatura de Artefatos Digitais
 
-## Exemplo Inspirador
+## Introdução
 
 Antes de publicar uma nova versão do sistema de protocolo, o cartório assinou todos os pacotes e contêineres. Ao executar a validação nos servidores de produção, perceberam que qualquer alteração indevida seria detectada imediatamente. O lançamento ocorreu com tranquilidade e confiança.
 
@@ -20,4 +20,4 @@ Antes de publicar uma nova versão do sistema de protocolo, o cartório assinou 
 
 ## Gancho para o Próximo Capítulo
 
-Com os artefatos assinados, precisamos garantir validade temporal. No próximo capítulo exploraremos timestamps RFC 3161, guiados por um exemplo inspirador de preservação de provas digitais.
+Com os artefatos assinados, precisamos garantir validade temporal. Na Introdução do próximo capítulo exploraremos timestamps RFC 3161, guiados por um caso de preservação de provas digitais.

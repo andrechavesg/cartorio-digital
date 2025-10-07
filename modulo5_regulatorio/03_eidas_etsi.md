@@ -1,6 +1,6 @@
 # eIDAS e ETSI para Cartórios Digitais
 
-## Exemplo Inspirador
+## Introdução
 
 Ao buscar parcerias com consulados europeus, o cartório precisou demonstrar compatibilidade com o regulamento eIDAS e as normas ETSI. Depois de alinhar procedimentos de assinatura avançada, o acordo foi fechado e possibilitou atendimento a brasileiros no exterior. A equipe celebrou a expansão internacional da confiança construída em casa.
 
@@ -20,4 +20,4 @@ Ao buscar parcerias com consulados europeus, o cartório precisou demonstrar com
 
 ## Gancho para o Próximo Capítulo
 
-Com a visão global consolidada, vamos detalhar os diferentes níveis de certificados exigidos para cada cenário. No próximo capítulo, um exemplo inspirador mostrará como distinguir certificados qualificados e avançados garante o serviço certo para cada cidadão.
+Com a visão global consolidada, vamos detalhar os diferentes níveis de certificados exigidos para cada cenário. Na Introdução do próximo capítulo mostraremos como distinguir certificados qualificados e avançados garante o serviço certo para cada cidadão.

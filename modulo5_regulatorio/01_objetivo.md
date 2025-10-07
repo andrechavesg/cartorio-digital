@@ -1,6 +1,6 @@
 # Objetivo do Módulo – Conformidade e Confiança
 
-## Exemplo Inspirador
+## Introdução
 
 Durante a cerimônia de credenciamento do cartório digital, a corregedoria exigiu evidências de que todas as normas nacionais e internacionais seriam seguidas. A equipe apresentou um dossiê impecável, mostrando como tecnologia e compliance andariam juntas. O reconhecimento público daquele momento reforçou que a segurança jurídica é tão importante quanto a criptografia.
 
@@ -20,4 +20,4 @@ Durante a cerimônia de credenciamento do cartório digital, a corregedoria exig
 
 ## Gancho para o Próximo Capítulo
 
-Com o objetivo definido, avançaremos para a espinha dorsal da conformidade no Brasil. No próximo capítulo veremos, a partir de um exemplo inspirador, como a ICP-Brasil orienta a operação diária do cartório digital.
+Com o objetivo definido, avançaremos para a espinha dorsal da conformidade no Brasil. Na Introdução do próximo capítulo veremos como a ICP-Brasil orienta a operação diária do cartório digital.

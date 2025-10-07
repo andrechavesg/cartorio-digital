@@ -1,6 +1,6 @@
 # Testes e Garantia de Qualidade
 
-## Exemplo Inspirador
+## Introdução
 
 Antes de liberar a API de assinatura, o cartório executou uma suíte completa de testes: validação de PDFs, manipulação de grandes volumes e verificação de falhas. Ao concluir, a equipe tinha confiança de que cada cenário crítico estava coberto.
 
@@ -20,4 +20,4 @@ Antes de liberar a API de assinatura, o cartório executou uma suíte completa d
 
 ## Gancho para o Próximo Capítulo
 
-Com testes estabelecidos, é hora de enfrentar desafios reais. No próximo capítulo veremos, com um exemplo inspirador, como resolver problemas comuns e manter o nível de confiança elevado.
+Com testes estabelecidos, é hora de enfrentar desafios reais. Na Introdução do próximo capítulo veremos como resolver problemas comuns e manter o nível de confiança elevado.

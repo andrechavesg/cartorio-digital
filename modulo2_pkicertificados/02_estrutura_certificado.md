@@ -1,6 +1,6 @@
 # Estrutura de um certificado X.509
 
-## Exemplo Inspirador
+## Introdução
 
 Durante uma auditoria surpresa, o time de conformidade solicitou que o cartório digital comprovasse, em minutos, que todas as APIs internas estavam cobertas por certificados com SAN e EKU corretos. Em vez de entrar em pânico, a equipe de segurança abriu um laboratório, gerou um certificado temporário e exibiu cada campo na tela, mostrando como a estrutura X.509 torna visível a confiança que sustentamos. A demonstração arrancou aplausos e reforçou a importância de dominar cada detalhe.
 
@@ -71,4 +71,4 @@ Extensões relevantes:
 
 ## Gancho para o Próximo Capítulo
 
-Com a anatomia do certificado dominada, estamos prontos para construir a espinha dorsal da nossa PKI. No próximo capítulo levantaremos uma CA raiz e uma intermediária, iniciando com um exemplo inspirador que mostra o impacto dessa estrutura na confiança do cartório digital.
+Com a anatomia do certificado dominada, estamos prontos para construir a espinha dorsal da nossa PKI. Na Introdução do próximo capítulo levantaremos uma CA raiz e uma intermediária, destacando o impacto dessa estrutura na confiança do cartório digital.

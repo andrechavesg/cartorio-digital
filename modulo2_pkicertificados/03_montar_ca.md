@@ -1,6 +1,6 @@
 # Construindo uma Autoridade Certificadora (CA)
 
-## Exemplo Inspirador
+## Introdução
 
 O primeiro conselho consultivo do cartório digital exigiu uma prova concreta de que a confiança não estaria nas mãos de terceiros. A equipe de segurança levou o grupo para a sala-cofre, apresentou o plano de criação da CA raiz isolada e mostrou como uma intermediária operacional permitiria emissões rápidas sem comprometer a pedra fundamental. Quando a luz verde acendeu no painel indicando a geração bem-sucedida do certificado raiz, todos entenderam que o cartório tinha acabado de erguer o coração da sua PKI.
 
@@ -72,4 +72,4 @@ O primeiro conselho consultivo do cartório digital exigiu uma prova concreta de
 
 ## Gancho para o Próximo Capítulo
 
-Com a raiz guardada e a intermediária pronta para emitir, é hora de colocar essa estrutura em ação. No próximo capítulo emitiremos certificados de servidor e de cliente, começando por um exemplo inspirador que mostra como uma nova API do cartório ganhou vida graças à nossa própria CA.
+Com a raiz guardada e a intermediária pronta para emitir, é hora de colocar essa estrutura em ação. Na Introdução do próximo capítulo veremos como emitir certificados de servidor e de cliente, mostrando como uma nova API do cartório ganhou vida graças à nossa própria CA.

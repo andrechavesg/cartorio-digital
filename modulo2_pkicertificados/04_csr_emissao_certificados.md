@@ -1,6 +1,6 @@
 # Gerando CSRs e emitindo certificados
 
-## Exemplo Inspirador
+## Introdução
 
 Quando o cartório digital lançou sua primeira API pública, o deploy travou porque o provedor externo não entregaria um certificado personalizado a tempo. Em minutos, o time de infraestrutura abriu o terminal, gerou o CSR com todas as SANs necessárias e usou a CA intermediária recém-criada para assinar o pedido. Ver o endpoint responder com o nosso próprio certificado foi o combustível perfeito para provar que dominar a emissão interna nos torna ágeis e confiáveis.
 

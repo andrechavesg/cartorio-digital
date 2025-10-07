@@ -1,6 +1,14 @@
 # Módulo 5 – Normas, Identidade e Regulamentações
 
-Para que o cartório digital atenda aos requisitos legais, é essencial conhecer as normas brasileiras (ICP‑Brasil), europeias (eIDAS) e padrões internacionais (ETSI).  Este módulo analisa as diferenças e semelhanças entre esses referenciais e mostra como adequar o sistema a cada contexto.
+Agora que você já implementou a emissão, automação e uso de certificados digitais no cartório (módulos 2 a 4), é hora de garantir que tudo esteja em conformidade com as leis e padrões aplicáveis. Este módulo analisa as normas brasileiras (ICP‑Brasil), europeias (eIDAS) e padrões internacionais (ETSI) para que seu sistema tenha validade jurídica e interoperabilidade internacional.
+
+## Sumário dos capítulos
+
+1. [Objetivo do módulo](01_objetivo.md) – Por que conhecer as legislações e padrões é essencial após automatizar a emissão de certificados.
+2. [ICP‑Brasil e legislação brasileira](02_icp_brasil.md) – Leis e decretos, tipos de certificado e exigências práticas para projetos.
+3. [Regulamento eIDAS e padrões ETSI](03_eidas_etsi.md) – Categorias de assinatura europeias e normas ETSI (EN 319 401/411/412/421).
+4. [Certificados qualificados e avançados: diferenças e aplicação](04_certificados_qualificados_e_avancados.md) – Comparação entre assinaturas e requisitos de certificado.
+5. [Práticas de conformidade para o cartório digital](05_praticas_conformidade.md) – Checklist de conformidade e ajustes no projeto.
 
 ## Objetivos de aprendizagem
 
@@ -20,7 +28,7 @@ Você deverá:
 
 ## Referências recomendadas
 
-- Documentos do [Portal ITI](https://iti.gov.br/) (ICP‑Brasil);
-- **Regulamento eIDAS (Reg. 910/2014)** – Disponível no site da União Europeia;
-- **ETSI EN 319 411 e 319 412** – Normas de políticas e perfis de certificado;
+- Documentos do Portal ITI (ICP‑Brasil);
+- Regulamento eIDAS (Reg. 910/2014) – Disponível no site da União Europeia;
+- ETSI EN 319 411 e 319 412 – Normas de políticas e perfis de certificado;
 - Lei 14.382/2022 – Lei do Cartório Digital no Brasil.

@@ -1,31 +1,24 @@
-# Práticas de Conformidade e Auditoria
+# Práticas de conformidade para o cartório digital
 
-Para fechar o módulo de normas, precisamos transformar a teoria em práticas concretas que garantam que o cartório digital opere dentro das exigências legais e regulatórias. Este capítulo apresenta um checklist de conformidade e sugestões para evoluir o projeto.
+Agora que você conhece as principais regulamentações e categorias de assinatura, é hora de aplicar esses conhecimentos ao projeto do cartório digital. Este capítulo apresenta práticas para garantir que sua solução esteja em conformidade com ICP‑Brasil, eIDAS/ETSI e outras normas aplicáveis.
 
 ## Checklist de conformidade
 
-- **Políticas de certificação**: garanta que sua CA interna e os certificados emitidos estejam alinhados às políticas ICP‑Brasil (DOC‑ICP‑05, DOC‑ICP‑15) e às normas ETSI EN 319 412. Defina e publique a Declaração de Práticas de Certificação (DPC) do seu cartório digital.
-- **Gestão de chaves e backups**: use HSM ou AWS KMS para armazenar chaves privadas de CA e servidores; implemente rotação periódica e cópias de segurança com controle de acesso.
-- **Validação de cadeia e revogação**: configure seu sistema para validar automaticamente a cadeia de confiança, verificar CRLs e OCSP de todas as CAs externas (ICP‑Brasil, QTSP europeus) e registrar as respostas.
-- **Logs e carimbo do tempo**: registre todas as operações de emissão, assinatura e validação em logs imutáveis e use carimbo do tempo (RFC 3161 / ETSI EN 319 421) para comprovar a data e hora das ações.
-- **Proteção de dados pessoais**: adeque‑se à LGPD (Lei Geral de Proteção de Dados) e GDPR, garantindo consentimento, finalidade e minimização no armazenamento de dados de clientes e signatários.
+1. **Políticas e procedimentos**: Documente políticas internas para gestão de chaves, emissão e revogação de certificados, uso de assinatura qualificada/avançada e carimbo do tempo. Mapeie‑as aos requisitos da DPC e das normas ETSI.
+2. **Gestão de chaves e HSM**: Garanta que as chaves privadas das autoridades certificadoras internas e dos oficiais do cartório sejam geradas e armazenadas em dispositivos que atendam ao FIPS 140‑3 ou QSCD (ver próximo módulo). Implemente rotação periódica.
+3. **Validação de cadeia**: Configure seu sistema para validar cadeias ICP‑Brasil e, opcionalmente, cadeias eIDAS. Mantenha repositórios de certificados raiz confiáveis.
+4. **Revogação e logs de auditoria**: Monitore CRLs e servidores OCSP; implemente log de auditoria para todas as operações de assinatura e emissão. Use logs de Transparência de Certificados (CT) quando disponíveis.
+5. **Privacidade e proteção de dados**: Atenda à Lei Geral de Proteção de Dados (LGPD) ao armazenar e processar dados pessoais. Limite acesso à chave privada do usuário e registre consentimentos.
 
-## Evoluindo o projeto
+## Propondo ajustes no projeto
 
-Além do checklist, considere as seguintes evoluções para o cartório digital:
+- **Integração com AC qualificada**: Se o cartório oferecer atos que requeiram assinatura qualificada, integre‑se a uma AC credenciada ou torne‑se AC. Avalie custos e requisitos de acreditação no ITI.
+- **Compatibilidade e interoperabilidade**: Adicione suporte para certificados estrangeiros (eIDAS) no módulo de validação. Defina política de aceitação e processamento de assinaturas avançadas de outras jurisdições.
+- **Auditoria externa**: Programe auditorias regulares com avaliadores credenciados para garantir a conformidade contínua. Use checklists baseados na EN 319 401 e na DPC aplicável.
+- **Atualizações legislativas**: Mantenha‑se atualizado sobre alterações legais (novas leis, decretos, resoluções do CNJ/ITI) e revise seus procedimentos quando necessário.
 
-- **Integração com autoridades externas**: implemente clientes API para consultar a EU Trusted List, validar certificados europeus e obter atualizações de CRL/OCSP.
-- **Assinatura em nuvem**: avalie provedores de assinatura qualificada em nuvem (QSCD remoto) para reduzir a dependência de tokens físicos e facilitar o uso por clientes.
-- **Auditorias periódicas**: agende auditorias técnicas e legais (internas ou por terceiros) para avaliar conformidade com ICP‑Brasil, eIDAS e ETSI. Documente resultados e implemente melhorias.
-- **Interoperabilidade**: mantenha um mapeamento de OIDs e perfis de certificado aceitos (ICP‑Brasil, eIDAS, NIST) e atualize seu sistema conforme novas versões das normas sejam publicadas.
-- **Treinamento contínuo**: ofereça capacitação regular para os funcionários sobre legislação, segurança e novas práticas, reforçando a cultura de conformidade no cartório.
+### Atividades
 
-## Atividades
-
-1. Revise sua implementação de CA interna e verifique se todos os requisitos do DOC‑ICP‑05 (Política e Requisitos de Certificação) estão atendidos.
-2. Configure monitoramento automatizado para checar expirations e revogações de certificados importados (ICP‑Brasil e QTSPs), alertando o time de operações.
-3. Elabore um documento de DPC para o cartório digital, inspirado nas normas ETSI EN 319 401 e DOC‑ICP‑15, descrevendo como as chaves são geridas, como ocorrem as auditorias e como os certificados são emitidos.
-4. Realize uma auditoria interna simulada: selecione um conjunto de operações de assinatura realizadas no seu ambiente de teste e verifique se todos os logs, carimbos do tempo e políticas foram aplicados corretamente.
-5. Pesquise fornecedores de QSCD remoto e avalie prós e contras de adotá‑los no seu projeto.
-
-Com isso, finalizamos o módulo de Normas e Regulamentações. Nos próximos capítulos, você colocará essas práticas em uso no projeto final integrador, garantindo que o cartório digital opere de forma segura, legalmente válida e interoperável.
+1. Elabore um **relatório comparativo** entre os requisitos da ICP‑Brasil e da EN 319 411‑2 para uma AC qualificada. Identifique gaps que seu cartório digital precisará preencher para ser reconhecido como QTSP.
+2. Crie um **checklist de conformidade** para uma emissão de certidão eletrônica que utiliza assinatura qualificada. Execute o checklist com seu sistema atual e identifique melhorias a implementar.
+3. Pesquise as sanções previstas pela LGPD para vazamento de dados no contexto de certificados digitais e proponha controles para mitigá‑las.

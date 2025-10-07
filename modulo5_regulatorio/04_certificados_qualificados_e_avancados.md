@@ -1,47 +1,38 @@
-# Certificados Qualificados vs Avançados
+# Certificados qualificados e avançados: diferenças e aplicação
 
-No capítulo anterior você conheceu o ecossistema europeu e sua distinção entre assinaturas avançadas e qualificadas. Este capítulo aprofunda essas diferenças e mostra como elas se traduzem em certificados digitais.
+No módulo 7 você aprendeu a diferença entre assinaturas qualificada e avançada do ponto de vista conceitual. Neste capítulo vamos consolidar esses conhecimentos e relacioná‑los aos requisitos dos certificados que dão suporte a cada tipo de assinatura.
 
-## O que é um certificado qualificado?
+## Assinatura qualificada
 
-Um certificado qualificado é emitido por um Prestador de Serviços de Confiança Qualificado (QTSP) registrado em um país da UE e segue os requisitos de qualidade e segurança definidos pelo eIDAS e pelas normas ETSI EN 319 411-2 e EN 319 412. Ele deve ser armazenado e utilizado em um **Dispositivo de Criação de Assinatura Qualificado (QSCD)**, como um smartcard ou token criptográfico certificado. O certificado contém indicações específicas (extensões qcStatements) de que é qualificado.
+- Exige **dispositivo criptográfico seguro (QSCD)** conforme eIDAS ou **token/smartcard** conforme ICP‑Brasil.
+- Certificado deve ser emitido por uma **autoridade certificadora qualificada** (QTSP na UE ou AC credenciada no ITI com DPC para assinatura qualificada).
+- Contém indicadores no certificado, como extensões `qcStatements` (ETSI EN 319 412-5) ou `policyIdentifier` específico na cadeia ICP‑Brasil.
+- Garante presunção legal de equivalência à assinatura manuscrita e não pode ser repudiada. Em tribunais europeus, somente assinaturas qualificadas têm esse status automático.
 
-Características:
-- Emitido por um QTSP listado na EU Trusted List.
-- Contém políticas OID específicas e a extensão `QcStatement`.
-- Exige uso de hardware certificado (QSCD) para assinar.
-- Confere presunção de veracidade equivalente à assinatura manuscrita na UE.
+## Assinatura avançada
 
-## O que é um certificado avançado (não qualificado)?
+- Não exige QSCD; a chave pode estar em software ou HSM.
+- A identidade do signatário é assegurada por processos de verificação, mas pode ser realizada por meio de cadastro biométrico, e‑mail verificado, etc.
+- Emite certificado de assinatura avançada sem o selo de “qualificado”; extensões de certificado podem incluir OIDs como “etsiQcsNonRepudiation”.
+- Tem validade jurídica, mas precisa ser demonstrada em tribunal se contestada.
 
-Certificados avançados (ou “não qualificados”) são emitidos por autoridades certificadoras que seguem boas práticas de segurança, mas não atendem a todos os requisitos de um QTSP. Eles podem usar armazenamento de chave em software ou HSM genérico e não possuem o selo “qualificado”. Ainda assim, permitem assinaturas eletrônicas avançadas com valor jurídico, mas a validade pode precisar ser comprovada mediante perícia.
+## Requisitos de certificado
 
-Características:
-- Emitido por um TSP que pode ou não ser QTSP.
-- Não necessariamente exige QSCD; a chave pode residir em HSM ou software.
-- Políticas e extensões podem variar (KeyUsage, ExtendedKeyUsage).
-- Valor jurídico depende de comprovação técnica em caso de disputa.
+| Elemento | Assinatura avançada | Assinatura qualificada |
+|---|---|---|
+| Dispositivo de chave | Software ou HSM | QSCD/Token/Smartcard |
+| Autoridade emissora | AC padrão (ICPs ou PKIs corporativas) | Prestador qualificado (QTSP ou AC credenciada) |
+| OID de política | OID de assinatura avançada (“id‑etsi‑qcs‑QcCompliance”) | OID de política qualificada (“id‑etsi‑qcs‑QcType”) |
+| Extensão `qcStatements` | Pode incluir algumas declarações | Deve incluir indicações de conformidade com QSCD e qualificação |
+| Presunção legal | Deve ser provada em caso de litígio | Presumida como assinatura manuscrita |
 
-## Comparando com a ICP‑Brasil
+## Como aplicar no projeto
 
-A ICP‑Brasil não faz distinção formal entre certificados “avançados” e “qualificados”. Todos os certificados ICP‑Brasil (A1, A3, A5) podem ser utilizados para assinaturas eletrônicas com presunção de validade jurídica, desde que observados os requisitos da Lei 14.063/2020 e MP 2.200‑2/2001. Porém, alguns paralelos podem ser traçados:
+- Para atos notariais simples, como uma certidão eletrônica com validade nacional, pode ser suficiente uma assinatura **avançada** (ex.: PAdES‑BES com certificado A1 emitido pela AC do cartório). Verifique se a legislação local (Lei 14.382/2022) aceita.
+- Para escrituras públicas, procurações e atos de alto valor econômico, **assinaturas qualificadas** são recomendadas. Isso implica que o cartório digital deve integrar‑se a uma AC credenciada e emitir certificados A3 ou QSCD para tabeliães.
+- No contexto europeu, usar certificados qualificados emitidos por um QTSP garante reconhecimento automático em todos os Estados‑membros. Verifique se sua PKI atende aos requisitos da EN 319 411‑2.
 
-- **A1 vs A3/A5**: O certificado A1 é armazenado no software e tem validade de 1 ano; as classes A3/A5 são armazenadas em dispositivo (token ou cartão) e possuem validade maior. Isso lembra a distinção entre certificados avançados (A1) e qualificados (A3/A5 com QSCD).
-- **Políticas de certificado**: A ICP define OIDs e perfis (DOC‑ICP‑03, DOC‑ICP‑05) similares às ETSI EN 319 412. Nosso projeto deve mapear as extensões corretas para interoperar.
+### Atividades
 
-## Como escolher no projeto
-
-No cartório digital, a escolha entre certificado qualificado e avançado depende do valor jurídico do documento e da jurisdição:
-
-- **Documentos com valor probatório pleno na UE** (escrituras que precisam circular no bloco europeu): use certificados qualificados emitidos por QTSPs, assinados em QSCD, para garantir presunção legal.
-- **Documentos internos ou nacionais**: certificados ICP‑Brasil A3/A5 ou certificados avançados em HSM podem ser suficientes.
-- **Automção e DevOps**: para assinaturas de código ou selagem de logs, certificados avançados gerenciados por HSM (como AWS KMS) são mais práticos.
-
-## Atividades
-
-1. Faça uma tabela comparando certificado ICP‑Brasil A1, A3 e A5 com certificados avançados e qualificados eIDAS (perfis, armazenamento, validade e uso).
-2. Pesquise quais QTSPs oferecem certificados qualificados de pessoa jurídica para uso em sistemas (selos de empresa) e quais dispositivos QSCD são compatíveis.
-3. Configure um repositório de teste no seu cartório digital que aceite tanto certificados ICP‑Brasil quanto um certificado qualificado europeu; implemente verificação de política (OID) para diferenciar tipos de certificado.
-4. Leia a Lei 14.063/2020, art. 4º, e identifique como ela classifica assinatura eletrônica simples, avançada e qualificada no contexto brasileiro.
-
-No próximo capítulo, vamos consolidar práticas de conformidade e auditoria para que o seu cartório digital permaneça alinhado às leis nacionais e internacionais.
+1. Analise um certificado de assinatura qualificada (pode ser um PFX de token ou QSCD europeu) com `openssl x509 -text`. Identifique as extensões `qcStatements` e `policyIdentifier`.
+2. Consulte a DPC de uma AC qualificada (QTSP) e verifique os procedimentos exigidos para emissão. Compare com a DPC de uma AC padrão.

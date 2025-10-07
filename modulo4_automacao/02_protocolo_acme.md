@@ -18,6 +18,8 @@ O Automatic Certificate Management Environment (ACME) é um protocolo padronizad
 
 Para usar ACME você precisa de uma **account key**. Ferramentas como `certbot` gerenciam isso automaticamente, mas você pode explorar o protocolo manualmente com `openssl` e `curl` para fins educacionais:
 
+Pense no nosso cartório digital avançando rumo ao objetivo maior de oferecer renovação contínua de certificados para cada serviço crítico. Em um cenário real, a equipe de infraestrutura percebe que depender de renovações manuais ameaça o compromisso de estabilidade que assumimos no projeto principal, por isso decide registrar uma conta ACME dedicada para o cluster de aplicações. O comando abaixo materializa esse movimento estratégico: ao gerar a chave da conta, criamos a identidade criptográfica que permitirá vincular os domínios do cartório a renovações automáticas e orquestradas, sustentando a visão de automação confiável.
+
 ```bash
 # Criar uma chave RSA para a conta ACME
 openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out account.key
@@ -40,6 +42,7 @@ Cada desafio tem requisitos de rede e automação diferentes. Escolha aquele que
 
 1. Leia a RFC 8555 (seção 1 e 7) para compreender a terminologia (Account, Order, Authorization, Challenge).
 2. Explore o endpoint de diretório do Let's Encrypt *staging* usando `curl`:
+   Ao preparar o lançamento do portal unificado do cartório, nossa equipe de observabilidade precisa auditar o diretório ACME que sustentará as renovações contínuas dos certificados do ambiente de produção. A consulta com `curl` ajuda a confirmar que cada URL exposto pelo serviço está alinhado com os fluxos automatizados que integraremos aos pipelines do projeto principal, reforçando a trilha inspiradora de construir uma operação resiliente e auditável.
    ```bash
    curl https://acme-staging-v02.api.letsencrypt.org/directory | jq .
    ```

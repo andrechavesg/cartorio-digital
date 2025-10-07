@@ -11,7 +11,7 @@ Antes de configurar qualquer notificação, reforçamos o conceito de que **aler
 - Do módulo 8 utilizamos o pipeline de CI/CD na nuvem para aplicar configurações automaticamente.
 
 ## Exercício Guiado: Criando Alertas no Alertmanager
-Com a filosofia alinhada, configuramos um alerta que dispara quando restarem menos de 15 dias para um certificado expirar e outro quando a latência do OCSP exceder 2 segundos.
+Com a filosofia alinhada, configuramos um alerta que dispara quando restarem menos de 15 dias para um certificado expirar e outro quando a latência do OCSP exceder 2 segundos. Antes de editar o arquivo, revisitamos o diagrama de fluxo do módulo 8 para confirmar quem recebe cada severidade e quais pipelines automatizam a resposta.
 
 ```bash
 cat <<'ALERTS' > /etc/prometheus/alert_rules/cartorio_certificados.yml
@@ -39,8 +39,8 @@ systemctl reload prometheus
 ```
 
 ## Plano de Ação Inspirador
-1. **Alertmanager envia mensagem** para o canal `#plantao-cartorio` no Slack.
-2. **Runbook automatizado** (pipeline do módulo 8) aplica renovação ou reinicia o serviço com OCSP.
-3. **Debrief matinal** registra aprendizados e ajusta SLOs.
+1. **Alertmanager envia mensagem** para o canal `#plantao-cartorio` no Slack e abre um ticket no Jira via webhook.
+2. **Runbook automatizado** (pipeline do módulo 8) aplica renovação ou reinicia o serviço com OCSP e atualiza o inventário em `modulo2_pkicertificados/inventory/`.
+3. **Debrief matinal** registra aprendizados e ajusta SLOs, alimentando o capítulo de métricas com novos KPIs.
 
 Ao final, transformamos alerta em oportunidade de superação, garantindo que o cartório digital esteja pronto para servir com excelência ininterrupta.

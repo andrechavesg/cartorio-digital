@@ -22,7 +22,7 @@ Antes de automatizar, revisitamos como os módulos anteriores alimentam esta fas
 
 Somente depois de alinhar esses conceitos é que criamos o primeiro fluxo automatizado.
 
-## Exemplo inspirador com GitHub Actions
+## Introdução
 
 ```yaml
 # .github/workflows/cartorio-ci.yml
@@ -47,7 +47,7 @@ jobs:
         run: npm test
 ```
 
-Essa base permite que cada mudança de código percorra uma trilha confiável, reforçando o compromisso do cartório digital com entregas frequentes e seguras.
+Essa introdução permite que cada mudança de código percorra uma trilha confiável, reforçando o compromisso do cartório digital com entregas frequentes e seguras.
 
 ## Conexão com o projeto final
 

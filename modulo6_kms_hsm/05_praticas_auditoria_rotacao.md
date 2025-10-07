@@ -4,19 +4,32 @@ A proteção de chaves vai além da criação inicial. Este capítulo descreve o
 
 ## Políticas de rotação
 
-- **Automática (KMS):** habilite `enable_key_rotation` para CMKs de produção (rotação anual).
-- **Manual (HSM):** defina calendário com *change windows* aprovadas pelo comitê de segurança.
-- **Documentação:** mantenha histórico de versões, motivos da rotação e responsáveis.
+- **Automática (CMKs simétricas):** habilite `enable_key_rotation` para chaves `KeyUsage = "ENCRYPT_DECRYPT"` com `KeySpec = "SYMMETRIC_DEFAULT"`; o KMS executa a rotação anual de forma transparente.
+- **Manual (CMKs assimétricas e HSM):** para chaves de assinatura (`KeyUsage = "SIGN_VERIFY"`) com `KeySpec` assimétrica (RSA/ECC) ou materiais hospedados em HSMs externos, defina calendário com *change windows* aprovadas pelo comitê de segurança e execute o plano de migração de alias/ARN documentado.
+- **Documentação:** mantenha histórico de versões, motivos da rotação, responsáveis e artefatos de teste em cada ciclo.
 
 ### Script de exemplo (Python/boto3)
 
 ```python
 import boto3
 
+
 def ativar_rotacao(key_id: str) -> None:
     kms = boto3.client("kms")
+    metadata = kms.describe_key(KeyId=key_id)["KeyMetadata"]
+
+    if metadata["KeySpec"] != "SYMMETRIC_DEFAULT":
+        print(
+            "Chave",
+            key_id,
+            "usa KeySpec",
+            metadata["KeySpec"],
+            "e requer rotação manual planejada (sem chamada a enable_key_rotation).",
+        )
+        return
+
     kms.enable_key_rotation(KeyId=key_id)
-    print("Rotação habilitada para:", key_id)
+    print("Rotação automática habilitada para:", key_id)
 ```
 
 ## Auditoria contínua

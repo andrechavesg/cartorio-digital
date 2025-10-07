@@ -18,7 +18,6 @@ resource "aws_kms_key" "assinatura_cartorio" {
   deletion_window_in_days = 30
   key_usage               = "SIGN_VERIFY"
   customer_master_key_spec = "RSA_2048"
-  enable_key_rotation     = true
 
   tags = {
     Sistema  = "CartorioDigital"
@@ -93,14 +92,10 @@ resource "aws_kms_alias" "assinatura_cartorio" {
 }
 ```
 O snippet evidencia como o projeto principal preserva a padronização ao encapsular a criação da CMK e do alias em código versionado, assegurando que cada cartório virtual receba a mesma estrutura de chaves que sustenta os fluxos de assinatura descritos acima.
-As chaves assimétricas de assinatura (`KeyUsage = "SIGN_VERIFY"`) com `customer_master_key_spec = "RSA_2048"` **não** suportam rotação automática; por isso, a opção `enable_key_rotation` não aparece no recurso acima.
+As chaves assimétricas de assinatura (`KeyUsage = "SIGN_VERIFY"`) com `customer_master_key_spec = "RSA_2048"` **não** suportam rotação automática porque o KMS não gera automaticamente novos pares de chaves RSA assinadoras: a rotação exige a criação de um novo par criptográfico e migração planejada do alias para preservar a rastreabilidade das assinaturas jurídicas.
 
-CMKs usadas para **assinatura** (`KeyUsage = "SIGN_VERIFY"`) com `customer_master_key_spec = "RSA_2048"`
-não suportam rotação automática pelo KMS. Para o Cartório Digital, isso significa que a rotação deve ser
-planejada e executada manualmente, obedecendo às janelas de mudança e aos controles de conformidade
-estabelecidos para os selos digitais.
+### Processo de rotação manual para o Cartório Digital
 
-> **Nota sobre rotação manual planejada:** crie uma nova CMK com a mesma configuração, atualize aliases
-> e políticas para apontar para a nova chave, valide a aplicação e os fluxos de assinatura, e somente após
-> a transição controlada desative e agende a exclusão da CMK anterior. Registre os passos, evidências de
-> teste e aprovações para sustentar auditorias futuras.
+1. **Provisione uma nova CMK** com os mesmos parâmetros (`KeyUsage = "SIGN_VERIFY"`, `customer_master_key_spec = "RSA_2048"`) em uma janela de mudança aprovada.
+2. **Troque o alias** (`aws_kms_alias`) e políticas aplicáveis para apontarem para a nova CMK, validando a compatibilidade das aplicações e a capacidade de verificação das assinaturas emitidas.
+3. **Planeje a desativação da CMK antiga**, mantendo-a ativa apenas pelo período de convivência acordado; em seguida, desative-a e agende a exclusão quando não houver mais dependências. Documente cada etapa, as evidências de teste e as aprovações de governança para fins de auditoria.

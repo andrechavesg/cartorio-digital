@@ -13,25 +13,21 @@ A assinatura digital combina criptografia assimétrica e hash para garantir **au
 1. Gere um par de chaves RSA (caso ainda não tenha).
 2. Crie um arquivo `contrato.txt` com um texto qualquer.
 
-No cartório digital, cada escritura eletrônica precisa ser assinada pela tabeliã responsável antes de seguir para o registro no tribunal. A validação automatizada precisa combinar o documento com a chave privada armazenada no HSM, gerando um comprovante que possa ser arquivado junto ao termo. O comando `openssl dgst` é empregado porque permite aplicar o algoritmo exigido na política de assinatura e integra-se aos processos já utilizados nas rotinas notariais.
+Imagine o fluxo jurídico de uma escritura de compra e venda. Após a conferência documental, a tabeliã redige o instrumento, envia para revisão da parte interessada e agenda a sessão de assinatura. O regulamento interno determina que, antes de protocolar o título no tribunal, a versão digital deve ser assinada com a chave privada protegida no HSM e carimbada com o hash correspondente. Só depois dessa etapa é que o registro pode avançar, garantindo autenticidade e não repúdio.
 
-Para emitir a assinatura criptográfica do arquivo, execute:
+Com o processo jurídico descrito em ata, o operador inicia a fase técnica e utiliza o `openssl dgst` porque o comando atende à política de assinatura e integra-se aos robôs que preparam os dossiês eletrônicos. Para emitir a assinatura criptográfica do arquivo, execute:
 
 ```bash
 openssl dgst -sha256 -sign rsa_private.pem -out contrato.sig contrato.txt
 ```
 
-Após a emissão, outro setor do cartório valida o documento antes de enviá-lo ao órgão regulador. Essa checagem é essencial para garantir que nenhuma edição foi feita entre a assinatura e o protocolo externo. O `openssl dgst` em modo de verificação compara a assinatura com a chave pública institucional e acusa qualquer tentativa de fraude.
-
-Verifique a assinatura com:
+Assim que a assinatura é emitida, o setor de controle de qualidade assume o processo jurídico. Ele precisa validar o documento antes de transmiti-lo ao órgão regulador, confirmando que nenhum ajuste foi feito entre a sessão de assinatura e o protocolo externo. Essa checagem é realizada com o mesmo `openssl dgst`, agora em modo de verificação, comparando a assinatura com a chave pública institucional e acusando qualquer tentativa de fraude. Verifique a assinatura com:
 
 ```bash
 openssl dgst -sha256 -verify rsa_public.pem -signature contrato.sig contrato.txt
 ```
 
-Além do conteúdo assinado, o cartório também precisa confirmar que o certificado usado pela tabeliã está dentro do prazo de validade e encadeado a uma autoridade reconhecida pela ICP-Brasil. Para isso, o time de compliance utiliza o `openssl verify`, que analisa a cadeia de certificação antes de liberar a escritura para o protocolo externo.
-
-Verifique a cadeia de confiança do certificado da tabeliã (assumindo que `cadeia_ca.pem` contém os certificados da hierarquia):
+Por fim, o jurídico não encerra o processo sem confirmar a validade do certificado da tabeliã. A legislação exige que o documento esteja amparado por uma cadeia reconhecida pela ICP-Brasil e dentro do prazo de vigência. O time de compliance registra essa checagem na ata e utiliza o `openssl verify`, que analisa a cadeia de certificação antes de liberar a escritura para o protocolo externo. Verifique a cadeia de confiança do certificado da tabeliã (assumindo que `cadeia_ca.pem` contém os certificados da hierarquia):
 
 ```bash
 openssl verify -CAfile cadeia_ca.pem certificado_tabelia.pem

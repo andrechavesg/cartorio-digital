@@ -26,10 +26,16 @@ Além disso, há categorias específicas para pessoas físicas (PF), pessoas jur
 
 - **Política de certificação**: O cartório digital deve observar a DPC da AC emissora (ex.: DOC‑ICP‑05) para saber quais práticas de segurança e controle devem ser seguidas (proteção de chave, revogação, etc.).
 - **Emissão e armazenamento**: Certificados de oficiais de registro e tabeliães devem ser emitidos em hardware criptográfico (token ou smartcard) quando exigido (certificado A3). O sistema deve integrar-se ao dispositivo via drivers.
-- **Validação**: Para verificar um certificado ICP‑Brasil, utilize ferramentas como `openssl x509` ou ferramentas do ITI, verificando se a cadeia está ancorada na AC Raiz Brasileira.
+- **Validação**: Consulte a seção a seguir para estruturar a conferência dos certificados e gerar evidências técnicas para auditorias.
 - **Revogação**: Consulte CRLs ou servidores OCSP publicados pelas ACs para verificar se o certificado está revogado. O projeto deve automatizar essas checagens.
+
+## Validação
+
+No cartório digital, auditores internos e externos frequentemente precisam comprovar a origem de um certificado ICP‑Brasil para validar um ato registral. Esse processo demanda evidências técnicas que indiquem de qual Autoridade Certificadora o certificado foi emitido, quais políticas estão vinculadas e se a cadeia está ancorada na AC Raiz Brasileira. Os fluxos de integração e monitoramento construídos nos módulos anteriores — da modelagem de certificados (módulo 2) à verificação automatizada em pipelines (módulo 4) — dependem dessa análise para que o time jurídico aprove a operação.
+
+Para responder a essas demandas, a equipe de conformidade pode gerar relatórios técnicos extraindo os metadados do certificado. Uma forma direta de obter essas informações, alinhada ao fluxo de inspeção usado nos módulos anteriores, é executar `openssl x509 -in certificado.icp.pem -text -noout`, que apresenta as políticas, pontos de distribuição de CRL e dados da cadeia de confiança.
 
 ### Atividades
 
 1. Acesse o site do [Portal ITI](https://www.gov.br/iti/pt-br) e baixe o DOC‑ICP‑05 e o DOC‑ICP‑15. Identifique três requisitos que impactam o desenvolvimento de um cartório digital.
-2. Utilize `openssl x509 -in certificado.icp.pem -text -noout` para inspecionar um certificado ICP‑Brasil que você possua (ou utilize o repositório de cadeia pública do ITI). Observe as extensões “policyIdentifier”, “CRL Distribution Points” e “Authority Info Access”.
+2. Considere a dor do projeto em garantir que as extensões obrigatórias do certificado (como políticas e pontos de revogação) estejam presentes para manter os fluxos automatizados dos módulos anteriores. Descreva quais evidências você precisa coletar e, na sequência, execute `openssl x509 -in certificado.icp.pem -text -noout` em um certificado ICP‑Brasil (próprio ou do repositório público do ITI) para verificar campos como “policyIdentifier”, “CRL Distribution Points” e “Authority Info Access”.

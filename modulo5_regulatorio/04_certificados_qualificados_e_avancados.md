@@ -32,6 +32,10 @@ No módulo 7 você aprendeu a diferença entre assinaturas qualificada e avanç
 - Para escrituras públicas, procurações e atos de alto valor econômico, **assinaturas qualificadas** são recomendadas. Isso implica que o cartório digital deve integrar‑se a uma AC credenciada e emitir certificados A3 ou QSCD para tabeliães.
 - No contexto europeu, usar certificados qualificados emitidos por um QTSP garante reconhecimento automático em todos os Estados‑membros. Verifique se sua PKI atende aos requisitos da EN 319 411‑2.
 
+## Desafio de comprovação para atos críticos
+
+Antes de partir para as atividades práticas, considere o cenário recorrente de um ato crítico — como uma escritura de cessão de direitos hereditários — que depende da prova de que o token apresentado pelo tabelião é de fato um QSCD aprovado pelo ITI. Auditores e o departamento jurídico exigem evidências que demonstrem a conformidade do dispositivo com a política da AC e com os requisitos de eIDAS/ICP‑Brasil, garantindo que a presunção de validade jurídica seja preservada. Isso significa documentar a cadeia de certificação do QSCD, registrar a homologação do dispositivo junto ao ITI e verificar se o certificado embarcado declara extensões de qualificação e de uso restrito ao dispositivo seguro. Relatórios incompletos colocam em risco a segurança jurídica do cartório digital, pois fragilizam a defesa do ato em eventual contencioso.
+
 ### Atividades
 
 O cartório digital precisa comprovar que o token QSCD utilizado pelos tabeliães atende a todos os requisitos legais. Para confirmar que o certificado embarcado no dispositivo declara conformidade com QSCD e política qualificada, será necessário inspecionar seu conteúdo detalhadamente; isso nos leva a utilizar o comando `openssl x509 -text`.
@@ -39,4 +43,4 @@ O cartório digital precisa comprovar que o token QSCD utilizado pelos tabeliãe
 1. Para responder ao desafio acima, execute `openssl x509 -text` no certificado de assinatura qualificada (pode ser um PFX de token ou QSCD europeu) e identifique as extensões `qcStatements` e `policyIdentifier`.
 2. Consulte a DPC de uma AC qualificada (QTSP) e verifique os procedimentos exigidos para emissão. Compare com a DPC de uma AC padrão.
 
-Ao dominar essa análise de certificados, você alimenta as decisões de arquitetura e conformidade do projeto final, garantindo que os componentes escolhidos atendam aos requisitos regulatórios desde o início.
+Ao dominar essa análise de certificados, você alimenta as decisões de arquitetura e conformidade do projeto final, garantindo que os componentes escolhidos atendam aos requisitos regulatórios desde o início e sustentando a segurança jurídica das assinaturas críticas entregues pelo cartório digital.

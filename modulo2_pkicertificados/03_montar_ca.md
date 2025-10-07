@@ -1,6 +1,6 @@
 # Construindo uma Autoridade Certificadora (CA)
 
-Nesta etapa você criará a base da sua PKI: uma Autoridade Certificadora raiz e uma CA intermediária. A CA raiz é o ponto mais confiável da cadeia; seus certificados nunca devem sair do ambiente seguro. A CA intermediária é usada para assinar certificados de servidor e cliente, preservando a chave da raiz.
+Nesta etapa você criará a base da sua PKI: uma Autoridade Certificadora raiz e uma CA intermediária. A CA raiz é o ponto mais confiável da cadeia; seus certificados nunca devem sair do ambiente seguro. A CA intermediária é usada para assinar certificados de servidor e cliente, preservando a chave da raiz. Ao separar os papéis, o time de segurança mitiga o risco de comprometimento total da infraestrutura: se uma intermediária vaza, apenas ela é substituída; se a raiz for exposta, toda a cadeia precisaria ser reemitida, impactando APIs, integrações e usuários finais. Por isso, os controles a seguir evidenciam como manter a raiz isolada e a intermediária pronta para operar no dia a dia sem abrir mão da confiança.
 
 ### 1. Definindo a estrutura de diretórios
 

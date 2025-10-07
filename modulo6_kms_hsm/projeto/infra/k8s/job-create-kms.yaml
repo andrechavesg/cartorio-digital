@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cartorio-mod6-create-kms
+  namespace: cartorio-mod6
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: cartorio-aws-cli
+      containers:
+        - name: aws-cli
+          image: amazon/aws-cli:2.13.11
+          command: ["/bin/sh", "-c", "chmod +x /scripts/create-kms.sh && /scripts/create-kms.sh"]
+          env:
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod6-settings
+                  key: awsRegion
+                  optional: true
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod6-settings
+                  key: environment
+                  optional: true
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: scripts
+          configMap:
+            name: cartorio-mod6-script
+            defaultMode: 0755
+  backoffLimit: 1

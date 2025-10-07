@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cartorio-mod3-script
+  namespace: cartorio-mod3
+data:
+  enable-mtls.sh: |-
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    REGION="${AWS_REGION:-us-east-1}"
+    ENVIRONMENT="${ENVIRONMENT:-dev}"
+    DOMAIN_NAME="${DOMAIN_NAME:-api.${ENVIRONMENT}.cartorio.example}"
+    TRUST_BUCKET="${TRUST_BUCKET:-}"
+    API_ID="${API_ID:-$(aws apigatewayv2 get-apis --region "${REGION}" --query "Items[?Name=='cartorio-${ENVIRONMENT}-api'].ApiId" --output text)}"
+
+    SECRET_ARN="$(aws ssm get-parameter --region "${REGION}" --name "/cartorio/${ENVIRONMENT}/pki/root_secret_arn" --query Parameter.Value --output text)"
+    ROOT_CERT_PATH="$(mktemp)"
+    aws secretsmanager get-secret-value --region "${REGION}" --secret-id "${SECRET_ARN}" \
+      --query SecretString --output text | python3 - <<'PY'
+import json, sys, pathlib
+payload = json.loads(sys.stdin.read())
+pathlib.Path("${ROOT_CERT_PATH}").write_text(payload["certificate_pem"])
+PY
+
+    if [[ -z "${TRUST_BUCKET}" ]]; then
+      TRUST_BUCKET="cartorio-${ENVIRONMENT}-truststore-$(date +%s)"
+      if [[ "${REGION}" == "us-east-1" ]]; then
+        aws s3api create-bucket --bucket "${TRUST_BUCKET}" --region "${REGION}" || true
+      else
+        aws s3api create-bucket --bucket "${TRUST_BUCKET}" --region "${REGION}" \
+          --create-bucket-configuration "LocationConstraint=${REGION}" || true
+      fi
+    fi
+
+    aws s3 cp "${ROOT_CERT_PATH}" "s3://${TRUST_BUCKET}/root-ca.pem"
+
+    if [[ -z "${CERT_ARN:-}" ]]; then
+      CERT_ARN="$(aws acm request-certificate \
+        --region "${REGION}" \
+        --domain-name "${DOMAIN_NAME}" \
+        --validation-method DNS \
+        --query CertificateArn --output text)"
+      echo "Certificado solicitado: ${CERT_ARN}. Valide o domínio no ACM."
+    else
+      CERT_ARN="${CERT_ARN}"
+    fi
+
+    aws apigatewayv2 create-domain-name \
+      --region "${REGION}" \
+      --domain-name "${DOMAIN_NAME}" \
+      --domain-name-configurations "CertificateArn=${CERT_ARN},EndpointType=REGIONAL,SecurityPolicy=TLS_1_2" \
+      --mutual-tls-authentication "TruststoreUri=s3://${TRUST_BUCKET}/root-ca.pem,TruststoreVersion=$(date +%s)" || true
+
+    aws apigatewayv2 create-api-mapping \
+      --region "${REGION}" \
+      --domain-name "${DOMAIN_NAME}" \
+      --api-id "${API_ID}" \
+      --stage "prod" \
+      --api-mapping-key "" || true

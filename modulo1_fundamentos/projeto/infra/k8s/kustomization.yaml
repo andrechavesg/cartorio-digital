@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - serviceaccount.yaml
+  - configmap-core-template.yaml
+  - configmap-scripts.yaml
+  - persistentvolumeclaim-frontend.yaml
+  - job-deploy-core.yaml
+  - job-sync-frontend.yaml

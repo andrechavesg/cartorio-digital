@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cartorio-mod4-script
+  namespace: cartorio-mod4
+data:
+  deploy-acme.sh: |-
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    REGION="${AWS_REGION:-us-east-1}"
+    ENVIRONMENT="${ENVIRONMENT:-dev}"
+    STACK_NAME="cartorio-mod4-acme-${ENVIRONMENT}"
+    TEMPLATE_FILE="/templates/acme.json"
+    RENDERED_TEMPLATE="$(mktemp)"
+
+    ENVIRONMENT="${ENVIRONMENT}" envsubst < "${TEMPLATE_FILE}" > "${RENDERED_TEMPLATE}"
+
+    aws cloudformation deploy \
+      --region "${REGION}" \
+      --stack-name "${STACK_NAME}" \
+      --capabilities CAPABILITY_NAMED_IAM \
+      --template-file "${RENDERED_TEMPLATE}"
+
+    aws cloudformation describe-stacks \
+      --region "${REGION}" \
+      --stack-name "${STACK_NAME}" \
+      --query "Stacks[0].Outputs" \
+      --output table

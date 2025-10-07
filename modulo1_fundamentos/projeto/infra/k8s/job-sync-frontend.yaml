@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cartorio-mod1-sync-frontend
+  namespace: cartorio-mod1
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: cartorio-aws-cli
+      containers:
+        - name: aws-cli
+          image: amazon/aws-cli:2.13.11
+          command: ["/bin/sh", "-c", "chmod +x /scripts/sync-frontend.sh && /scripts/sync-frontend.sh"]
+          env:
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod1-settings
+                  key: awsRegion
+                  optional: true
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod1-settings
+                  key: environment
+                  optional: true
+            - name: FRONTEND_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod1-settings
+                  key: frontendBucket
+                  optional: true
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: frontend-dist
+              mountPath: /workspace/frontend/dist
+      volumes:
+        - name: scripts
+          configMap:
+            name: cartorio-mod1-scripts
+            defaultMode: 0755
+        - name: frontend-dist
+          persistentVolumeClaim:
+            claimName: frontend-dist
+  backoffLimit: 1

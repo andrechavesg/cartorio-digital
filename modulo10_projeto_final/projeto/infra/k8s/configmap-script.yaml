@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cartorio-mod10-script
+  namespace: cartorio-mod10
+data:
+  aggregate-outputs.sh: |-
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    REGION="${AWS_REGION:-us-east-1}"
+    PARAMETER_NAME="${PARAMETER_NAME:-/cartorio/dev/summary}"
+    STACKS_CSV="${STACKS:-}"
+
+    TMP_FILE="$(mktemp)"
+    : > "${TMP_FILE}"
+
+    IFS=',' read -ra STACK_ARRAY <<< "${STACKS_CSV}"
+    for stack in "${STACK_ARRAY[@]}"; do
+      [[ -z "${stack}" ]] && continue
+      outputs="$(aws cloudformation describe-stacks --region "${REGION}" --stack-name "${stack}" --query "Stacks[0].Outputs" --output json 2>/dev/null || echo '[]')"
+      printf '%s\t%s\n' "${stack}" "${outputs}" >> "${TMP_FILE}"
+    done
+
+    SUMMARY_JSON="$(python3 - <<'PY'
+import json, sys
+summary = {}
+for line in sys.stdin:
+    stack, outputs = line.rstrip('\n').split('\t', 1)
+    summary[stack] = json.loads(outputs)
+print(json.dumps(summary))
+PY
+    < "${TMP_FILE}")"
+
+    aws ssm put-parameter --region "${REGION}" \
+      --name "${PARAMETER_NAME}" \
+      --type String \
+      --value "${SUMMARY_JSON}" \
+      --overwrite

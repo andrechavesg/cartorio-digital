@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cartorio-mod9-enable-observability
+  namespace: cartorio-mod9
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: cartorio-aws-cli
+      containers:
+        - name: aws-cli
+          image: amazon/aws-cli:2.13.11
+          command: ["/bin/sh", "-c", "chmod +x /scripts/enable-observability.sh && /scripts/enable-observability.sh"]
+          env:
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod9-settings
+                  key: awsRegion
+                  optional: true
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod9-settings
+                  key: environment
+                  optional: true
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: scripts
+          configMap:
+            name: cartorio-mod9-script
+            defaultMode: 0755
+  backoffLimit: 1

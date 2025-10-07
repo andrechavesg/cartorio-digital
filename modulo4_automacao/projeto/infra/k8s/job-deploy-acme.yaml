@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cartorio-mod4-deploy-acme
+  namespace: cartorio-mod4
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: cartorio-aws-cli
+      containers:
+        - name: aws-cli
+          image: amazon/aws-cli:2.13.11
+          command: ["/bin/sh", "-c", "chmod +x /scripts/deploy-acme.sh && /scripts/deploy-acme.sh"]
+          env:
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod4-settings
+                  key: awsRegion
+                  optional: true
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod4-settings
+                  key: environment
+                  optional: true
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: template
+              mountPath: /templates
+      volumes:
+        - name: scripts
+          configMap:
+            name: cartorio-mod4-script
+            defaultMode: 0755
+        - name: template
+          configMap:
+            name: cartorio-mod4-template
+  backoffLimit: 1

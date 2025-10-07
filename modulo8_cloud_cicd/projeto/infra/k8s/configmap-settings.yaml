@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cartorio-mod8-settings
+  namespace: cartorio-mod8
+data:
+  awsRegion: us-east-1
+  environment: dev
+  artifactBucket: cartorio-dev-cicd-artifacts
+  githubOwner: SEU_USUARIO
+  githubRepo: cartorio-digital
+  githubBranch: main
+  githubToken: ""

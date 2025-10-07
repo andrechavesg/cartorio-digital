@@ -1,0 +1,62 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cartorio-mod1-deploy-core
+  namespace: cartorio-mod1
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: cartorio-aws-cli
+      containers:
+        - name: aws-cli
+          image: amazon/aws-cli:2.13.11
+          command: ["/bin/sh", "-c", "chmod +x /scripts/deploy-core.sh && /scripts/deploy-core.sh"]
+          env:
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod1-settings
+                  key: awsRegion
+                  optional: true
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod1-settings
+                  key: environment
+                  optional: true
+            - name: BACKEND_IMAGE_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod1-settings
+                  key: backendImageUri
+                  optional: true
+            - name: FRONTEND_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod1-settings
+                  key: frontendBucket
+                  optional: true
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: template
+              mountPath: /templates
+      volumes:
+        - name: scripts
+          configMap:
+            name: cartorio-mod1-scripts
+            defaultMode: 0755
+        - name: template
+          configMap:
+            name: cartorio-mod1-core-template
+  backoffLimit: 1
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cartorio-mod1-settings
+  namespace: cartorio-mod1
+data:
+  awsRegion: us-east-1
+  environment: dev

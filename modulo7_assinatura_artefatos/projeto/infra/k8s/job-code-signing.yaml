@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cartorio-mod7-code-signing
+  namespace: cartorio-mod7
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: cartorio-aws-cli
+      containers:
+        - name: aws-cli
+          image: amazon/aws-cli:2.13.11
+          command: ["/bin/sh", "-c", "chmod +x /scripts/code-signing.sh && /scripts/code-signing.sh"]
+          env:
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod7-settings
+                  key: awsRegion
+                  optional: true
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod7-settings
+                  key: environment
+                  optional: true
+            - name: ARTIFACT_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: cartorio-mod7-settings
+                  key: artifactBucket
+                  optional: true
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: scripts
+          configMap:
+            name: cartorio-mod7-script
+            defaultMode: 0755
+  backoffLimit: 1

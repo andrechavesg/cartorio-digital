@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cartorio-mod2-settings
+  namespace: cartorio-mod2
+data:
+  awsRegion: us-east-1
+  environment: dev
+  rootSecretName: cartorio/dev/pki/root

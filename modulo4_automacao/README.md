@@ -1,6 +1,10 @@
 # Módulo 4 – Automação do Ciclo de Vida de Certificados
 
-Quando o cartório digital garante que cada ato eletrônico está protegido por um certificado válido, os resultados aparecem na forma de confiança pública, auditorias aprovadas e serviços contínuos. A automação via protocolo **ACME** é o motor invisível dessa conquista: ela elimina gargalos manuais e mantém os certificados sempre alinhados ao ritmo do negócio. Neste módulo você aprenderá a transformar essa automação em vantagem estratégica, combinando **Let’s Encrypt**, **Certbot** e **Smallstep** para que a experiência do cartório nunca pare.
+Quando o cartório digital garante que cada ato eletrônico está protegido por um certificado válido, os resultados aparecem na forma de confiança pública, auditorias aprovadas e serviços contínuos. A automação via protocolo **ACME** é o motor invisível dessa conquista: ela elimina gargalos manuais e mantém os certificados sempre alinhados ao ritmo do negócio.
+
+Para a pessoa desenvolvedora de segurança, este módulo é o momento de assumir o volante. Você já ergueu a PKI, entregou mTLS confiável e pavimentou os ambientes de produção; agora é hora de impedir que a rotina volte a depender de lembretes em planilhas ou alarmes de última hora. O plano aqui é conduzir a transformação operacional: traduzir requisitos de conformidade em pipelines, antecipar incidentes antes que o certificado expire e abrir o caminho para que o restante da equipe confie no selo digital do cartório.
+
+Você explorará como **Let’s Encrypt**, **Certbot** e **Smallstep** se encaixam no fluxo diário do cartório, criando trilhas reproduzíveis para emitir, renovar e distribuir certificados sem interrupções. Ao final, o ciclo de vida completo estará sob seu comando, com auditoria transparente, alertas úteis e integrações prontas para crescer com a demanda da população.
 
 Nos capítulos anteriores você estruturou a PKI e habilitou servidores TLS. Agora vamos fechar esse ciclo, garantindo que cada renovação aconteça sem fricção e com registros que comprovem a conformidade do serviço.
 

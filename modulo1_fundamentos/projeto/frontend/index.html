@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cartório Digital - Fundamentos</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+      }
+      form {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      input {
+        padding: 0.5rem;
+      }
+      button {
+        padding: 0.5rem 1rem;
+      }
+      pre {
+        background: #f5f5f5;
+        padding: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cartório Digital &mdash; Fundamentos</h1>
+    <p>Cadastre cidadãos para acompanhar a evolução do sistema.</p>
+
+    <form id="citizen-form">
+      <input type="text" id="name" placeholder="Nome" required />
+      <input type="email" id="email" placeholder="E-mail" required />
+      <button type="submit">Cadastrar</button>
+    </form>
+
+    <section>
+      <h2>Registros</h2>
+      <pre id="citizens"></pre>
+    </section>
+
+    <script>
+      const API_BASE = "http://localhost:8000";
+
+      async function fetchCitizens() {
+        const response = await fetch(`${API_BASE}/citizens`);
+        const data = await response.json();
+        document.getElementById("citizens").textContent = JSON.stringify(
+          data.citizens,
+          null,
+          2
+        );
+      }
+
+      document
+        .getElementById("citizen-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const response = await fetch(`${API_BASE}/citizens`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: document.getElementById("name").value,
+              email: document.getElementById("email").value,
+            }),
+          });
+          if (response.ok) {
+            event.target.reset();
+            fetchCitizens();
+          }
+        });
+
+      fetchCitizens();
+    </script>
+  </body>
+</html>

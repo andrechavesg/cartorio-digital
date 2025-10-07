@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cartório Digital - Requisitos Regulatórios</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+      }
+      section {
+        margin-bottom: 2rem;
+      }
+      form {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr) 200px;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      input,
+      button,
+      select {
+        padding: 0.5rem;
+      }
+      pre {
+        background: #f5f5f5;
+        padding: 1rem;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cartório Digital &mdash; Requisitos Regulatórios</h1>
+
+    <section>
+      <h2>Cadastro com documentação</h2>
+      <form id="citizen-form">
+        <input type="text" id="name" placeholder="Nome" required />
+        <input type="email" id="email" placeholder="E-mail" required />
+        <select id="doc-type">
+          <option value="RG">RG</option>
+          <option value="CPF">CPF</option>
+          <option value="CNH">CNH</option>
+        </select>
+        <input type="text" id="doc-id" placeholder="Número do documento" required />
+        <button type="submit">Cadastrar</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Emissão com checagem de compliance</h2>
+      <form id="certificate-form">
+        <input type="email" id="cert-email" placeholder="E-mail cadastrado" required />
+        <input type="text" id="cn" placeholder="Common Name" required />
+        <button type="submit">Emitir certificado</button>
+      </form>
+      <pre id="result"></pre>
+    </section>
+
+    <section>
+      <h2>Auditoria</h2>
+      <button id="refresh-audit">Atualizar auditoria</button>
+      <pre id="audit"></pre>
+    </section>
+
+    <script>
+      const API_BASE = "http://localhost:8000";
+
+      document
+        .getElementById("citizen-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          await fetch(`${API_BASE}/citizens`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: document.getElementById("name").value,
+              email: document.getElementById("email").value,
+              document_type: document.getElementById("doc-type").value,
+              document_id: document.getElementById("doc-id").value,
+            }),
+          });
+          event.target.reset();
+          refreshAudit();
+        });
+
+      document
+        .getElementById("certificate-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const response = await fetch(`${API_BASE}/certificates/compliant`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: document.getElementById("cert-email").value,
+              common_name: document.getElementById("cn").value,
+            }),
+          });
+          const payload = await response.json();
+          document.getElementById("result").textContent = JSON.stringify(
+            payload,
+            null,
+            2
+          );
+          refreshAudit();
+        });
+
+      document.getElementById("refresh-audit").addEventListener("click", () => {
+        refreshAudit();
+      });
+
+      async function refreshAudit() {
+        const response = await fetch(`${API_BASE}/audit`);
+        const data = await response.json();
+        document.getElementById("audit").textContent = JSON.stringify(
+          data.entries,
+          null,
+          2
+        );
+      }
+
+      refreshAudit();
+    </script>
+  </body>
+</html>

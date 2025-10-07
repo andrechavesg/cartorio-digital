@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cartório Digital - Projeto Final</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+        background: #f9fafb;
+      }
+      h1 {
+        margin-bottom: 0.5rem;
+      }
+      section {
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      input,
+      button,
+      textarea,
+      select {
+        padding: 0.6rem;
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        font-size: 0.95rem;
+      }
+      button {
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #1d4ed8;
+      }
+      textarea {
+        min-height: 120px;
+      }
+      pre {
+        background: #0f172a;
+        color: #f8fafc;
+        padding: 1rem;
+        border-radius: 6px;
+        overflow: auto;
+        max-height: 280px;
+        font-size: 0.9rem;
+      }
+      .columns {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cartório Digital &mdash; Projeto Final</h1>
+    <p>
+      Aplicação integrada demonstrando cadastro de cidadãos, emissão de certificados, automação ACME, KMS/HSM, assinatura de artefatos, pipelines e observabilidade.
+    </p>
+
+    <section>
+      <h2>Cadastro e Compliance</h2>
+      <form id="citizen-form">
+        <input type="text" id="citizen-name" placeholder="Nome" required />
+        <input type="email" id="citizen-email" placeholder="E-mail" required />
+        <select id="citizen-doc-type">
+          <option value="RG">RG</option>
+          <option value="CPF">CPF</option>
+          <option value="CNH">CNH</option>
+        </select>
+        <input type="text" id="citizen-doc-id" placeholder="Documento" required />
+        <button type="submit">Registrar cidadão</button>
+      </form>
+      <div class="columns">
+        <pre id="citizens"></pre>
+        <pre id="audit"></pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>PKI & TLS</h2>
+      <form id="client-cert-form">
+        <input type="email" id="client-email" placeholder="E-mail cadastrado" required />
+        <input type="text" id="client-cn" placeholder="Common Name" required />
+        <button type="submit">Emitir certificado de cliente</button>
+      </form>
+      <form id="server-cert-form">
+        <input type="text" id="server-host" placeholder="Hostname" required />
+        <button type="submit">Emitir certificado de servidor</button>
+      </form>
+      <form id="handshake-form">
+        <input type="number" id="server-serial" placeholder="Serial servidor" required />
+        <input type="number" id="client-serial" placeholder="Serial cliente" required />
+        <button type="submit">Validar mTLS</button>
+      </form>
+      <div class="columns">
+        <pre id="certificates"></pre>
+        <pre id="handshake"></pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Automação ACME</h2>
+      <form id="acme-form">
+        <input type="text" id="acme-domain" placeholder="dominio.exemplo" required />
+        <button type="submit">Criar ordem</button>
+      </form>
+      <form id="acme-complete-form">
+        <input type="text" id="acme-order-id" placeholder="ID da ordem" required />
+        <input type="text" id="acme-token" placeholder="Token" required />
+        <button type="submit">Completar desafio</button>
+      </form>
+      <pre id="acme"></pre>
+    </section>
+
+    <section>
+      <h2>KMS / HSM</h2>
+      <form id="kms-form">
+        <input type="email" id="kms-email" placeholder="E-mail" required />
+        <input type="text" id="kms-cn" placeholder="Common Name" required />
+        <button type="submit">Emitir credencial protegida</button>
+      </form>
+      <div class="columns">
+        <pre id="kms-credentials"></pre>
+        <pre id="kms-keys"></pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Assinatura de Artefatos</h2>
+      <form id="sign-credential-form">
+        <input type="text" id="sign-cn" placeholder="Common Name" required />
+        <button type="submit">Emitir credencial de code signing</button>
+      </form>
+      <form id="artifact-form">
+        <input type="text" id="artifact-id" placeholder="ID do artefato" required />
+        <input type="text" id="artifact-alias" placeholder="Alias da chave" required />
+        <textarea id="artifact-payload" placeholder="Conteúdo" required></textarea>
+        <input type="text" id="artifact-desc" placeholder="Descrição" />
+        <button type="submit">Assinar artefato</button>
+      </form>
+      <div class="columns">
+        <pre id="signing-credentials"></pre>
+        <pre id="artifacts"></pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Pipeline CI/CD</h2>
+      <form id="pipeline-form">
+        <input type="text" id="pipeline-app" placeholder="Aplicação" required />
+        <input type="text" id="pipeline-env" placeholder="Ambiente" required />
+        <textarea id="pipeline-payload" placeholder="Manifesto/artefato" required></textarea>
+        <button type="submit">Executar pipeline</button>
+      </form>
+      <pre id="pipelines"></pre>
+    </section>
+
+    <section>
+      <h2>Observabilidade</h2>
+      <form id="metric-form">
+        <input type="text" id="metric-name" placeholder="Nome da métrica" required />
+        <input type="number" step="0.01" id="metric-value" placeholder="Valor" required />
+        <textarea id="metric-labels" placeholder='Labels JSON'></textarea>
+        <button type="submit">Registrar métrica</button>
+      </form>
+      <div class="columns">
+        <pre id="observability-snapshot"></pre>
+        <pre id="observability-prom"></pre>
+      </div>
+    </section>
+
+    <script>
+      const API_BASE = "http://localhost:8000";
+
+      async function fetchJson(url) {
+        const response = await fetch(url);
+        return response.json();
+      }
+
+      function toJsonTextarea(value) {
+        if (!value) return {};
+        try {
+          return JSON.parse(value);
+        } catch (error) {
+          alert("JSON inválido: " + error.message);
+          throw error;
+        }
+      }
+
+      async function refreshCitizens() {
+        const data = await fetchJson(`${API_BASE}/citizens`);
+        document.getElementById("citizens").textContent = JSON.stringify(
+          data.citizens,
+          null,
+          2
+        );
+        const audit = await fetchJson(`${API_BASE}/audit`);
+        document.getElementById("audit").textContent = JSON.stringify(
+          audit.entries,
+          null,
+          2
+        );
+      }
+
+      async function refreshCertificates() {
+        const data = await fetchJson(`${API_BASE}/certificates`);
+        document.getElementById("certificates").textContent = JSON.stringify(
+          data.certificates,
+          null,
+          2
+        );
+      }
+
+      async function refreshAcme() {
+        const data = await fetchJson(`${API_BASE}/acme/orders`);
+        document.getElementById("acme").textContent = JSON.stringify(
+          data.orders,
+          null,
+          2
+        );
+      }
+
+      async function refreshKms() {
+        const credentials = await fetchJson(`${API_BASE}/kms/credentials`);
+        document.getElementById("kms-credentials").textContent = JSON.stringify(
+          credentials.credentials,
+          null,
+          2
+        );
+        const keys = await fetchJson(`${API_BASE}/kms/keys`);
+        document.getElementById("kms-keys").textContent = JSON.stringify(
+          keys.keys,
+          null,
+          2
+        );
+      }
+
+      async function refreshSigning() {
+        const credentials = await fetchJson(`${API_BASE}/signing/credentials`);
+        document.getElementById("signing-credentials").textContent = JSON.stringify(
+          credentials.credentials,
+          null,
+          2
+        );
+        const artifacts = await fetchJson(`${API_BASE}/signing/artifacts`);
+        document.getElementById("artifacts").textContent = JSON.stringify(
+          artifacts.artifacts,
+          null,
+          2
+        );
+      }
+
+      async function refreshPipelines() {
+        const data = await fetchJson(`${API_BASE}/pipelines`);
+        document.getElementById("pipelines").textContent = JSON.stringify(
+          data.pipelines,
+          null,
+          2
+        );
+      }
+
+      async function refreshObservability() {
+        const snapshot = await fetchJson(`${API_BASE}/observability/snapshot`);
+        document.getElementById("observability-snapshot").textContent = JSON.stringify(
+          snapshot,
+          null,
+          2
+        );
+        const response = await fetch(`${API_BASE}/observability/metrics/prometheus`);
+        document.getElementById("observability-prom").textContent = await response.text();
+      }
+
+      document.getElementById("citizen-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await fetch(`${API_BASE}/citizens`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: document.getElementById("citizen-name").value,
+            email: document.getElementById("citizen-email").value,
+            document_type: document.getElementById("citizen-doc-type").value,
+            document_id: document.getElementById("citizen-doc-id").value,
+          }),
+        });
+        refreshCitizens();
+      });
+
+      document.getElementById("client-cert-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const response = await fetch(`${API_BASE}/certificates/client`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: document.getElementById("client-email").value,
+            common_name: document.getElementById("client-cn").value,
+          }),
+        });
+        const payload = await response.json();
+        document.getElementById("handshake").textContent = JSON.stringify(payload, null, 2);
+        refreshCertificates();
+        refreshObservability();
+      });
+
+      document.getElementById("server-cert-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await fetch(`${API_BASE}/certificates/server`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ hostname: document.getElementById("server-host").value }),
+        });
+        refreshCertificates();
+      });
+
+      document.getElementById("handshake-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const response = await fetch(`${API_BASE}/tls/handshake`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            server_serial: Number(document.getElementById("server-serial").value),
+            client_serial: Number(document.getElementById("client-serial").value),
+          }),
+        });
+        const payload = await response.json();
+        document.getElementById("handshake").textContent = JSON.stringify(payload, null, 2);
+      });
+
+      document.getElementById("acme-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await fetch(`${API_BASE}/acme/orders`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ domain: document.getElementById("acme-domain").value }),
+        });
+        refreshAcme();
+      });
+
+      document.getElementById("acme-complete-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await fetch(`${API_BASE}/acme/orders/${document.getElementById("acme-order-id").value}/complete`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: document.getElementById("acme-token").value }),
+        });
+        refreshAcme();
+      });
+
+      document.getElementById("kms-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await fetch(`${API_BASE}/kms/credentials`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: document.getElementById("kms-email").value,
+            common_name: document.getElementById("kms-cn").value,
+          }),
+        });
+        refreshKms();
+      });
+
+      document.getElementById("sign-credential-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await fetch(`${API_BASE}/signing/credentials`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ common_name: document.getElementById("sign-cn").value }),
+        });
+        refreshSigning();
+      });
+
+      document.getElementById("artifact-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await fetch(`${API_BASE}/signing/artifacts`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            artifact_id: document.getElementById("artifact-id").value,
+            key_alias: document.getElementById("artifact-alias").value,
+            payload: document.getElementById("artifact-payload").value,
+            description: document.getElementById("artifact-desc").value,
+          }),
+        });
+        refreshSigning();
+      });
+
+      document.getElementById("pipeline-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await fetch(`${API_BASE}/pipelines`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            application: document.getElementById("pipeline-app").value,
+            environment: document.getElementById("pipeline-env").value,
+            payload: document.getElementById("pipeline-payload").value,
+          }),
+        });
+        refreshPipelines();
+        refreshSigning();
+        refreshKms();
+      });
+
+      document.getElementById("metric-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await fetch(`${API_BASE}/observability/metrics`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: document.getElementById("metric-name").value,
+            value: Number(document.getElementById("metric-value").value),
+            labels: toJsonTextarea(document.getElementById("metric-labels").value),
+          }),
+        });
+        refreshObservability();
+      });
+
+      refreshCitizens();
+      refreshCertificates();
+      refreshAcme();
+      refreshKms();
+      refreshSigning();
+      refreshPipelines();
+      refreshObservability();
+    </script>
+  </body>
+</html>

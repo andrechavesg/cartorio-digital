@@ -18,6 +18,6 @@ Em uma reunião de governança, representantes das trilhas apresentaram indicado
 3. Mantenha um repositório de riscos atualizado com status e responsáveis.
 4. Crie painéis operacionais que integrem métricas de desempenho e conformidade.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com governança definida, vamos orquestrar tecnologia e processos em uma arquitetura final. No próximo capítulo veremos, através de um exemplo inspirador, como conectar todos os componentes do cartório digital.

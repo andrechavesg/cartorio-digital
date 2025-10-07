@@ -18,6 +18,6 @@ Um cliente apresentou ao cartório um lote de documentos em PDF, XML e JSON. Par
 3. Monte exemplos de cada assinatura para servir como referência interna.
 4. Estabeleça políticas de armazenamento e distribuição dos arquivos assinados.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com os tipos mapeados, vamos mergulhar no PADES, formato favorito para documentos em PDF. No próximo capítulo um exemplo inspirador mostrará como gerar assinaturas visíveis e confiáveis.

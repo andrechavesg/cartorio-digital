@@ -18,6 +18,6 @@ Durante a cerimônia de credenciamento do cartório digital, a corregedoria exig
 3. Crie um calendário de auditorias internas, incluindo revisões de certificados, logs e procedimentos.
 4. Documente como evidências serão armazenadas para responder rapidamente a fiscalizações.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com o objetivo definido, avançaremos para a espinha dorsal da conformidade no Brasil. No próximo capítulo veremos, a partir de um exemplo inspirador, como a ICP-Brasil orienta a operação diária do cartório digital.

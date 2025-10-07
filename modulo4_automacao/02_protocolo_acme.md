@@ -25,6 +25,6 @@ Quando a equipe precisou renovar 20 certificados em um único fim de semana, per
 
 4. **Planeje políticas de segurança:** defina limites de taxa, monitoramento e rotação das chaves de conta.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Agora que entendemos o protocolo, vamos colocá-lo em prática com uma ferramenta popular. No próximo capítulo acompanharemos, com um exemplo inspirador, como o Certbot automatiza desafios HTTP e entrega certificados renovados sem drama.

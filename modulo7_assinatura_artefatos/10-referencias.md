@@ -18,6 +18,6 @@ Ao finalizar o módulo, o cartório montou uma biblioteca digital com livros, ar
 3. Incentive a participação em comunidades técnicas e jurídicas.
 4. Registre insights de cada leitura para inspirar projetos futuros.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com as referências em mãos, partiremos para o módulo de nuvem e CI/CD, onde veremos como automatizar todo o ciclo de entrega mantendo a segurança conquistada até aqui.

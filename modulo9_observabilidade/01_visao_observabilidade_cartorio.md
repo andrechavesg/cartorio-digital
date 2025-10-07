@@ -18,6 +18,6 @@ Quando um certificado prestes a expirar quase interrompeu um serviço, o cartór
 3. Defina alertas com antecedência suficiente para renovação segura.
 4. Compartilhe dashboards com times jurídicos e de negócio para reforçar confiança.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a visão geral estabelecida, vamos aprofundar a transparência dos certificados emitidos. No próximo capítulo veremos, inspirados por um caso real, como construir relatórios que encantam auditores.

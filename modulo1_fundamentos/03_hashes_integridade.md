@@ -32,6 +32,6 @@ Uma remessa de certidões recém-assinadas chega ao cofre digital com uma falha 
    - Documente como o hash será integrado ao fluxo jurídico descrito no capítulo anterior.
    - Liste quais algoritmos são aceitos pelo órgão regulador do seu cartório digital.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Agora que você domina a arte de detectar qualquer alteração, está pronto para dar o próximo salto: **transformar esses hashes em assinaturas digitais que comprovem autoria e validade jurídica**. No capítulo seguinte veremos, a partir de uma situação real do cartório, como unir chaves e resumos para carimbar documentos com confiança absoluta.

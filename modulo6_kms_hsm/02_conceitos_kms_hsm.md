@@ -18,6 +18,6 @@ Na migração para o HSM, a equipe realizou uma sessão aberta para todo o cart�
 3. Configure políticas que restringem o uso da chave a determinados serviços ou funções.
 4. Ative logs de auditoria e configure alertas para uso fora do horário esperado ou por identidades não autorizadas.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a teoria clara, é hora de construir a implementação específica do cartório. No próximo capítulo veremos, inspirado por um projeto real, como desenhar uma arquitetura de KMS que suporta todos os fluxos críticos da instituição.

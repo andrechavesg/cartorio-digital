@@ -18,6 +18,6 @@ Mesmo com automação, o cartório enfrentou incidentes como certificados expira
 3. Realize retrospectivas com todas as equipes envolvidas para compartilhar aprendizados.
 4. Atualize documentação e treinamentos sempre que um desafio for superado.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Depois de superar desafios, encerramos o módulo com referências e materiais complementares. No próximo capítulo você encontrará fontes inspiradoras para continuar evoluindo.

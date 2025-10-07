@@ -18,6 +18,6 @@ O cartório decidiu centralizar todas as chaves em uma arquitetura híbrida: HSM
 3. Automate rotação de chaves com funções serverless ou cron jobs documentados.
 4. Integre o KMS a sistemas de emissão de certificados, assinatura de documentos e criptografia de banco de dados.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a arquitetura operacionalizada, precisamos entender os diferenciais do hardware criptográfico dedicado. No próximo capítulo analisaremos, através de um exemplo inspirador, como HSMs garantem proteção física e lógica incomparável.

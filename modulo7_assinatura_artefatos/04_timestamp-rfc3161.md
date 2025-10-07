@@ -18,6 +18,6 @@ Ao registrar uma ata digital, o cartório aplicou um carimbo de tempo RFC 3161 f
 3. Verifique o carimbo periodicamente para garantir que a cadeia de confiança permanece válida.
 4. Documente fornecedores de TSA e procedimentos de renovação.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com timestamps dominados, avançaremos para uma prática guiada que combina assinatura e validação em fluxo completo. No próximo capítulo, um exemplo inspirador conduzirá você passo a passo.

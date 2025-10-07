@@ -52,6 +52,6 @@ Em sistemas modernos, usamos a força da simetria para cifrar dados e a elegânc
    ```
    Registre a percepção de performance e como isso impactará o atendimento aos cidadãos.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Proteger o acesso é poderoso, mas ainda precisamos de uma bússola que acuse qualquer alteração inesperada em nossos documentos. No próximo capítulo vamos descobrir, guiados por outro exemplo do cartório, como as funções hash se tornam guardiãs da integridade, preparando-nos para assinaturas digitais impecáveis.

@@ -18,6 +18,6 @@ Em uma madrugada de implantação, o certificado do ambiente de homologação ex
 3. Planeje janelas de renovação, notificações e monitoramento para evitar expirações.
 4. Documente políticas de fallback caso a automação falhe, garantindo continuidade do serviço.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com o propósito definido, vamos explorar o protocolo que torna essa mágica possível. No próximo capítulo estudaremos, por meio de um exemplo inspirador, como o ACME funciona passo a passo e por que ele é a espinha dorsal da automação no cartório digital.

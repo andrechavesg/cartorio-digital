@@ -81,6 +81,6 @@ Quando o cartório digital lançou sua primeira API pública, o deploy travou po
 
 5. **Documente o ciclo de vida:** registre datas de expiração, responsáveis e sistemas que dependem de cada certificado para facilitar renovações.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Agora que emitimos e instalamos certificados, precisamos planejar o que fazer quando uma credencial é comprometida ou expira antes do previsto. No próximo capítulo veremos, inspirados por um caso real de revogação, como manter a confiança viva com CRL, OCSP e verificações constantes.

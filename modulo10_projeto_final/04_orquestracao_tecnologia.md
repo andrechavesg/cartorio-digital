@@ -18,6 +18,6 @@ Durante um sprint decisivo, a equipe montou um diagrama vivo mostrando integraç
 3. Automatize deploys e atualizações com pipelines confiáveis.
 4. Realize testes de resiliência para validar failover e recuperação.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a tecnologia orquestrada, resta apresentar o projeto e garantir adoção. No capítulo final veremos, inspirado por uma sessão com stakeholders, como comunicar resultados e planejar próximos passos.

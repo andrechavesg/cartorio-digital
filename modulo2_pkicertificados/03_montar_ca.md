@@ -70,6 +70,6 @@ O primeiro conselho consultivo do cartório digital exigiu uma prova concreta de
    ```
    Utilize a ferramenta para laboratórios rápidos e compare os fluxos gerados automaticamente com a estrutura manual.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a raiz guardada e a intermediária pronta para emitir, é hora de colocar essa estrutura em ação. No próximo capítulo emitiremos certificados de servidor e de cliente, começando por um exemplo inspirador que mostra como uma nova API do cartório ganhou vida graças à nossa própria CA.

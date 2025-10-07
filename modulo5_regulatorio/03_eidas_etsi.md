@@ -18,6 +18,6 @@ Ao buscar parcerias com consulados europeus, o cartório precisou demonstrar com
 3. Prepare relatórios em inglês destacando conformidade com ETSI EN 319 401/411-1/411-2.
 4. Estabeleça canais com órgãos estrangeiros para atualizações regulatórias contínuas.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a visão global consolidada, vamos detalhar os diferentes níveis de certificados exigidos para cada cenário. No próximo capítulo, um exemplo inspirador mostrará como distinguir certificados qualificados e avançados garante o serviço certo para cada cidadão.

@@ -18,6 +18,6 @@ Em uma apresentação à corregedoria, o cartório exibiu um relatório detalhad
 3. Documente incidentes e revogações com informações suficientes para auditoria.
 4. Compartilhe resumos executivos com a direção para facilitar tomada de decisão.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com relatórios estabelecidos, precisamos monitorar o status em tempo real. No próximo capítulo veremos, inspirado por uma situação crítica, como OCSP e monitoramento ativo evitam surpresas.

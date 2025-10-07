@@ -18,6 +18,6 @@ Após assinar centenas de documentos, o cartório gerou relatórios automáticos
 3. Armazene os resultados em repositório seguro, com controle de versão.
 4. Compartilhe métricas com a equipe de conformidade e defina ações corretivas quando necessário.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com validação sob controle, vamos expor esses recursos como APIs. No próximo capítulo veremos, com um exemplo inspirador, como integrar assinatura digital aos sistemas do cartório de forma escalável.

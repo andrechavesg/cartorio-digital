@@ -18,6 +18,6 @@ Durante uma integração com um órgão parceiro, o responder OCSP do cartório 
 3. Documente procedimentos de fallback (CRL) em caso de indisponibilidade.
 4. Integre logs de OCSP ao SIEM para detectar padrões anômalos.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com o status em dia, vamos transformar dados em insights. No próximo capítulo veremos como métricas e dashboards em Grafana inspiram decisões rápidas e precisas.

@@ -18,6 +18,6 @@ Na apresentação final, a equipe demonstrou o cartório digital em funcionament
 3. Defina plano de treinamento e suporte para equipes internas e cidadãos.
 4. Estabeleça roadmap de evolução para incorporar feedback e novas demandas.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Este é o encerramento do curso: continue evoluindo, compartilhando conhecimento e inspirando novos avanços na transformação digital dos cartórios.

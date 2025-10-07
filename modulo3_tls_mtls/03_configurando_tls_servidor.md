@@ -50,6 +50,6 @@ Ao ativar o novo site do cartório, a equipe realizou um ritual simbólico: com 
 
 4. **Automatize verificações de configuração:** integre ferramentas como `sslscan` ou `testssl.sh` na pipeline para detectar regressões.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com o servidor seguro, precisamos garantir que apenas clientes autorizados acessem as APIs confidenciais. No próximo capítulo ativaremos mTLS, começando por um exemplo inspirador de cooperação entre equipes técnicas e de atendimento do cartório.

@@ -18,6 +18,6 @@ O cartório implementou um serviço REST que recebe documentos, aplica assinatur
 3. Registre cada requisição em logs auditáveis, incluindo hash dos documentos.
 4. Forneça SDKs ou exemplos para facilitar adoção pelos sistemas parceiros.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Após expor a API, precisamos garantir que novas versões funcionem. No próximo capítulo exploraremos testes automatizados e suites de regressão inspirados por casos reais.

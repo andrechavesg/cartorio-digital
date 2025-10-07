@@ -38,6 +38,6 @@ A sessão de assinatura de uma escritura de compra e venda começa com expectati
 
 5. **Experimente a resiliência:** altere `contrato.txt` e repita a verificação para sentir, na prática, como a assinatura denuncia qualquer mudança.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Você agora domina os blocos fundamentais: cifras, chaves, hashes e assinaturas. O próximo passo é ousado e inspirador — construir uma **infraestrutura de chave pública completa** para emitir certificados confiáveis. No início do próximo módulo abriremos o capítulo de PKI mostrando como esse poder se organiza em autoridades certificadoras a serviço do cartório digital.

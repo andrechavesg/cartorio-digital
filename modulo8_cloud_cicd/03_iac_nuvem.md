@@ -18,6 +18,6 @@ O cartório provisionou um ambiente completo em minutos usando Terraform: redes,
 3. Integre verificações de segurança (tfsec, cfn-nag) no pipeline.
 4. Documente procedimentos de destruição e recuperação de ambientes.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Após provisionar infraestrutura, precisamos mantê-la observável e monitorada. No próximo capítulo veremos, inspirados por um incidente real, como alertas e dashboards mantêm o cartório seguro.

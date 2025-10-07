@@ -18,6 +18,6 @@ Em um exercício conjunto, times técnicos e jurídicos simularam a expiração 
 3. Documente aprendizados e atualize processos após cada simulado.
 4. Integre observabilidade com planos de continuidade e comunicação externa.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com observabilidade madura, seguimos para o módulo final do curso, onde aplicaremos todo o conhecimento em um projeto completo de cartório digital.

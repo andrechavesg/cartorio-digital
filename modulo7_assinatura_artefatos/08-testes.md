@@ -18,6 +18,6 @@ Antes de liberar a API de assinatura, o cartório executou uma suíte completa d
 3. Monitore métricas de desempenho durante os testes e registre resultados.
 4. Documente critérios de aprovação para liberar novas versões.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com testes estabelecidos, é hora de enfrentar desafios reais. No próximo capítulo veremos, com um exemplo inspirador, como resolver problemas comuns e manter o nível de confiança elevado.

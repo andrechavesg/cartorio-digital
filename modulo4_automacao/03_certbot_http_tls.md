@@ -32,6 +32,6 @@ Em pleno horário de pico, o portal do cartório precisava de um certificado ren
 
 4. **Documente logs e alertas:** configure notificações para falhas de renovação e mantenha registros de quem revisou cada execução.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Alguns domínios do cartório não podem responder desafios HTTP. No próximo capítulo veremos, inspirados por uma integração na nuvem, como automatizar desafios DNS-01 usando provedores como AWS Route 53.

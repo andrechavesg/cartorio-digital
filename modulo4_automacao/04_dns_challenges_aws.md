@@ -26,6 +26,6 @@ Para emitir certificados wildcard para o domínio corporativo, o cartório preci
 
 4. **Planeje monitoramento:** verifique logs de alterações DNS e alerte quando desafios demorarem a propagar.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Depois de automatizar as renovações, precisamos acionar tarefas complementares em cada emissão. No próximo capítulo veremos, com um exemplo inspirador, como hooks e pipelines garantem deploys seguros e coerentes em todo o cartório digital.

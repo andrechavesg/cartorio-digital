@@ -20,6 +20,6 @@ Sem essa estrutura, qualquer pessoa poderia gerar um par de chaves e se passar p
 3. **Defina políticas iniciais:** determine prazos de validade, algoritmos aprovados e critérios de revogação para cada tipo de certificado.
 4. **Crie um cronograma de implantação:** alinhe o plano com equipes jurídicas e de compliance para garantir que as decisões técnicas tenham respaldo regulatório.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com a visão inspiradora definida, precisamos entender a anatomia de um certificado X.509 para construir a cadeia com segurança. No próximo capítulo vamos dissecar cada campo e extensão, começando por um exemplo prático que ilumina o caminho das nossas futuras emissões.

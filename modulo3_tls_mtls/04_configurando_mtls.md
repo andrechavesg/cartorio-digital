@@ -48,6 +48,6 @@ Durante uma auditoria de integração, a secretaria estadual exigiu prova de que
 
 4. **Automatize verificação de revogação:** configure `ssl_crl` ou OCSP stapling para rejeitar certificados revogados.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Com TLS e mTLS operando, podemos elevar o nível adicionando cabeçalhos e mecanismos que reforçam a segurança contínua. No próximo capítulo integraremos HSTS, OCSP stapling e outras práticas inspiradoras que completam o arsenal do cartório digital.

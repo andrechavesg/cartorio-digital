@@ -18,6 +18,6 @@ Uma cidadã precisou assinar digitalmente um testamento e buscou orientação no
 3. Crie roteiros de atendimento que orientem o cidadão sobre requisitos de coleta biométrica e entrega de mídia.
 4. Integre sistemas para registrar o tipo de certificado utilizado em cada ato, permitindo auditorias futuras.
 
-## Gancho para o Próximo Capítulo
+## Próximos passos
 
 Depois de dominar os tipos de certificados, precisamos garantir que a conformidade seja monitorada diariamente. No próximo capítulo conheceremos práticas inspiradoras de governança contínua que mantêm o cartório digital sempre alinhado às normas.

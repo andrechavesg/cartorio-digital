@@ -33,6 +33,14 @@ Ao longo de dez módulos, você vai percorrer desde os fundamentos de criptograf
 - **Entregar serviços contínuos em cloud**, com pipelines de CI/CD, observabilidade de ponta a ponta e governança operacional.
 - **Apresentar um projeto final integrador** que conecta todas as decisões técnicas à experiência de cidadãos, escreventes e órgãos reguladores.
 
+## Sumário dos capítulos
+
+- [Capítulo 1 – Objetivo](modulo4_automacao/01_objetivo.md): Problema → sem metas alinhadas à jornada digital do cartório; Solução → definir objetivos e métricas que orientam a automação de certificados.
+- [Capítulo 2 – Protocolo ACME](modulo4_automacao/02_protocolo_acme.md): Problema → incerteza sobre como comprovar a posse de domínios com segurança; Solução → dissecar o fluxo ACME e os desafios que validam cada requisição.
+- [Capítulo 3 – Certbot HTTP/TLS](modulo4_automacao/03_certbot_http_tls.md): Problema → risco de indisponibilidade ao renovar certificados manualmente; Solução → executar desafios HTTP‑01 e TLS‑ALPN‑01 com automação contínua usando o Certbot.
+- [Capítulo 4 – DNS Challenges AWS](modulo4_automacao/04_dns_challenges_aws.md): Problema → manutenção manual de registros DNS para certificados wildcard; Solução → orquestrar o desafio DNS‑01 via Route 53 para cobrir múltiplas zonas com governança.
+- [Capítulo 5 – Automação com Hooks](modulo4_automacao/05_automacao_hooks.md): Problema → certificados renovados sem implantação rastreável; Solução → construir hooks e pipelines que distribuem chaves, atualizam serviços e registram auditoria.
+
 ## Mapeamento dos módulos
 
 Cada módulo possui um diretório próprio com um **README.md** contendo objetivos de aprendizagem, referências recomendadas e instruções passo a passo. Explore os capítulos conforme a evolução desejada:

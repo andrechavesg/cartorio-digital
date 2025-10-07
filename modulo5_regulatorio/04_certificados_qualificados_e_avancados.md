@@ -34,5 +34,9 @@ No módulo 7 você aprendeu a diferença entre assinaturas qualificada e avanç
 
 ### Atividades
 
-1. Analise um certificado de assinatura qualificada (pode ser um PFX de token ou QSCD europeu) com `openssl x509 -text`. Identifique as extensões `qcStatements` e `policyIdentifier`.
+O cartório digital precisa comprovar que o token QSCD utilizado pelos tabeliães atende a todos os requisitos legais. Para confirmar que o certificado embarcado no dispositivo declara conformidade com QSCD e política qualificada, será necessário inspecionar seu conteúdo detalhadamente; isso nos leva a utilizar o comando `openssl x509 -text`.
+
+1. Para responder ao desafio acima, execute `openssl x509 -text` no certificado de assinatura qualificada (pode ser um PFX de token ou QSCD europeu) e identifique as extensões `qcStatements` e `policyIdentifier`.
 2. Consulte a DPC de uma AC qualificada (QTSP) e verifique os procedimentos exigidos para emissão. Compare com a DPC de uma AC padrão.
+
+Ao dominar essa análise de certificados, você alimenta as decisões de arquitetura e conformidade do projeto final, garantindo que os componentes escolhidos atendam aos requisitos regulatórios desde o início.

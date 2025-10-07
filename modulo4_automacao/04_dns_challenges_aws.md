@@ -16,7 +16,7 @@ Durante os pilotos do projeto, avaliamos diversos provedores DNS. Optamos pelo R
 
 ## Configurando credenciais da AWS
 
-Para que a automação crie os registros TXT do desafio em nome do cartório, precisamos de um usuário IAM com permissões mínimas sobre a zona hospedada oficial. Criamos um usuário dedicado ao pipeline de certificados e aplicamos a ele uma política restrita às zonas `cartorio.gov.br` e `intra.cartorio.gov.br`.
+O primeiro alerta veio quando tentamos renovar o wildcard `*.balcao.cartorio.gov.br` e percebemos que nenhum humano tinha acesso em tempo hábil para criar o registro TXT exigido. Para que a automação crie os desafios em nome do cartório, precisamos de um usuário IAM com permissões mínimas sobre a zona hospedada oficial. Criamos um usuário dedicado ao pipeline de certificados e aplicamos a ele uma política restrita às zonas `cartorio.gov.br` e `intra.cartorio.gov.br`.
 
 Salve as credenciais (Access Key ID e Secret) no arquivo `~/.aws/credentials`. Esse passo permite que o agente de CI conecte-se ao Route 53 durante a fase de emissão:
 
@@ -31,7 +31,7 @@ Quando o pipeline roda em runners efêmeros, exportamos as variáveis `AWS_ACCES
 
 ## Instalando o plugin DNS-Route53
 
-O `certbot` oferece o plugin oficial `certbot-dns-route53`, que fala nativamente com o serviço DNS da AWS. Instalamos o plugin no contêiner da pipeline para que o job de emissão possa manipular automaticamente os registros TXT:
+Assim que o primeiro deploy automático falhou por falta do módulo DNS, ficou claro que o pipeline só seria confiável se o próprio `certbot` pudesse conversar com o Route 53. O plugin oficial `certbot-dns-route53` resolve isso, permitindo criar e apagar registros TXT sem intervenção manual. Instalamos o plugin no contêiner da pipeline para evitar novas corridas contra o relógio:
 
 ```bash
 sudo apt-get install python3-certbot-dns-route53
@@ -43,7 +43,7 @@ Esses comandos garantem que, ao dispararmos a automação, o agente possua o mó
 
 ## Obtendo um certificado wildcard
 
-Com o plugin disponível e as credenciais armazenadas, o pipeline executa o `certbot` apontando para o Route 53. O comando a seguir exemplifica o job que usamos na fase de staging do cartório digital para validar novas integrações de balcões eletrônicos:
+Quando o certificado wildcard expirou em um domingo, tivemos de subir consoles às pressas para criar o TXT `_acme-challenge`. Com o plugin disponível e as credenciais armazenadas, automatizamos esse passo para que o pipeline execute o `certbot` e renove tudo sozinho. O comando a seguir exemplifica o job que usamos na fase de staging do cartório digital para validar novas integrações de balcões eletrônicos:
 
 ```bash
 sudo certbot certonly --dns-route53 \
@@ -55,7 +55,7 @@ sudo certbot certonly --dns-route53 \
 
 O plugin cria o registro TXT `_acme-challenge.cartorio.gov.br`, aguarda a propagação e, após a validação pela ACME, remove o registro. Em seguida o pipeline armazena o certificado em `/etc/letsencrypt/live/cartorio.gov.br/` e o publica em nosso cofre de segredos para ser consumido pelos ambientes de homologação.
 
-Quando precisamos mover para produção, o mesmo job roda em outra branch do pipeline e remove o parâmetro `--server`, permitindo que a Let’s Encrypt emita o certificado definitivo. Para sustentar a continuidade do atendimento no balcão digital, adicionamos uma etapa recorrente de renovação com reload automático dos proxies mTLS que protegem os livros eletrônicos:
+Quando precisamos mover para produção, o mesmo job roda em outra branch do pipeline e remove o parâmetro `--server`, permitindo que a Let’s Encrypt emita o certificado definitivo. Também aprendemos com auditorias que não adianta renovar se o proxy não recarregar o material novo: em um incidente anterior, os certificados ficaram atualizados no disco, mas o Nginx seguiu servindo a cadeia vencida. Para sustentar a continuidade do atendimento no balcão digital, adicionamos uma etapa recorrente de renovação com reload automático dos proxies mTLS que protegem os livros eletrônicos:
 
 ```bash
 sudo certbot renew --dns-route53 --post-hook 'systemctl reload nginx'
@@ -69,7 +69,7 @@ Nosso fluxo CI/CD executa as etapas de DNS-01 logo após a aprovação de mudan�
 
 ## Alternativas e ferramentas
 
-- **lego**: cliente ACME em Go que usamos quando precisamos emitir certificados diretamente em scripts de infraestrutura como código. As variáveis de ambiente abaixo liberam o acesso do nosso usuário IAM e o comando `lego` emite o wildcard necessário para os testes do balcão digital:
+- **lego**: durante um exercício de contingência, detectamos que a dependência no `certbot` era um ponto único de falha para times que usam ferramentas Go em pipelines serverless. Adotamos o cliente ACME em Go quando precisamos emitir certificados diretamente em scripts de infraestrutura como código. As variáveis de ambiente abaixo liberam o acesso do nosso usuário IAM e o comando `lego` emite o wildcard necessário para os testes do balcão digital:
 
   ```bash
   AWS_ACCESS_KEY_ID=SEU_ACCESS_KEY \

@@ -1,8 +1,10 @@
 # ACME: como funciona o protocolo de automação de certificados
 
-O Automatic Certificate Management Environment (ACME) é um protocolo padronizado pelo IETF (RFC 8555) que permite que clientes solicitem, renovem e revoguem certificados automaticamente junto às autoridades certificadoras (ACs) sem intervenção humana. Ele define um fluxo HTTP seguro entre **cliente ACME** e **servidor ACME** (como o Let’s Encrypt) usando assinaturas JWS (JSON Web Signature).
+Quando um certificado expira em produção, cada requisição HTTPS começa a falhar e o cartório digital enfrenta uma cascata de erros em APIs e portais. O Automatic Certificate Management Environment (ACME) surge justamente para evitar essa ruptura: é um protocolo padronizado pelo IETF (RFC 8555) que permite que clientes solicitem, renovem e revoguem certificados automaticamente junto às autoridades certificadoras (ACs) sem intervenção humana. Ele define um fluxo HTTP seguro entre **cliente ACME** e **servidor ACME** (como o Let’s Encrypt) usando assinaturas JWS (JSON Web Signature), devolvendo à operação o controle preventivo sobre renovações.
 
 ## Visão geral do fluxo
+
+Quando não dominamos o fluxo ACME, a equipe corre o risco de descobrir uma renovação falha apenas quando os usuários já enfrentam indisponibilidade. O passo a passo abaixo funciona como antídoto: entender cada fase prepara você para monitorar e automatizar o processo antes que os certificados do ambiente produtivo expirem silenciosamente.
 
 1. **Registro de conta:** O cliente gera uma chave (account key) e registra‑se no servidor ACME informando um endereço de e‑mail para contato. Isso cria uma “conta” que será usada para assinar todas as requisições seguintes.
 2. **Ordem de certificado:** Para solicitar um certificado, o cliente cria uma *ordem* (order) especificando os domínios (identidades) desejados.
@@ -16,7 +18,7 @@ O Automatic Certificate Management Environment (ACME) é um protocolo padronizad
 
 ## Trabalhando com contas e chaves
 
-Para usar ACME você precisa de uma **account key**. Ferramentas como `certbot` gerenciam isso automaticamente, mas você pode explorar o protocolo manualmente com `openssl` e `curl` para fins educacionais:
+Uma falha comum de renovação ocorre quando o time perde a chave de conta (account key) e precisa revalidar todos os domínios às pressas. Prevenir esse caos significa manter uma identidade criptográfica bem gerenciada. Ferramentas como `certbot` fazem isso automaticamente, mas você pode explorar o protocolo manualmente com `openssl` e `curl` para fins educacionais, garantindo que saiba recuperar ou recriar a chave antes que a produção pare:
 
 Pense no nosso cartório digital avançando rumo ao objetivo maior de oferecer renovação contínua de certificados para cada serviço crítico. Em um cenário real, a equipe de infraestrutura percebe que depender de renovações manuais ameaça o compromisso de estabilidade que assumimos no projeto principal, por isso decide registrar uma conta ACME dedicada para o cluster de aplicações. O comando abaixo materializa esse movimento estratégico: ao gerar a chave da conta, criamos a identidade criptográfica que permitirá vincular os domínios do cartório a renovações automáticas e orquestradas, sustentando a visão de automação confiável.
 
@@ -29,6 +31,8 @@ openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out account.key
 ```
 
 ## Desafios na prática
+
+Outra causa frequente de incidentes é escolher um desafio incompatível com o ambiente e perceber o erro apenas quando o certificado já venceu. Antecipe o risco analisando os desafios a seguir: ao mapear portas expostas e integrações DNS, você reduz o intervalo entre a expiração e a correção de serviço.
 
 No próximo capítulo você verá como um cliente ACME (Certbot ou Step‑CLI) abstrai esses detalhes, mas é importante entender as diferenças:
 

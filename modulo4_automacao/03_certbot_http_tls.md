@@ -1,19 +1,19 @@
 # ACME com desafios HTTP-01 e TLS-ALPN-01
 
-Após compreender o protocolo ACME no capítulo anterior, vamos colocar a teoria em prática: usar clientes ACME para responder aos desafios **HTTP-01** e **TLS-ALPN-01**. Esses métodos permitem obter certificados de forma automática, sem intervenção manual, algo essencial para os serviços do cartório digital.
+Quando um certificado expira de madrugada e a aplicação fica inacessível, a pergunta que ecoa é: “por que ninguém automatizou isso?” Após compreender o protocolo ACME no capítulo anterior, vamos colocar a teoria em prática e mostrar como responder aos desafios **HTTP-01** e **TLS-ALPN-01** resolve riscos clássicos — indisponibilidade por falta de servidor web e restrições de firewall que barram a porta 80.
 
 ## HTTP-01 (Standalone e Webroot)
 
-No desafio HTTP-01 o servidor ACME valida o controle do domínio acessando um arquivo estático em `http://<domínio>/.well-known/acme-challenge/<token>`. Para isso você precisa de acesso à porta 80. Existem dois modos comuns de usar o `certbot`:
+O primeiro incidente que o time enfrentou ocorreu porque não havia ninguém para subir o servidor HTTP quando o certificado venceu. O desafio HTTP-01 valida o domínio acessando um arquivo estático em `http://<domínio>/.well-known/acme-challenge/<token>`. Em vez de esperar a pane repetir, configuramos o `certbot` para assumir o controle.
 
-Antes de acionar o modo **standalone**, imagine o plantão noturno do cartório: a aplicação de emissão de certidões precisa renovar o certificado, mas o servidor entrou em manutenção e nenhum serviço web está disponível. O comando abaixo entra como solução rápida, abrindo temporariamente a porta 80 para que a validação aconteça sem depender de um servidor dedicado.
+**Por que standalone?** Quando toda a infraestrutura está em manutenção ou os containers de front-end foram desligados, a renovação falha e os usuários veem erros TLS. O modo standalone abre temporariamente a porta 80 para responder ao desafio, garantindo que a validação aconteça mesmo na ausência de um web server permanente. Só depois de entender esse cenário é que executamos o comando:
 
 ```bash
 sudo certbot certonly --standalone -d seudominio.com \
   --email seu@email.com --agree-tos --non-interactive
 ```
 
-Quando o cartório já mantém um Nginx servindo o portal de solicitações de certidões, porém a equipe teme tocar na infraestrutura para não interromper o atendimento digital, o modo **webroot** resolve: o certbot escreve o arquivo do desafio no diretório publicado e o fluxo segue em produção sem paradas.
+**Por que webroot?** Em outra semana, a equipe evitava mexer no Nginx em produção com medo de quebrar o atendimento digital. A renovação automática falhou porque ninguém criou o arquivo de desafio na pasta servida pelo portal. O modo webroot elimina esse gargalo: o `certbot` deposita o token diretamente no diretório publicado e a validação acontece sem downtime. Só depois de mapear esse risco repetitivo é que incluímos o comando no playbook:
 
 ```bash
 sudo certbot certonly --webroot -w /var/www/html \
@@ -23,7 +23,7 @@ sudo certbot certonly --webroot -w /var/www/html \
 
 > Nota inspiradora: cada certificado emitido mantém a plataforma de certidões eletrônicas e as APIs internas de registro acolhidas sob uma camada de confiança, garantindo que cidadãos e sistemas parceiros encontrem um cartório moderno e seguro.
 
-Use a opção `--test-cert` para usar o ambiente de staging da Let’s Encrypt durante seus testes, evitando o limite de emissões:
+Sempre que repetimos o incidente em um ambiente de testes, utilizamos o ambiente de staging da Let’s Encrypt para comprovar que a automação está resiliente sem comprometer as cotas de produção. Por isso adicionamos ao roteiro o uso de `--test-cert` antes de qualquer mudança ousada:
 
 ```bash
 sudo certbot certonly --standalone --test-cert -d seudominio.com
@@ -33,9 +33,7 @@ Após a emissão, os certificados ficam em `/etc/letsencrypt/live/seudominio.com
 
 ## TLS-ALPN-01
 
-O desafio TLS-ALPN-01 usa a porta 443 em vez da 80. Ele verifica se você controla o domínio por meio de uma conexão TLS com protocolo ALPN `acme-tls/1`. É útil quando a porta 80 está bloqueada (por exemplo, devido a regras de firewall). Para usar esse desafio:
-
-Visualize o cenário do cartório com firewalls rígidos que nunca permitem a abertura da porta 80 para a internet, porque as integrações com órgãos públicos trafegam exclusivamente via TLS. O comando a seguir contorna o impasse e mantém a rotina de emissão de certificados em dia.
+As áreas jurídicas exigiram firewalls rígidos que bloqueiam permanentemente a porta 80. Resultado: todo agendamento de renovação via HTTP-01 fracassava, ameaçando APIs que só podem operar em TLS. A resposta é o desafio TLS-ALPN-01, que valida o domínio pela porta 443 com protocolo ALPN `acme-tls/1`. Depois de alinhar com a equipe de redes que esse fluxo é permitido, rodamos o comando abaixo para manter os certificados em dia:
 
 ```bash
 sudo certbot certonly --standalone \
@@ -43,7 +41,7 @@ sudo certbot certonly --standalone \
   -d seudominio.com --test-cert
 ```
 
-Outra alternativa é o **step-cli**. Instale o Step se ainda não o fez (veja https://github.com/smallstep/cli). Em seguida:
+Quando precisamos do mesmo procedimento em ambientes com pipelines Go ou scripts customizados, adotamos o **step-cli**. A decisão veio após perceber que algumas equipes não tinham privilégios para instalar o `certbot`, mas podiam acionar binários portáteis. Com o Step já instalado (https://github.com/smallstep/cli), aplicamos o comando como solução padrão para contornar firewalls e garantir a continuidade das renovações:
 
 ```bash
 step ca certificate seudominio.com seudominio.crt seudominio.key \

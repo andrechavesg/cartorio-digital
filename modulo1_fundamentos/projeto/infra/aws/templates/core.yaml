@@ -1,0 +1,113 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Cartório Digital - Módulo 1 - Infraestrutura base
+Parameters:
+  EnvironmentName:
+    Type: String
+  BackendImageUri:
+    Type: String
+  FrontendBucketName:
+    Type: String
+Resources:
+  CitizensTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub cartorio-${EnvironmentName}-citizens
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: Id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: Id
+          KeyType: HASH
+  BackendRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub cartorio-${EnvironmentName}-backend-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: CitizensTableAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:Scan
+                Resource: !GetAtt CitizensTable.Arn
+  BackendLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/cartorio-${EnvironmentName}-backend
+      RetentionInDays: 14
+  BackendFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub cartorio-${EnvironmentName}-backend
+      PackageType: Image
+      Code:
+        ImageUri: !Ref BackendImageUri
+      Role: !GetAtt BackendRole.Arn
+      Timeout: 30
+      MemorySize: 512
+      Environment:
+        Variables:
+          CITIZENS_TABLE: !Ref CitizensTable
+  LambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref BackendFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*
+  HttpApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub cartorio-${EnvironmentName}-api
+      ProtocolType: HTTP
+      Target: !Ref BackendFunction
+  ApiStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref HttpApi
+      StageName: prod
+      AutoDeploy: true
+  FrontendBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref FrontendBucketName
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+  FrontendBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref FrontendBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: '*'
+            Action:
+              - s3:GetObject
+            Resource: !Sub arn:aws:s3:::${FrontendBucketName}/*
+Outputs:
+  ApiEndpoint:
+    Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/prod
+  CitizensTableName:
+    Value: !Ref CitizensTable
+  FrontendBucketName:
+    Value: !Ref FrontendBucket

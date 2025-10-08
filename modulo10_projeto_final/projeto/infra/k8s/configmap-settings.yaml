@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cartorio-mod10-settings
+  namespace: cartorio-mod10
+data:
+  awsRegion: us-east-1
+  environment: dev
+  stacks: cartorio-mod1-dev,cartorio-mod4-acme-dev
+  parameterName: /cartorio/dev/summary

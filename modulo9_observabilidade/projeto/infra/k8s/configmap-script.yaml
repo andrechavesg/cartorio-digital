@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cartorio-mod9-script
+  namespace: cartorio-mod9
+data:
+  enable-observability.sh: |-
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    REGION="${AWS_REGION:-us-east-1}"
+    ENVIRONMENT="${ENVIRONMENT:-dev}"
+
+    aws logs create-log-group --region "${REGION}" --log-group-name "/cartorio/${ENVIRONMENT}/observability" || true
+
+    aws cloudwatch put-metric-alarm \
+      --region "${REGION}" \
+      --alarm-name "cartorio-${ENVIRONMENT}-api-latency" \
+      --metric-name Latency \
+      --namespace "AWS/ApiGateway" \
+      --statistic Average \
+      --period 60 \
+      --threshold 500 \
+      --comparison-operator GreaterThanThreshold \
+      --evaluation-periods 1 \
+      --treat-missing-data breaching || true
+
+    aws xray create-group \
+      --region "${REGION}" \
+      --group-name "cartorio-${ENVIRONMENT}" \
+      --filter-expression "service(\"cartorio-${ENVIRONMENT}-backend\")" || true
+
+    aws cloudwatch put-dashboard \
+      --region "${REGION}" \
+      --dashboard-name "cartorio-${ENVIRONMENT}" \
+      --dashboard-body "{\"widgets\":[{\"type\":\"metric\",\"x\":0,\"y\":0,\"width\":12,\"height\":6,\"properties\":{\"metrics\":[[\"AWS/ApiGateway\",\"Latency\",\"ApiName\",\"cartorio-${ENVIRONMENT}-api\"]],\"stat\":\"Average\",\"period\":60,\"title\":\"Latência API\"}}]}" || true

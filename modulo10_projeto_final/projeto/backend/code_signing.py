@@ -73,8 +73,8 @@ class CodeSigningCA:
             subject=certificate.subject.rfc4514_string(),
             certificate_pem=certificate.public_bytes(serialization.Encoding.PEM).decode(),
             key_alias=alias,
-            not_valid_before=certificate.not_valid_before,
-            not_valid_after=certificate.not_valid_after,
+            not_valid_before=certificate.not_valid_before_utc,
+            not_valid_after=certificate.not_valid_after_utc,
         )
         self._issued[certificate.serial_number] = credential
         return credential

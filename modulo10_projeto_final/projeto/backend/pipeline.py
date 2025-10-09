@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Dict, List
 
-from crypto import CodeSigningCA, SigningCredential
+from code_signing import CodeSigningCA, SigningCredential
 from kms import MockKMS
 from signing import ArtifactSigner, SignedArtifact
 

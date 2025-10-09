@@ -53,8 +53,8 @@ class CertificateAuthority:
             serial_number=certificate.serial_number,
             subject=certificate.subject.rfc4514_string(),
             pem=certificate.public_bytes(serialization.Encoding.PEM).decode(),
-            not_valid_before=certificate.not_valid_before,
-            not_valid_after=certificate.not_valid_after,
+            not_valid_before=certificate.not_valid_before_utc,
+            not_valid_after=certificate.not_valid_after_utc,
             purpose=purpose,
         )
         self._issued[issued.serial_number] = issued

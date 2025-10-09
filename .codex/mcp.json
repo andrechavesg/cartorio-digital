@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "wsl": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-wsl-exec"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
+    },
+    "git": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-git",
+        "--repository",
+        "."
+      ]
+    }
+  }
+}

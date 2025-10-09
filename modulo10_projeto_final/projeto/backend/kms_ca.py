@@ -79,8 +79,8 @@ class KmsBackedCA:
             certificate_pem=certificate.public_bytes(serialization.Encoding.PEM).decode(),
             key_alias=key_metadata.alias,
             public_key_pem=key_metadata.public_key_pem,
-            not_valid_before=certificate.not_valid_before,
-            not_valid_after=certificate.not_valid_after,
+            not_valid_before=certificate.not_valid_before_utc,
+            not_valid_after=certificate.not_valid_after_utc,
         )
         self._issued[credential.serial_number] = credential
         return credential

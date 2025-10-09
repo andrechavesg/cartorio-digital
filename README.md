@@ -17,6 +17,7 @@
   - [Módulo 10 – Projeto Final Integrador](modulo10_projeto_final/README.md)
 - [Apêndices](#apêndices)
   - [Apêndice – EJBCA-CE (Community Edition)](apendices/ejbca-ce/README.md)
+  - [Apêndice – Getting Production Ready with AWS KMS](apendices/aws-kms-production/README.md)
 - [Como navegar pelo repositório](#como-navegar-pelo-repositório)
 
 ## Prefácio: a missão do Cartório Digital
@@ -78,6 +79,22 @@ Este apêndice apresenta o **EJBCA-CE**, uma solução de PKI de código aberto 
 - Casos de uso práticos no Cartório Digital
 
 **Acesse:** [apendices/ejbca-ce/README.md](apendices/ejbca-ce/README.md)
+
+### Apêndice – Getting Production Ready with AWS KMS
+
+Este apêndice apresenta um guia completo para levar a infraestrutura de PKI do Cartório Digital para **produção na AWS**, utilizando serviços gerenciados como AWS KMS, AWS Private CA, Secrets Manager e outros componentes críticos para um ambiente enterprise-grade.
+
+**Conteúdo:**
+- Arquitetura de referência Multi-AZ para alta disponibilidade
+- AWS KMS para proteção de chaves criptográficas (FIPS 140-2)
+- AWS Private CA para hierarquias de CA gerenciadas
+- Infrastructure as Code com Terraform
+- Segurança em camadas (network, IAM, encryption)
+- Monitoramento e observabilidade com CloudWatch
+- Disaster Recovery e procedimentos de backup
+- Análise de custos e otimizações
+
+**Acesse:** [apendices/aws-kms-production/README.md](apendices/aws-kms-production/README.md)
 
 ## Como navegar pelo repositório
 

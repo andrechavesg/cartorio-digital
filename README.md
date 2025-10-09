@@ -14,7 +14,9 @@
   - [Módulo 7 – Assinatura de Artefatos Digitais](modulo7_assinatura_artefatos/README.md)
   - [Módulo 8 – Cloud e CI/CD do Cartório](modulo8_cloud_cicd/README.md)
   - [Módulo 9 – Observabilidade e Transparência](modulo9_observabilidade/README.md)
-  - [Módulo 10 – Projeto Final Integrador](modulo10_projeto_final/README.md)
+  - [Módulo 10 – Projeto Final Integrador](modulo10_projeto_final/README.md)
+- [Apêndices](#apêndices)
+  - [Apêndice – EJBCA-CE (Community Edition)](apendices/ejbca-ce/README.md)
 - [Como navegar pelo repositório](#como-navegar-pelo-repositório)
 
 ## Prefácio: a missão do Cartório Digital
@@ -59,6 +61,23 @@ Cada módulo possui um diretório próprio com um **README.md** contendo objetiv
 | **10** | Projeto Final Integrador | Entrega do cartório digital completo, pronto para auditorias e para operar com o SERP. |
 
 Os links diretos para os módulos estão disponíveis no [sumário](#sumário).
+
+## Apêndices
+
+### Apêndice – EJBCA-CE (Community Edition)
+
+Este apêndice apresenta o **EJBCA-CE**, uma solução de PKI de código aberto que complementa os conceitos trabalhados ao longo dos módulos. O EJBCA-CE é uma implementação de referência para construção de Autoridades Certificadoras (CA) robustas e escaláveis.
+
+**Conteúdo:**
+- Introdução ao EJBCA-CE e seu papel em projetos de PKI
+- Arquitetura e componentes (CA, RA, VA)
+- Guia de instalação com Docker
+- Gestão completa de certificados (emissão, renovação, revogação)
+- Protocolos suportados (ACME, SCEP, EST, CMP, REST API)
+- Comparação com AWS Private CA e outras soluções comerciais
+- Casos de uso práticos no Cartório Digital
+
+**Acesse:** [apendices/ejbca-ce/README.md](apendices/ejbca-ce/README.md)
 
 ## Como navegar pelo repositório
 

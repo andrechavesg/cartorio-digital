@@ -1,10 +1,22 @@
 # Infraestrutura — Módulo 4 (Automação ACME)
 
-Este módulo usa manifests Kubernetes para acionar um `Job` que aplica a stack
-CloudFormation responsável por DynamoDB, SQS e Step Functions utilizados no
-fluxo ACME.
+Esta pasta oferece duas alternativas para aplicar a stack CloudFormation com
+DynamoDB, SQS e Step Functions utilizadas no fluxo ACME:
 
-## Execução
+- **Scripts AWS CLI** em `infra/aws` para execução direta no terminal.
+- **Manifests Kubernetes** em `infra/k8s`, que disparam um `Job` compatível com
+  clusters gerenciados ou Minikube.
+
+## Execução direta com AWS CLI (`infra/aws`)
+
+```bash
+cd infra/aws
+./01-deploy-acme.sh
+```
+
+Use `AWS_REGION` e `ENVIRONMENT` para ajustar nomes.
+
+## Execução via Kubernetes/Minikube (`infra/k8s`)
 
 ```bash
 kubectl apply -k infra/k8s

@@ -1,9 +1,18 @@
 # Infraestrutura — Módulo 7 (Assinatura de Artefatos)
 
-Provisiona chave de assinatura dedicada, bucket versionado e tabela DynamoDB
-via `Job` Kubernetes.
+Disponibiliza scripts AWS CLI e manifests Kubernetes para provisionar a chave de
+assinatura dedicada, o bucket versionado e a tabela DynamoDB do módulo.
 
 ## Execução
+
+## Execução direta com AWS CLI (`infra/aws`)
+
+```bash
+cd infra/aws
+./01-code-signing.sh
+```
+
+## Execução via Kubernetes/Minikube (`infra/k8s`)
 
 ```bash
 kubectl apply -k infra/k8s

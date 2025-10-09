@@ -2,6 +2,30 @@
 
 Este apêndice apresenta o **EJBCA-CE (EJBCA Community Edition)**, uma solução de PKI de código aberto que complementa os conceitos trabalhados ao longo dos módulos do projeto Cartório Digital. O EJBCA-CE é uma implementação de referência para construção de Autoridades Certificadoras (CA) robustas e escaláveis, oferecendo recursos profissionais para gestão completa de certificados digitais.
 
+## Código-fonte do EJBCA-CE
+
+O código-fonte oficial do EJBCA-CE está disponível como um **git submodule** neste projeto, no diretório:
+
+```
+apendices/ejbca-ce/ejbca-ce-source/
+```
+
+Para clonar o repositório completo incluindo o código-fonte do EJBCA-CE:
+
+```bash
+git clone --recursive https://github.com/andrechavesg/cartorio-digital
+```
+
+Ou, se já clonou o repositório, inicialize os submodules:
+
+```bash
+git submodule update --init --recursive
+```
+
+**Repositório oficial:** [https://github.com/Keyfactor/ejbca-ce](https://github.com/Keyfactor/ejbca-ce)
+
+> **Nota:** Este submodule aponta para o repositório oficial do EJBCA-CE mantido pela Keyfactor, permitindo acesso direto ao código-fonte para estudo, experimentação e referência técnica.
+
 ## Sumário dos capítulos
 
 1. [O que é o EJBCA-CE](01_introducao.md) – Visão geral, histórico e licenciamento.

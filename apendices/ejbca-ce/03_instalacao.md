@@ -23,6 +23,34 @@ Antes de instalar o EJBCA-CE, certifique-se de ter:
 - Conceitos básicos de Docker
 - Noções de PKI (módulos 1 e 2 deste curso)
 
+## Executando a partir deste repositório
+
+O código-fonte de referência deste módulo está em `apendices/ejbca-ce/ejbca-ce-source`. Ele acompanha arquivos de configuração prontos para uso, incluindo a habilitação de `awskms.cryptotoken.enabled=true`, e um `docker-compose.yml` na raiz de `apendices/ejbca-ce` para orquestrar os serviços necessários.
+
+Para levantar o ambiente utilizando o material deste repositório:
+
+1. A partir da raiz do projeto, entre no diretório do módulo:
+
+   ```bash
+   cd apendices/ejbca-ce
+   ```
+
+2. Caso deseje customizações adicionais, copie `ejbca-ce-source/conf/web.properties.sample` para `ejbca-ce-source/conf/web.properties` antes de subir os serviços.
+
+3. Suba a stack localmente (usa MariaDB e expõe HTTP/HTTPS):
+
+   ```bash
+   docker compose up -d
+   ```
+
+4. Acompanhe a inicialização pela composição:
+
+   ```bash
+   docker compose logs -f ejbca
+   ```
+
+Os próximos passos deste capítulo seguem válidos e podem ser executados sobre esse ambiente provisionado localmente.
+
 ## Instalação com Docker (método recomendado)
 
 Este é o método mais rápido para ter um ambiente EJBCA-CE funcional.

@@ -1,0 +1,48 @@
+version: "3.8"
+
+networks:
+  access-bridge:
+    driver: bridge
+  application-bridge:
+    driver: bridge
+
+services:
+  ejbca-database:
+    image: mariadb:latest
+    container_name: ejbca-database
+    networks:
+      - application-bridge
+    environment:
+      - MYSQL_ROOT_PASSWORD=foo123
+      - MYSQL_DATABASE=ejbca
+      - MYSQL_USER=ejbca
+      - MYSQL_PASSWORD=ejbca
+    volumes:
+      - ./datadbdir:/var/lib/mysql:rw
+    restart: unless-stopped
+
+  ejbca-node1:
+    image: keyfactor/ejbca-ce:latest
+    # If you want to build your own image from this repo later, replace the
+    # image: line with the following build: block:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    hostname: ejbca-node1
+    container_name: ejbca
+    depends_on:
+      - ejbca-database
+    networks:
+      - access-bridge
+      - application-bridge
+    environment:
+      - DATABASE_JDBC_URL=jdbc:mariadb://ejbca-database:3306/ejbca?characterEncoding=UTF-8
+      - LOG_LEVEL_APP=INFO
+      - LOG_LEVEL_SERVER=INFO
+      - TLS_SETUP_ENABLED=simple
+      # Note: use `simple` for first-time setup without client certs;
+      # switch to client-cert auth afterwards.
+    ports:
+      - "80:8080"
+      - "443:8443"
+    restart: unless-stopped

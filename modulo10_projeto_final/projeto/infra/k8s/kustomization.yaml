@@ -6,3 +6,7 @@ resources:
   - configmap-settings.yaml
   - configmap-script.yaml
   - job-aggregate-outputs.yaml
+  - deployment-backend.yaml
+  - service-backend.yaml
+  - deployment-frontend.yaml
+  - service-frontend.yaml

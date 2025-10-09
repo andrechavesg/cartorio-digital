@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cartorio-frontend
+  namespace: cartorio-mod10
+  labels:
+    app: cartorio-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cartorio-frontend
+  template:
+    metadata:
+      labels:
+        app: cartorio-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: cartorio-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80

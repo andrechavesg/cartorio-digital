@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cartorio-backend
+  namespace: cartorio-mod10
+  labels:
+    app: cartorio-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cartorio-backend
+  template:
+    metadata:
+      labels:
+        app: cartorio-backend
+    spec:
+      containers:
+        - name: backend
+          image: cartorio-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000

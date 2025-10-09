@@ -31,6 +31,66 @@ python -m http.server 3000
 
 Acesse `http://localhost:3000` para interagir com todos os fluxos.
 
+### Execução com Docker
+
+```bash
+# Backend
+docker build -t cartorio-backend:latest backend/
+docker run --rm -p 8000:8000 cartorio-backend:latest
+
+# (opcional) Frontend estático
+docker build -t cartorio-frontend:latest frontend/
+docker run --rm -p 3000:80 cartorio-frontend:latest
+```
+
+> O frontend consome a API em `http://localhost:8000`, portanto mantenha o contêiner do backend ativo antes de iniciar o frontend.
+
+### Execução com Docker Compose
+
+```bash
+cd modulo10_projeto_final/projeto
+docker compose up --build
+```
+
+- A API ficará disponível em `http://localhost:8000`.
+- O frontend estará em `http://localhost:3000`.
+
+Para encerrar e remover os contêineres:
+
+```bash
+docker compose down
+```
+
+### Execução em Minikube
+
+```bash
+minikube start
+
+# Construa as imagens diretamente no cluster
+minikube image build -t cartorio-backend:latest backend/
+minikube image build -t cartorio-frontend:latest frontend/
+
+# Aplique os manifests com Kustomize
+kubectl apply -k infra/k8s
+```
+
+Para expor os serviços localmente:
+
+```bash
+# Frontend
+minikube service cartorio-frontend -n cartorio-mod10 --url
+
+# API (alternativa com port-forward)
+kubectl port-forward -n cartorio-mod10 svc/cartorio-backend 8000:8000
+```
+
+Finalize os recursos:
+
+```bash
+kubectl delete -k infra/k8s
+minikube stop
+```
+
 ## Validação sugerida
 
 1. Cadastre um cidadão, emita certificado de cliente e valide o compliance.

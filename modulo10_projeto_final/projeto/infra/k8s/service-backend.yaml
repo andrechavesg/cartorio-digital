@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cartorio-backend
+  namespace: cartorio-mod10
+  labels:
+    app: cartorio-backend
+spec:
+  selector:
+    app: cartorio-backend
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000

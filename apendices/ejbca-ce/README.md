@@ -154,6 +154,14 @@ O EJBCA-CE pode ser usado no projeto Cartório Digital para:
    - Manter uma CA secundária para cenários de continuidade de negócio
    - Servir como fallback em caso de indisponibilidade de provedores externos
 
+## Integração com AWS KMS
+
+- **Proteção de chaves privadas:** O EJBCA suporta `AWSKMSCryptoToken`, permitindo que operações de assinatura usem chaves armazenadas no AWS Key Management Service enquanto o EJBCA gerencia apenas fluxos e políticas. As chaves nunca saem do HSM gerenciado pela AWS.
+- **Disponibilidade na edição certa:** O código da Community Edition referencia o token AWS KMS (por exemplo, `modules/ejbca-ejb-cli/src/org/ejbca/ui/cli/cryptotoken/CryptoTokenCreateCommand.java` e `modules/admin-gui/src/org/ejbca/ui/web/admin/cryptotoken/CryptoTokenMBean.java`), mas a classe concreta é distribuída com a edição Enterprise. Em implantações CE é necessário adicionar manualmente o provider correspondente para habilitar o recurso.
+- **Provisionamento típico:** Criar o crypto token via CLI (`./bin/ejbca.sh cryptotoken create --type AWSKMSCryptoToken --awskmsregion us-east-1 ...`), ativá-lo e associá-lo ao CA Token. Utilizar credenciais ou perfis de IAM/STS (`AwsKmsAuthenticationType`) para autenticar chamadas ao KMS.
+- **Persistência de certificados:** Apenas operações de chave usam KMS; metadados de certificados, CRLs e auditoria continuam armazenados no banco do EJBCA. Para arquivar certificados em serviços AWS adicionais (por exemplo, S3), configure publishers ou integrações complementares.
+- **Próximos passos para produção:** Para um guia completo de hardening, automação e conformidade usando serviços AWS (KMS, Private CA, Secrets Manager, observabilidade, DR), consulte o apêndice dedicado em `apendices/aws-kms-production/README.md`.
+
 ## Diferenças entre EJBCA-CE e soluções comerciais
 
 | Aspecto | EJBCA-CE | AWS Private CA | ICP-Brasil TSP |

@@ -1,0 +1,85 @@
+version: '3.9'
+services:
+  localstack:
+    image: localstack/localstack:1.4
+    environment:
+      - SERVICES=kms,s3,sqs,sns,sts,iam
+      - DEFAULT_REGION=us-east-1
+    ports:
+      - '4566:4566'
+    volumes:
+      - ./scripts/localstack:/docker-entrypoint-initaws.d
+
+  mock-hsm:
+    image: ghcr.io/openca/mock-hsm:latest
+    ports:
+      - '8443:8443'
+
+  identity-service:
+    build:
+      context: ./backend
+      dockerfile: services/identity/Dockerfile
+    depends_on:
+      - localstack
+      - mock-hsm
+
+  enrollment-service:
+    build:
+      context: ./backend
+      dockerfile: services/enrollment/Dockerfile
+    depends_on:
+      - identity-service
+
+  issuance-service:
+    profiles: [full]
+    build:
+      context: ./backend/services/issuance
+    depends_on:
+      - enrollment-service
+      - mock-hsm
+
+  revocation-service:
+    profiles: [full]
+    build:
+      context: ./backend/services/revocation
+    depends_on:
+      - issuance-service
+
+  validation-service:
+    profiles: [full]
+    build:
+      context: ./backend/services/validation
+    depends_on:
+      - issuance-service
+
+  audit-service:
+    profiles: [full]
+    build:
+      context: ./backend/services/audit
+
+  publisher-service:
+    profiles: [full]
+    build:
+      context: ./backend/services/publisher
+      
+  operator-portal:
+    profiles: [full]
+    build:
+      context: ./frontend/operator-portal
+    depends_on:
+      - identity-service
+      - issuance-service
+
+  ra-portal:
+    profiles: [full]
+    build:
+      context: ./frontend/ra-portal
+    depends_on:
+      - enrollment-service
+
+  auditor-portal:
+    profiles: [full]
+    build:
+      context: ./frontend/auditor-portal
+    depends_on:
+      - audit-service

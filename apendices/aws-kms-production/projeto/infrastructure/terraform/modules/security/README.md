@@ -1,0 +1,9 @@
+# Módulo security
+
+Implementa os recursos de serviços de segurança gerenciados (GuardDuty, Config, CloudTrail, IAM). Consulte 05_iac_terraform.md para variáveis obrigatórias, outputs e dependências.
+
+## Próximos passos
+
+1. Definir inputs (variables.tf) refletindo padrões de segurança.
+2. Implementar recursos Terraform idempotentes.
+3. Adicionar testes terratest e varreduras Checkov/tfsec.

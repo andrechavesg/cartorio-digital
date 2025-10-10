@@ -1,6 +1,7 @@
 from typing import Dict, List
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 
 from acme import AcmeDirectory, AcmeOrder
@@ -86,6 +87,19 @@ class LogRequest(BaseModel):
 
 
 app = FastAPI(title="Cartório Digital - Projeto Final")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.options("/{full_path:path}")
+def preflight(full_path: str) -> Response:
+    return Response(status_code=204)
 
 citizens: Dict[str, CitizenRecord] = {}
 compliance_engine = ComplianceEngine()

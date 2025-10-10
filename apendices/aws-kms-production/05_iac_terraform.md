@@ -410,6 +410,284 @@ resource "aws_kms_alias" "data_encryption" {
 }
 ```
 
+## Módulo: Private CA
+
+### `modules/private-ca/main.tf`
+
+```hcl
+resource "aws_acmpca_certificate_authority" "intermediate" {
+  permanent_deletion_time_in_days = 7
+  type                            = "SUBORDINATE"
+
+  certificate_authority_configuration {
+    key_algorithm     = "RSA_2048"
+    signing_algorithm = "SHA256WITHRSA"
+    subject {
+      common_name  = "${var.project_name} Intermediate CA"
+      organization = "Cartorio Digital"
+      country      = "BR"
+    }
+  }
+
+  revocation_configuration {
+    crl_configuration {
+      enabled            = true
+      expiration_in_days = 7
+      s3_bucket_name     = var.crl_bucket_name
+      custom_cname       = "crl.${var.domain_name}"
+    }
+  }
+
+  tags = merge(var.common_tags, {
+    Name = "${var.project_name}-intermediate-ca"
+  })
+}
+
+resource "aws_acmpca_permission" "private_ca" {
+  certificate_authority_arn = aws_acmpca_certificate_authority.intermediate.arn
+  principal                 = "acm.amazonaws.com"
+  actions                   = ["IssueCertificate", "GetCertificate", "ListPermissions"]
+  source_account            = var.aws_account_id
+}
+```
+
+Esse módulo entrega a CA subordinada usada pelos fluxos de emissão descritos no Capítulo 3, publica CRLs em S3 e garante aderência ao DOC-ICP-05.
+
+## Módulo: ECS (Serviços aplicacionais)
+
+### `modules/ecs/main.tf`
+
+```hcl
+resource "aws_ecs_cluster" "main" {
+  name = "${var.project_name}-cluster"
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
+  tags = var.common_tags
+}
+
+resource "aws_ecs_task_definition" "ejbca" {
+  family                   = "${var.project_name}-ejbca"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = "1024"
+  memory                   = "2048"
+  execution_role_arn       = var.ecs_execution_role_arn
+  task_role_arn            = var.ecs_task_role_arn
+
+  container_definitions = jsonencode([
+    {
+      name        = "ejbca"
+      image       = var.ejbca_image
+      essential   = true
+      portMappings = [
+        { containerPort = 8080, hostPort = 8080, protocol = "tcp" },
+        { containerPort = 8443, hostPort = 8443, protocol = "tcp" }
+      ]
+      environment = [
+        { name = "DATABASE_JDBC_URL", value = var.jdbc_url },
+        { name = "TLS_SETUP_ENABLED", value = "simple" },
+        { name = "LOG_LEVEL_APP", value = "INFO" }
+      ]
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = "/ecs/${var.project_name}/ejbca"
+          awslogs-region        = var.aws_region
+          awslogs-stream-prefix = "ecs"
+        }
+      }
+    }
+  ])
+}
+
+resource "aws_ecs_service" "ejbca" {
+  name                  = "${var.project_name}-ejbca"
+  cluster               = aws_ecs_cluster.main.id
+  task_definition       = aws_ecs_task_definition.ejbca.arn
+  desired_count         = var.desired_count
+  launch_type           = "FARGATE"
+  enable_execute_command = true
+
+  network_configuration {
+    assign_public_ip = false
+    subnets          = var.private_app_subnets
+    security_groups  = [var.ejbca_sg_id]
+  }
+
+  load_balancer {
+    target_group_arn = var.alb_target_group_arn
+    container_name   = "ejbca"
+    container_port   = 8443
+  }
+
+  deployment_controller {
+    type = "CODE_DEPLOY"
+  }
+
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
+}
+```
+
+O módulo consome sub-redes privadas e security groups gerados pelo módulo de rede, expõe o ARN do serviço e habilita observabilidade via Container Insights.
+
+## Módulo: RDS / Aurora PostgreSQL
+
+### `modules/rds/main.tf`
+
+```hcl
+resource "aws_db_subnet_group" "main" {
+  name       = "${var.project_name}-aurora-subnets"
+  subnet_ids = var.private_data_subnets
+  tags       = var.common_tags
+}
+
+resource "aws_rds_cluster" "aurora" {
+  cluster_identifier      = "${var.project_name}-aurora"
+  engine                  = "aurora-postgresql"
+  engine_mode             = "provisioned"
+  master_username         = var.master_username
+  master_password         = var.master_password
+  database_name           = "ejbca"
+  backup_retention_period = 7
+  storage_encrypted       = true
+  kms_key_id              = var.kms_key_id
+  db_subnet_group_name    = aws_db_subnet_group.main.name
+  vpc_security_group_ids  = [var.db_sg_id]
+  enabled_cloudwatch_logs_exports = ["postgresql"]
+  copy_tags_to_snapshot   = true
+  tags = merge(var.common_tags, { Name = "${var.project_name}-aurora" })
+}
+
+resource "aws_rds_cluster_instance" "aurora_instances" {
+  count              = 2
+  identifier         = "${var.project_name}-aurora-${count.index}"
+  cluster_identifier = aws_rds_cluster.aurora.id
+  instance_class     = var.instance_class
+  engine             = aws_rds_cluster.aurora.engine
+  engine_version     = aws_rds_cluster.aurora.engine_version
+  publicly_accessible = false
+  monitoring_interval = 60
+  performance_insights_enabled = true
+}
+```
+
+## Módulo: Observabilidade & DR
+
+```hcl
+resource "aws_cloudwatch_log_group" "ecs" {
+  name              = "/ecs/${var.project_name}"
+  retention_in_days = 90
+  kms_key_id        = var.logs_kms_key_id
+  tags              = var.common_tags
+}
+
+resource "aws_cloudwatch_dashboard" "operations" {
+  dashboard_name = "${var.project_name}-operations"
+  dashboard_body = file("${path.module}/dashboards/operations.json")
+}
+
+resource "aws_backup_vault" "main" {
+  name        = "${var.project_name}-backup-vault"
+  kms_key_arn = var.backup_kms_key_arn
+  tags        = var.common_tags
+}
+
+resource "aws_backup_plan" "aurora" {
+  name = "${var.project_name}-aurora-plan"
+  rule {
+    rule_name         = "daily-backup"
+    target_vault_name = aws_backup_vault.main.name
+    schedule          = "cron(0 5 * * ? *)"
+    lifecycle {
+      cold_storage_after = 30
+      delete_after       = 365
+    }
+  }
+}
+
+resource "aws_backup_selection" "aurora" {
+  iam_role_arn = var.backup_role_arn
+  name         = "aurora-selection"
+  plan_id      = aws_backup_plan.aurora.id
+  resources    = [aws_rds_cluster.aurora.arn]
+}
+```
+
+## Parâmetros por ambiente
+
+Cada diretório em `terraform/environments/` referencia os módulos com valores reais. Exemplo (`environments/prod/terraform.tfvars`):
+
+```hcl
+project_name       = "cartorio-prod"
+aws_region         = "sa-east-1"
+availability_zones = ["sa-east-1a", "sa-east-1b", "sa-east-1c"]
+domain_name        = "cartorio.gov.br"
+crl_bucket_name    = "cartorio-prod-crl"
+desired_count      = 3
+instance_class     = "db.r6g.large"
+master_username    = "ejbca_admin"
+master_password    = var.rds_master_password
+common_tags = {
+  Environment = "prod"
+  Owner       = "PKI Team"
+  Compliance  = "ICP-Brasil"
+}
+```
+
+## Orquestração com ECS e EKS
+
+- **ECS Fargate** hospeda EJBCA, APIs e serviços auxiliares com autoscaling baseado em CPU, memória e profundidade de fila SQS.
+- **App Mesh** adiciona mTLS interno e observabilidade (X-Ray) provisionada por módulo opcional `modules/app-mesh`.
+- **CodeDeploy** executa deploy blue/green no ECS usando o `deployment_controller` definido acima, com rollback automático.
+- **EKS opcional**: workloads que exigem sidecars específicos (ex.: validação biométrica) podem ser implantados via módulo `modules/eks/`, reutilizando a VPC e sub-redes privadas criadas anteriormente.
+
+## Ambiente local com Docker Compose
+
+Para desenvolvimento, oferecemos `compose/dev/docker-compose.yml`:
+
+```yaml
+version: "3.8"
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+    environment:
+      - SERVICES=acm,kms,s3,sqs,cloudwatch,secretsmanager
+      - AWS_DEFAULT_REGION=sa-east-1
+    ports:
+      - "4566:4566"
+    volumes:
+      - ./localstack:/var/lib/localstack
+
+  ejbca:
+    image: keyfactor/ejbca-ce:latest
+    environment:
+      - TLS_SETUP_ENABLED=simple
+      - DATABASE_JDBC_URL=jdbc:h2:/mnt/persistent/ejbcadb
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./ejbca-data:/mnt/persistent
+
+  mock-hsm:
+    image: fortanix/pkcs11-mock:latest
+    ports:
+      - "3001:3001"
+```
+
+O script `scripts/dev/bootstrap-local.sh` cria recursos no LocalStack (buckets, chaves KMS, tópicos SNS) para espelhar os outputs do Terraform e facilitar testes end-to-end.
+
+## Observabilidade & DR automatizados
+
+- Dashboards e alarmes CloudWatch são versionados com Terraform (módulo `observability`).
+- AWS Backup mantém RPO=15 min e retenção de 365 dias conforme DOC-ICP-10.
+- `scripts/dr/run-drill.sh` automatiza exercícios trimestrais (failover Aurora + restauração S3) e armazena relatórios em `s3://cartorio-prod-dr-reports/`.
+- Alarmes críticos (ALB 5xx, OCSP latency, fila de revogação) disparam SNS → PagerDuty/Slack com meta de resposta < 15 min.
+
 ### `modules/kms/variables.tf`
 
 ```hcl
@@ -813,6 +1091,14 @@ jobs:
         working-directory: terraform/environments/prod
         run: terraform apply -auto-approve
 ```
+
+**Pipeline em estágios**
+
+1. **Lint & Security** – `terraform fmt`, `terraform validate`, `tflint` e `checkov` garantem conformidade e ausência de drifts.
+2. **Plan review** – artefato do `terraform plan` é publicado no PR; comentários automáticos destacam recursos impactados.
+3. **Apply controlado** – ambientes `dev` aplicam automaticamente após merge; `staging` e `prod` exigem *manual approval* (branch protection + reviewers).
+4. **Smoke tests pós-apply** – script `scripts/post-apply-smoke.sh` valida saúde do ALB, ECS e RDS; falhas cancelam a promoção.
+5. **Promotions** – CodePipeline opcional integra com ServiceNow/Change Management para releases regulamentados.
 
 ## Próximos passos
 

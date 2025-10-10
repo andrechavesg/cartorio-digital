@@ -37,6 +37,76 @@ A arquitetura de produção do Cartório Digital na AWS segue os **AWS Well-Arch
 - Uso de regiões com energia renovável
 - Otimização de recursos (menos compute = menos carbono)
 
+## Fase 2 – Arquitetura e Infraestrutura
+
+### 2.1 Arquitetura lógica
+
+| Domínio | Serviços | Responsabilidades principais | Integrações e observações de conformidade |
+| --- | --- | --- | --- |
+| Identidade & RA | Identity Proofing API, Enrollment Service, Evidence Vault | Captura/validação de identidade, workflows de RA, guarda de evidências criptografadas | Integrações com Gov.br, biometria, validação documental; armazena hashes em `Evidence Ledger` com KMS/HSM homologado |
+| Emissão | Certificate Issuance API, Profile Manager, Signing Orchestrator | Gestão de perfis DOC-ICP-08, orquestração de requisições CMP/SCEP/ACME/REST | Encaminha requisições a CloudHSM/AWS KMS + EJBCA; aplica segregação de funções (operador x aprovador) |
+| Revogação & Publicação | Revocation Workflow, CRL Publisher, OCSP/TSA responders | Autoriza pedidos de revogação, publica CRL/OCSP, carimbar tempo (TSA) | Publica CRLs em S3 + CloudFront (immutability), assina OCSP/TSA com chaves dedicadas |
+| Auditoria & Compliance | Audit Collector, Evidence Exporter, Metrics Service | Registro imutável (append-only), geração de relatórios ITI, coleta CloudTrail/AWS Config | Envia trilhas para OpenSearch/S3 Glacier, mantém checks automáticos DOC-ICP |
+| Portais & Integrações | RA Portal, Operator Console, Auditor Workspace, External APIs | Experiência web (Next.js) para operadores/auditores, integrações B2B (Webhooks/mTLS) | Autenticação federada (AWS SSO), MFA obrigatório, RBAC/ABAC baseado em persona |
+
+**Mensageria e eventos**
+- SNS/SQS para notificações assíncronas (ex.: aprovação de RA, revogação emergencial).
+- EventBridge orquestra runbooks automáticos (backup, rotação de chaves, auditorias).
+- Kinesis Data Firehose alimenta Data Lake/Athena com registros de auditoria.
+
+### 2.2 Arquitetura física e topologia AWS
+
+- **Landing Zone multi-conta**: contas separadas para `prod`, `stage`, `audit`, `shared-services`; AWS Organizations com SCP restringindo ações fora da baseline.
+- **VPC produtiva** com três zonas de disponibilidade e segmentação por função:
+  - Sub-redes públicas (ALB/WAF, bastion, NAT Gateways).
+  - Sub-redes privadas de aplicação (ECS Fargate, Lambda, App Mesh).
+  - Sub-redes restritas de dados (RDS/Aurora PostgreSQL, ElastiCache, OpenSearch) com security groups somente internos.
+  - Sub-rede dedicada a **CloudHSM cluster** (porta 1792/2225 liberadas apenas para emissor).
+- **Fronteira de segurança**: AWS WAF + Shield Advanced no ALB, AWS Firewall Manager aplicando regras centralizadas.
+- **Conectividade segura**: AWS Client VPN para operadores, AWS SSO + mTLS para APIs externas, VPC Endpoints para S3, KMS, Secrets Manager, CloudWatch e SQS evitando tráfego pela Internet.
+- **Observabilidade**: Service Mesh (App Mesh) coleta métricas (X-Ray, CloudWatch). OpenSearch + CloudWatch Logs Insights para análise de auditoria e incidentes.
+- **Alta disponibilidade**: componentes distribuídos em múltiplas AZs; Private CA (EJBCA) roda em ECS Fargate com storage em EFS criptografado.
+
+### 2.3 Modelos de dados e armazenamento
+
+| Dataset / evidência | Serviço AWS | Política de retenção | Salvaguardas ITI |
+| --- | --- | --- | --- |
+| Metadados de certificados, perfis, logs operacionais | Amazon Aurora PostgreSQL (multi-AZ) | PITR 35 dias + snapshots semanais | CMK dedicado, TLS 1.2, segregação de acesso (IAM + credenciais temporárias) |
+| Evidências de RA (documentos, biometria) | S3 bucket `evidence-vault` (SSE-KMS) + Glacier Deep Archive | 12 anos (RA) conforme DOC-ICP-05 | Versionamento, Object Lock (compliance mode), replicação cross-region opcional |
+| Trilhas de auditoria técnica | CloudTrail + S3 `audit-logs` + Athena | 7 anos | CloudTrail org-wide, digest logs, Lambda verifica integridade (hash chain) |
+| CRLs, OCSP responses, TSA tokens | S3 + CloudFront, ElastiCache (cache quente) | CRL 24h, OCSP 8h, TSA 2 anos | Publicação dupla (S3 + repo externo), assinaturas carimbo do tempo, validação automática |
+| Segredos e chaves operacionais | AWS Secrets Manager, AWS KMS, CloudHSM | Rotação 90 dias (segredos), 12 meses (chaves operacionais), RAIZ manual | Key policies com dual control, integrações automáticas com EJBCA e scripts de cerimônia |
+
+### 2.4 Artefatos de documentação e diagramas
+
+- **Diagramas C4**:
+  - Nível 1 (Contexto) – posiciona RA, operadores, auditores, integrações governamentais.
+  - Nível 2 (Contêiner) – relaciona microserviços, Fargate/ECS, Lambda, mensageria.
+  - Nível 3 (Componente) – detalha módulos críticos (Issuance Orchestrator, Audit Collector).
+  - Nível 4 (Código) – opcional para módulos regulatórios (ex.: assinatura de CRL).
+- **Mapas de rede**: detalhar CIDRs, security groups, fluxos de portas críticas (CMP, SCEP, OCSP, TSA).
+- **Blueprint de Key Ceremony**: documento com sequência de passos, controles de dupla custódia e registro em vídeo (referencia Fase 6).
+- **Catálogo de APIs**: especificações OpenAPI com requisitos de mTLS, envelopes criptografados.
+- **Repositório central** (`docs/architecture`): armazenar diagramas (PlantUML ou Structurizr), tabelas de matrizes de controle e listas de verificação ITI.
+
+## Alinhamento com Fase 1 – Controles e Personas
+
+- **Personas e segregação de funções**
+  - *Agente RA*: fluxo guiado no RA Portal, requisições aprovadas por Operador, com dupla custódia para revogações críticas (DOC-ICP-05).
+  - *Operador de Emissão*: acessa Issuance Orchestrator via console protegido (MFA + mTLS), não possui permissão de alterar políticas KMS (least privilege).
+  - *Administrador de Segurança*: gerencia políticas IAM/KMS, audita CloudTrail; acesso via conta privilegiada com bastion e sessão gravada.
+  - *Auditor/OAT*: workspace somente leitura com relatórios e exportação de evidências (Athena/QuickSight) + auditoria imutável.
+  - *Subscritor/Cliente*: integrações via APIs externas com contratos ACME/CMP e certificados cliente.
+- **Controles ICP-Brasil chave**
+  - Registro completo das transações em trilha imutável (DOC-ICP-04/05).
+  - Cerimônia de chaves alinhada à DOC-ICP-02 com CloudHSM e scripts de validação.
+  - Retenção de evidências e logs conforme prazos regulatórios (DOC-ICP-05/08).
+  - Planos de contingência, DR e testes documentados atendendo DOC-ICP-01/10.
+- **Métricas e SLA/SLO**
+  - Disponibilidade alvo: 99,9%; RPO 15 min; RTO 1 hora.
+  - Métricas críticas: taxa de emissão por CA, tempo médio de aprovação RA, latência OCSP/TSA < 200 ms, tempo de resposta a incidentes < 30 min.
+  - Todos os indicadores alimentam dashboards (CloudWatch + Grafana) com alertas automáticos (SNS) e runbooks vinculados.
+
 ## Arquitetura completa
 
 ### Diagrama de rede
